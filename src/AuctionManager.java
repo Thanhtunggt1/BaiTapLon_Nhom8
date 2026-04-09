@@ -37,7 +37,6 @@ public class AuctionManager {
             throw new Exception("Giá đặt phải cao hơn giá hiện tại.");
         }
 
-        // Tạo giao dịch và cập nhật
         BidTransaction transaction = new BidTransaction(UUID.randomUUID().toString(), bidder, item, amount);
         item.addBid(transaction);
 

@@ -1,7 +1,6 @@
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-// Design Pattern: Factory Method
 public class ItemFactory {
     public static Item createItem(String type, String id, String name, String description, double startingPrice, Seller seller) {
         switch (type.toUpperCase()) {

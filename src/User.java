@@ -10,9 +10,7 @@ public abstract class User extends Entity {
         this.role = role;
     }
 
-    // Abstract method cho tính đa hình
     public abstract void printInfo();
 
-    // Getters and Setters
     public String getUsername() { return username; }
 }

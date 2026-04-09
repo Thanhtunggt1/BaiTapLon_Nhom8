@@ -1,6 +1,5 @@
 import java.util.List;
 import java.util.ArrayList;
-// Lớp trừu tượng Item (Subject thông báo cho Observers)
 public abstract class Item extends Entity implements Subject {
     protected String name;
     protected String description;
@@ -18,7 +17,7 @@ public abstract class Item extends Entity implements Subject {
         this.name = name;
         this.description = description;
         this.startingPrice = startingPrice;
-        this.currentHighestBid = startingPrice; // Ban đầu giá cao nhất là giá khởi điểm
+        this.currentHighestBid = startingPrice;
         this.status = ItemStatus.OPEN;
         this.seller = seller;
         this.observers = new ArrayList<>();

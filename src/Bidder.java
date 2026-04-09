@@ -1,4 +1,3 @@
-// Lớp Bidder (tham gia đấu giá, nhận thông báo)
 public class Bidder extends User implements Observer {
     private double maxBid;
     private double increment;
@@ -7,14 +6,13 @@ public class Bidder extends User implements Observer {
         super(id, username, password, "BIDDER");
     }
 
-    // Auto-bidding config
+
     public void setAutoBidConfig(double maxBid, double increment) {
         this.maxBid = maxBid;
         this.increment = increment;
     }
 
     public void placeBid(Item item, double amount) {
-        // Logic đặt giá sẽ gọi qua AuctionManager
     }
 
     @Override

@@ -32,7 +32,6 @@ public class AuctionManager {
         if (item == null) throw new Exception("Sản phẩm không tồn tại.");
         if (item.getStatus() != ItemStatus.RUNNING) throw new Exception("Phiên đấu giá chưa mở hoặc đã kết thúc.");
 
-        // Kiểm tra tính hợp lệ của giá đấu
         if (amount <= item.getCurrentHighestBid()) {
             throw new Exception("Giá đặt phải cao hơn giá hiện tại.");
         }

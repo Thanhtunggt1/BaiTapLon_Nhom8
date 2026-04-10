@@ -17,7 +17,6 @@ class Item {
     private LocalDateTime endTime;
     private ItemType type;
     private String sellerUsername; // để biết sản phẩm này của ai
-
     public Item(String id, String name, String description, double startingPrice, LocalDateTime startTime, LocalDateTime endTime, ItemType type, String sellerUsername) {
         this.id = id;
         this.name = name;
@@ -29,7 +28,6 @@ class Item {
         this.type = type;
         this.sellerUsername = sellerUsername;
     }
-
     public String getId() { return id; }
     public String getName() { return name; }
     public String getDescription() { return description; }
@@ -47,16 +45,13 @@ class Item {
 }
 class ProductManager {
     private ArrayList<Item> items;
-
     public ProductManager() {
         this.items = new ArrayList<>();
     }
-
     // thêm sản phẩm mới
     public void addItem(Item item) {
         items.add(item);
     }
-
     // xóa sản phẩm theo ID
     // ghi chú: chỉ nên cho phép xóa nếu phiên đấu giá chưa bắt đầu
     public boolean removeItem(String id) {
@@ -70,7 +65,6 @@ class ProductManager {
         }
         return false;
     }
-
     // sửa thông tin sản phẩm
     public boolean updateItem(String id, String newName, String newDesc, LocalDateTime newEnd) {
         for (Item item : items) {
@@ -84,7 +78,6 @@ class ProductManager {
         }
         return false;
     }
-
     // lấy danh sách sản phẩm đang diễn ra
     public ArrayList<Item> getActiveItems() {
         ArrayList<Item> activeItems = new ArrayList<>();
@@ -96,7 +89,6 @@ class ProductManager {
         }
         return activeItems;
     }
-
     // tìm theo tên của sản phẩm
     public ArrayList<Item> searchByName(String keyword) {
         ArrayList<Item> result = new ArrayList<>();

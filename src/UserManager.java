@@ -7,11 +7,11 @@ public class UserManager {
         users = new ArrayList<>();
     }
 
-    //register
+    //register(Đăng ký)
     public boolean register(String username, String password, Role role) {
         for (User u : users) {
             if(u.getUsername().equals(username)) {
-                return false;
+                return false; // check sự tồn tại name nếu đã tồn tại
             }
         }
 

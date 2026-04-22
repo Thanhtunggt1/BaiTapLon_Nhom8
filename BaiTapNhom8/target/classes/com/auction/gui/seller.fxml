@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.chart.*?>
+<TabPane tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+         fx:controller="com.auction.gui.controller.SellerController">
+         
+    <Tab text="Kho Sản Phẩm">
+        <VBox spacing="10.0" style="-fx-padding: 15;">
+            <HBox spacing="10.0">
+                <Button text="Thêm Sản Phẩm" onAction="#handleAddItem" style="-fx-base: #27ae60; -fx-text-fill: white;"/>
+                <Button text="Sửa" onAction="#handleEditItem"/>
+                <Button text="Xóa" onAction="#handleDeleteItem" style="-fx-base: #e74c3c; -fx-text-fill: white;"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button text="Làm mới" onAction="#handleRefreshItems"/>
+            </HBox>
+            <TableView fx:id="itemTable" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colItemName" text="Tên sản phẩm" prefWidth="250.0"/>
+                    <TableColumn fx:id="colItemType" text="Loại" prefWidth="120.0"/>
+                    <TableColumn fx:id="colItemPrice" text="Giá khởi điểm" prefWidth="150.0"/>
+                    <TableColumn fx:id="colItemDesc" text="Mô tả" prefWidth="400.0"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </Tab>
+
+    <Tab text="Quản Lý Phiên Đấu Giá">
+        <VBox spacing="10.0" style="-fx-padding: 15;">
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+                <Button text="Tạo Phiên Đấu Giá Mới" onAction="#handleCreateAuction" style="-fx-base: #2980b9; -fx-text-fill: white;"/>
+                <Button text="Bắt Đầu Phiên" onAction="#handleStartAuction"/>
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <Label fx:id="totalEarningsLabel" text="Tổng doanh thu: 0 đ" style="-fx-font-weight: bold; -fx-text-fill: #27ae60; -fx-font-size: 15px;"/>
+
+                <Button text="Làm mới" onAction="#handleRefreshAuctions"/>
+            </HBox>
+            <TableView fx:id="auctionTable" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colAuctionItem" text="Sản phẩm" prefWidth="250.0"/>
+                    <TableColumn fx:id="colAuctionCurrent" text="Giá hiện tại" prefWidth="150.0"/>
+                    <TableColumn fx:id="colAuctionLeader" text="Dẫn đầu" prefWidth="120.0"/>
+                    <TableColumn fx:id="colAuctionStatus" text="Trạng thái" prefWidth="120.0"/>
+                    <TableColumn fx:id="colAuctionBids" text="Số bids" prefWidth="80.0"/>
+                    <TableColumn fx:id="colAuctionEnd" text="Thời gian kết thúc" prefWidth="150.0"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </Tab>
+</TabPane>

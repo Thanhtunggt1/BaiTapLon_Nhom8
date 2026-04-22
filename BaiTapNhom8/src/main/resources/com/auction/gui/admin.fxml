@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.chart.*?>
+<VBox spacing="15.0" style="-fx-padding: 20;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.auction.gui.controller.AdminController">
+      
+    <HBox spacing="20.0" alignment="CENTER_LEFT">
+        <VBox style="-fx-background-color: #ecf0f1; -fx-padding: 15; -fx-border-radius: 5; -fx-background-radius: 5;" minWidth="150">
+            <Label text="Tổng Phiên" style="-fx-font-size: 14px; -fx-text-fill: #7f8c8d;"/>
+            <Label fx:id="totalAuctionsLabel" text="0" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+        </VBox>
+        <VBox style="-fx-background-color: #e8f8f5; -fx-padding: 15; -fx-border-radius: 5; -fx-background-radius: 5;" minWidth="150">
+            <Label text="Đang Chạy" style="-fx-font-size: 14px; -fx-text-fill: #27ae60;"/>
+            <Label fx:id="runningLabel" text="0" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #27ae60;"/>
+        </VBox>
+        <VBox style="-fx-background-color: #ebf5fb; -fx-padding: 15; -fx-border-radius: 5; -fx-background-radius: 5;" minWidth="150">
+            <Label text="Hoàn Thành" style="-fx-font-size: 14px; -fx-text-fill: #2980b9;"/>
+            <Label fx:id="finishedLabel" text="0" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2980b9;"/>
+        </VBox>
+        <VBox style="-fx-background-color: #fef9e7; -fx-padding: 15; -fx-border-radius: 5; -fx-background-radius: 5;" minWidth="150">
+            <Label text="Tổng Users" style="-fx-font-size: 14px; -fx-text-fill: #f39c12;"/>
+            <Label fx:id="totalUsersLabel" text="0" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #f39c12;"/>
+        </VBox>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="Cập Nhật" onAction="#handleRefresh" prefHeight="40" style="-fx-base: #bdc3c7;"/>
+    </HBox>
+
+    <HBox spacing="10.0">
+        <Button text="Hủy Phiên Tranh Chấp" onAction="#handleCancelAuction" style="-fx-base: #e74c3c; -fx-text-fill: white;"/>
+        <Button text="Ép Kết Thúc Phiên" onAction="#handleEndAuction" style="-fx-base: #f39c12; -fx-text-fill: white;"/>
+        <Button text="Đánh Dấu Đã Thanh Toán" onAction="#handleMarkPaid" style="-fx-base: #8e44ad; -fx-text-fill: white;"/>
+    </HBox>
+
+    <TableView fx:id="allAuctionsTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colId" text="ID" prefWidth="100.0"/>
+            <TableColumn fx:id="colAdminItem" text="Sản phẩm" prefWidth="200.0"/>
+            <TableColumn fx:id="colAdminSeller" text="Người bán" prefWidth="100.0"/>
+            <TableColumn fx:id="colAdminPrice" text="Giá hiện tại" prefWidth="120.0"/>
+            <TableColumn fx:id="colAdminLeader" text="Dẫn đầu" prefWidth="100.0"/>
+            <TableColumn fx:id="colAdminStatus" text="Trạng thái" prefWidth="100.0"/>
+            <TableColumn fx:id="colAdminBids" text="Số Bid" prefWidth="70.0"/>
+            <TableColumn fx:id="colAdminEnd" text="Thời gian kết thúc" prefWidth="150.0"/>
+        </columns>
+    </TableView>
+</VBox>

@@ -64,7 +64,7 @@ public class AuctionListController {
         colEndTime.setCellValueFactory(d ->
                 new SimpleStringProperty(d.getValue().getEndTime().format(DTF)));
 
-        // Color status cell - ĐÃ SỬA CÚ PHÁP SWITCH TRUYỀN THỐNG
+        // Color status cell
         colStatus.setCellFactory(col -> new TableCell<>() {
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -72,7 +72,7 @@ public class AuctionListController {
                 if (empty || item == null) { setText(null); setStyle(""); return; }
                 setText(item);
 
-                String style = "-fx-text-fill: #f39c12;"; // Màu mặc định (vàng cam)
+                String style = "-fx-text-fill: #f39c12;";
                 switch (item) {
                     case "RUNNING":
                         style = "-fx-text-fill: #27ae60;";

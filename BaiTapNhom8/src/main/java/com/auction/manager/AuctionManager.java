@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class AuctionManager {
 
-    // ── Singleton ─────────────────────────────────────────────────────────────
+    // Singleton
 
     private static volatile AuctionManager instance;
 
@@ -53,7 +53,7 @@ public class AuctionManager {
         return instance;
     }
 
-    // ── Auction management ────────────────────────────────────────────────────
+    // Auction management
 
     /**
      * Đăng ký phiên đấu giá mới vào hệ thống.

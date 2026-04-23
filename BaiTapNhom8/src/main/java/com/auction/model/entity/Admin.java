@@ -13,7 +13,7 @@ public class Admin extends User {
         super(username, password, email);
     }
 
-    // ── Business methods ─────────────────────────────────────────────────────
+    // Business methods
 
     /**
      * Quản lý hệ thống — in tổng quan các phiên đang hoạt động.
@@ -26,7 +26,6 @@ public class Admin extends User {
 
     /**
      * Giải quyết tranh chấp: có thể hủy một phiên đấu giá.
-     *
      * @param auction phiên bị tranh chấp
      * @param reason  lý do hủy
      */
@@ -45,7 +44,6 @@ public class Admin extends User {
 
     /**
      * Xem thông tin chi tiết của bất kỳ phiên đấu giá nào.
-     *
      * @param auction phiên cần xem
      */
     public void inspectAuction(Auction auction) {

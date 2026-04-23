@@ -26,15 +26,12 @@ public class BidTransaction extends Entity {
         this.timestamp = LocalDateTime.now();
     }
 
-    // ── Business methods ─────────────────────────────────────────────────────
+    //\Business methods
 
     /**
      * Kiểm tra tính hợp lệ của giao dịch:
-     * <ul>
-     *   <li>Phiên đang ở trạng thái RUNNING</li>
-     *   <li>Số tiền cao hơn giá hiện tại của phiên</li>
-     * </ul>
-     *
+     * Phiên đang ở trạng thái RUNNING
+     * Số tiền cao hơn giá hiện tại của phiên
      * @return true nếu hợp lệ
      */
     public boolean isValid() {
@@ -44,7 +41,7 @@ public class BidTransaction extends Entity {
         return amount > auction.getCurrentHighestPrice();
     }
 
-    // ── Getters ───────────────────────────────────────────────────────────────
+    // Getters
 
     public Bidder getBidder() { return bidder; }
 

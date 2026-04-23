@@ -14,7 +14,7 @@ import java.util.Map;
 public class DataInitializer {
 
   public static void init() {
-    // ── Users ─────────────────────────────────────────────────────────────
+    // Users
     Admin admin = new Admin("admin", "admin123", "admin@auction.com");
     UserStore.addUser(admin);
 
@@ -30,7 +30,7 @@ public class DataInitializer {
     UserStore.addUser(bidder2);
     UserStore.addUser(bidder3);
 
-    // ── Items for seller1 ─────────────────────────────────────────────────
+    // Items for seller1
     Map<String, Object> p1 = new HashMap<>();
     p1.put("brand", "Samsung");
     p1.put("warrantyMonths", 24);
@@ -49,7 +49,7 @@ public class DataInitializer {
     Item macbook = seller1.createItem("MacBook Pro M3 14\"", "Chip M3 Pro, 18GB RAM, 512GB SSD",
         55_000_000, ItemType.ELECTRONICS, p3);
 
-    // ── Items for seller2 ─────────────────────────────────────────────────
+    // Items for seller2
     Map<String, Object> p4 = new HashMap<>();
     p4.put("mileage", 45000.0);
     p4.put("licensePlate", "29A-12345");
@@ -62,7 +62,7 @@ public class DataInitializer {
     Item bike = seller2.createItem("Xe máy Honda Wave 2024", "Xe mới 100%, chưa lăn bánh",
         20_000_000, ItemType.VEHICLE, p5);
 
-    // ── Auctions ──────────────────────────────────────────────────────────
+    // Auctions
     LocalDateTime now = LocalDateTime.now();
 
     // Auction 1: đang chạy (TV Samsung)
@@ -88,7 +88,7 @@ public class DataInitializer {
     Auction a5 = seller2.createAuction(bike, now.plusMinutes(15), now.plusHours(1));
     AuctionManager.getInstance().registerAuction(a5);
 
-    // ── Seed some bids ─────────────────────────────────────────────────────
+    // Seed some bids
     try {
       a1.placeBid(new BidTransaction(bidder1, a1, 15_500_000));
       a1.placeBid(new BidTransaction(bidder2, a1, 16_000_000));

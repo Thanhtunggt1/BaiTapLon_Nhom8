@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 
 /**
  * Cấu hình Auto-Bid của một Bidder cho một phiên đấu giá cụ thể.
- * <p>
  * Khi có bid mới từ đối thủ, AuctionManager sẽ kiểm tra các AutoBidConfig
  * và tự động đặt giá theo thứ tự ưu tiên (thời điểm đăng ký sớm hơn → ưu tiên hơn).
  */
@@ -30,11 +29,10 @@ public class AutoBidConfig extends Entity implements Comparable<AutoBidConfig> {
         this.registeredTime = LocalDateTime.now();
     }
 
-    // ── Business methods ─────────────────────────────────────────────────────
+    // Business methods
 
     /**
      * Tính giá auto-bid tiếp theo dựa trên giá hiện tại của phiên.
-     *
      * @param currentPrice giá hiện tại cao nhất
      * @return giá auto-bid đề xuất, hoặc -1 nếu vượt quá maxBid
      */
@@ -51,7 +49,7 @@ public class AutoBidConfig extends Entity implements Comparable<AutoBidConfig> {
         return this.registeredTime.compareTo(other.registeredTime);
     }
 
-    // ── Getters / Setters ────────────────────────────────────────────────────
+    //Getters / Setters
 
     public Bidder getBidder() { return bidder; }
 

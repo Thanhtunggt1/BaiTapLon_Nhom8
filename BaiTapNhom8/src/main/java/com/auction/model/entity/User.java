@@ -28,11 +28,10 @@ public abstract class User extends Entity {
         this.loggedIn = false;
     }
 
-    // ── Business methods ─────────────────────────────────────────────────────
+    //Business methods
 
     /**
      * Đăng nhập với username và password.
-     *
      * @param username tên đăng nhập
      * @param password mật khẩu
      * @return true nếu thành công
@@ -65,7 +64,7 @@ public abstract class User extends Entity {
                 getClass().getSimpleName(), getId(), username, email, loggedIn);
     }
 
-    // ── Getters / Setters ────────────────────────────────────────────────────
+    // Getters / Setters
 
     public String getUsername() { return username; }
 

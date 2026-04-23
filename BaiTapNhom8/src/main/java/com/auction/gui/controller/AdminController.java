@@ -18,13 +18,13 @@ import java.util.Locale;
 
 public class AdminController {
 
-    // ── Summary cards ──────────────────────────────────────────────────────────
+    // Summary cards
     @FXML private Label totalAuctionsLabel;
     @FXML private Label runningLabel;
     @FXML private Label finishedLabel;
     @FXML private Label totalUsersLabel;
 
-    // ── Table ──────────────────────────────────────────────────────────────────
+    // Table
     @FXML private TableView<Auction>            allAuctionsTable;
     @FXML private TableColumn<Auction, String>  colId;
     @FXML private TableColumn<Auction, String>  colAdminItem;
@@ -64,7 +64,7 @@ public class AdminController {
         colAdminEnd.setCellValueFactory(d ->
                 new SimpleStringProperty(d.getValue().getEndTime().format(DTF)));
 
-        // Color status - ĐÃ SỬA VỀ CÚ PHÁP CHUẨN
+        // Color status
         colAdminStatus.setCellFactory(col -> new TableCell<>() {
             @Override protected void updateItem(String s, boolean empty) {
                 super.updateItem(s, empty);

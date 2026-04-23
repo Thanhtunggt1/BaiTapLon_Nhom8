@@ -1,8 +1,8 @@
 package com.auction.model.entity;
 
 /**
- * Sản phẩm điện tử — kế thừa {@link Item}.
- * Có thêm thuộc tính: thương hiệu và thời hạn bảo hành (tháng).
+ * Sản phẩm điện tử — kế thừa Item
+ * Có thêm thuộc tính: thương hiệu và thời hạn bảo hành (tháng)
  */
 public class Electronics extends Item {
 
@@ -22,7 +22,7 @@ public class Electronics extends Item {
         this.warrantyMonths = warrantyMonths;
     }
 
-    // ── Polymorphism: override printInfo ─────────────────────────────────────
+    //override printInfo
 
     @Override
     public void printInfo() {
@@ -30,7 +30,7 @@ public class Electronics extends Item {
         System.out.printf("  └─ Thương hiệu: %s | Bảo hành: %d tháng%n", brand, warrantyMonths);
     }
 
-    // ── Getters / Setters ────────────────────────────────────────────────────
+    // Getters / Setters
 
     public String getBrand() { return brand; }
 

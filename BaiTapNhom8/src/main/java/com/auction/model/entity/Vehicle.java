@@ -1,8 +1,8 @@
 package com.auction.model.entity;
 
 /**
- * Phương tiện — kế thừa {@link Item}.
- * Có thêm thuộc tính: số km đã đi và biển số xe.
+ * Phương tiện — kế thừa Item
+ * Có thêm thuộc tính: số km đã đi và biển số xe
  */
 public class Vehicle extends Item {
 
@@ -22,7 +22,7 @@ public class Vehicle extends Item {
         this.licensePlate = licensePlate;
     }
 
-    // ── Polymorphism: override printInfo ─────────────────────────────────────
+    //override printInfo
 
     @Override
     public void printInfo() {
@@ -30,7 +30,7 @@ public class Vehicle extends Item {
         System.out.printf("  └─ Biển số: %s | Km đã đi: %.1f km%n", licensePlate, mileage);
     }
 
-    // ── Getters / Setters ────────────────────────────────────────────────────
+    //Getters / Setters
 
     public double getMileage() { return mileage; }
 

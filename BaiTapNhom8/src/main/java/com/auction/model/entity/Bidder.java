@@ -8,10 +8,8 @@ import com.auction.pattern.observer.Observer;
 
 /**
  * Người tham gia đấu giá (Bidder).
- * <ul>
- *   <li>Implement {@link Observer} để nhận cập nhật realtime khi có bid mới.</li>
- *   <li>Có thể đặt bid thủ công hoặc cài đặt auto-bid.</li>
- * </ul>
+ * Implement {@link Observer} để nhận cập nhật realtime khi có bid mới
+ * Có thể đặt bid thủ công hoặc cài đặt auto-bid
  */
 public class Bidder extends User implements Observer {
 
@@ -25,11 +23,10 @@ public class Bidder extends User implements Observer {
         this.balance = initialBalance;
     }
 
-    // ── Business methods ─────────────────────────────────────────────────────
+    //Business methods
 
     /**
      * Đặt giá thủ công cho một phiên đấu giá.
-     *
      * @param auction phiên đấu giá muốn tham gia
      * @param amount  số tiền muốn đặt
      * @return true nếu bid hợp lệ và được chấp nhận
@@ -63,7 +60,6 @@ public class Bidder extends User implements Observer {
     /**
      * Cài đặt auto-bid cho một phiên đấu giá.
      * Hệ thống sẽ tự động trả giá thay người dùng khi có bid từ đối thủ.
-     *
      * @param auction   phiên đấu giá
      * @param maxBid    giá tối đa sẵn sàng trả
      * @param increment bước giá mỗi lần auto-bid
@@ -96,7 +92,7 @@ public class Bidder extends User implements Observer {
                 auction.getCurrentLeader() != null ? auction.getCurrentLeader().getUsername() : "Chưa có");
     }
 
-    // ── Getters / Setters ────────────────────────────────────────────────────
+    // Getters / Setters
 
     public double getBalance() { return balance; }
 

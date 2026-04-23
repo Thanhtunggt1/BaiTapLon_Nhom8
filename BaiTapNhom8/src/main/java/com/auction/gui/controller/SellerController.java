@@ -23,14 +23,14 @@ public class SellerController {
     @FXML
     private Label totalEarningsLabel;
 
-    // ── Item tab ───────────────────────────────────────────────────────────────
+    // Item tab
     @FXML private TableView<Item>               itemTable;
     @FXML private TableColumn<Item, String>     colItemName;
     @FXML private TableColumn<Item, String>     colItemType;
     @FXML private TableColumn<Item, String>     colItemPrice;
     @FXML private TableColumn<Item, String>     colItemDesc;
 
-    // ── Auction tab ────────────────────────────────────────────────────────────
+    // Auction tab
     @FXML private TableView<Auction>            auctionTable;
     @FXML private TableColumn<Auction, String>  colAuctionItem;
     @FXML private TableColumn<Auction, String>  colAuctionStatus;
@@ -53,7 +53,7 @@ public class SellerController {
         return (Seller) SessionManager.getCurrentUser();
     }
 
-    // ── Table setup ────────────────────────────────────────────────────────────
+    // Table setup
 
     private void setupItemTable() {
         colItemName.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getName()));
@@ -73,7 +73,7 @@ public class SellerController {
         colAuctionBids.setCellValueFactory(d -> new SimpleStringProperty(String.valueOf(d.getValue().getBidHistory().size())));
         colAuctionEnd.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getEndTime().format(DTF)));
 
-        // Color status - ĐÃ SỬA CÚ PHÁP ĐỂ TƯƠNG THÍCH VỚI MỌI PHIÊN BẢN JAVA
+        // Color status
         colAuctionStatus.setCellFactory(col -> new TableCell<>() {
             @Override protected void updateItem(String s, boolean empty) {
                 super.updateItem(s, empty);
@@ -108,8 +108,7 @@ public class SellerController {
         updateTotalEarnings();
     }
 
-    // ── Item actions ───────────────────────────────────────────────────────────
-
+    // Item actions
     @FXML private void handleRefreshItems()    { loadData(); }
     @FXML private void handleRefreshAuctions() { loadData(); }
 
@@ -246,7 +245,7 @@ public class SellerController {
         });
     }
 
-    // ── Auction actions ────────────────────────────────────────────────────────
+    // Auction actions
 
     @FXML
     private void handleCreateAuction() {
@@ -283,7 +282,7 @@ public class SellerController {
         CheckBox startNow = new CheckBox("Bắt đầu ngay lập tức");
         startNow.setSelected(true);
 
-        // ... Phần add các thành phần vào GridPane bên dưới giữ nguyên không đổi ...
+        //Phần add các thành phần vào GridPane bên dưới giữ nguyên không đổi
         g.add(new Label("Sản phẩm:"),         0, 0); g.add(itemBox,      1, 0);
         g.add(new Label("Thời lượng (phút):"), 0, 1); g.add(durationField,1, 1);
         g.add(startNow, 0, 2, 2, 1);
@@ -349,7 +348,7 @@ public class SellerController {
         totalEarningsLabel.setText("Tổng doanh thu: " + format.format(total) + " đ");
     }
 
-    // ── Helpers ────────────────────────────────────────────────────────────────
+    //Helpers
 
     private GridPane buildGrid() {
         GridPane g = new GridPane();

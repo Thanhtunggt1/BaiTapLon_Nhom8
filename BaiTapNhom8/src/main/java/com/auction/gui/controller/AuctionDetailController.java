@@ -26,37 +26,37 @@ import java.util.Locale;
 
 public class AuctionDetailController implements Observer {
 
-    // ── Item info ──────────────────────────────────────────────────────────────
+    // Item info
     @FXML private Label itemNameLabel;
     @FXML private Label itemDescLabel;
     @FXML private Label itemDetailLabel;
 
-    // ── Live status bar ────────────────────────────────────────────────────────
+    // Live status bar
     @FXML private Label currentPriceLabel;
     @FXML private Label leaderLabel;
     @FXML private Label statusLabel;
     @FXML private Label timeRemainingLabel;
 
-    // ── Chart & history ────────────────────────────────────────────────────────
+    // Chart & history
     @FXML private LineChart<String, Number> priceChart;
     @FXML private TableView<BidTransaction>   bidHistoryTable;
     @FXML private TableColumn<BidTransaction, String> colBidder;
     @FXML private TableColumn<BidTransaction, String> colAmount;
     @FXML private TableColumn<BidTransaction, String> colTime;
 
-    // ── Manual bid panel ───────────────────────────────────────────────────────
+    // Manual bid panel
     @FXML private TextField bidAmountField;
     @FXML private Button    depositButton;
     @FXML private Label     balanceLabel;
     @FXML private Button    placeBidButton;
     @FXML private Label     bidMessage;
 
-    // ── Auto-bid panel ─────────────────────────────────────────────────────────
+    // Auto-bid panel
     @FXML private TextField maxBidField;
     @FXML private TextField incrementField;
     @FXML private Label     autoBidMessage;
 
-    // ── Info labels ────────────────────────────────────────────────────────────
+    // Info labels
     @FXML private Label totalBidsLabel;
     @FXML private Label sellerLabel;
     @FXML private Label startPriceLabel;
@@ -69,7 +69,7 @@ public class AuctionDetailController implements Observer {
     private static final NumberFormat NF  = NumberFormat.getInstance(new Locale("vi", "VN"));
     private static final DateTimeFormatter DTF = DateTimeFormatter.ofPattern("HH:mm:ss");
 
-    // ── Init ───────────────────────────────────────────────────────────────────
+    // Init
 
     @FXML
     public void initialize() {
@@ -85,7 +85,7 @@ public class AuctionDetailController implements Observer {
         configurePermissions();
     }
 
-    // ── Permissions ────────────────────────────────────────────────────────────
+    // Permissions
 
     private void configurePermissions() {
         User user = SessionManager.getCurrentUser();
@@ -111,7 +111,7 @@ public class AuctionDetailController implements Observer {
         }
     }
 
-    // ── Table setup ────────────────────────────────────────────────────────────
+    // Table setup
 
     private void setupBidHistoryTable() {
         colBidder.setCellValueFactory(d ->
@@ -131,7 +131,7 @@ public class AuctionDetailController implements Observer {
         priceChart.setLegendVisible(false);
     }
 
-    // ── Refresh UI ─────────────────────────────────────────────────────────────
+    // Refresh UI
 
     private void refreshUI() {
         if (auction == null) return;
@@ -189,7 +189,7 @@ public class AuctionDetailController implements Observer {
         };
     }
 
-    // ── Countdown ──────────────────────────────────────────────────────────────
+    // Countdown
 
     private void startCountdown() {
         if (countdown != null) countdown.stop();
@@ -214,7 +214,7 @@ public class AuctionDetailController implements Observer {
         if (secs < 30) timeRemainingLabel.setStyle("-fx-text-fill: #e74c3c; -fx-font-size: 15; -fx-font-weight: bold;");
     }
 
-    // ── Actions ────────────────────────────────────────────────────────────────
+    // Actions
 
     @FXML
     private void handlePlaceBid() {
@@ -296,7 +296,7 @@ public class AuctionDetailController implements Observer {
         lbl.setText(msg);
     }
 
-    // ── Observer callback ──────────────────────────────────────────────────────
+    // Observer callback
 
     @Override
     public void update(Auction auction) {

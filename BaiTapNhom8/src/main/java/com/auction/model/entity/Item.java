@@ -28,7 +28,7 @@ public abstract class Item extends Entity {
         this.startingPrice = startingPrice;
     }
 
-    // ── Abstract / Polymorphism ───────────────────────────────────────────────
+    //Abstract / Polymorphism
 
     /**
      * In thông tin sản phẩm — subclass override để thêm thuộc tính đặc thù.
@@ -38,7 +38,7 @@ public abstract class Item extends Entity {
                 getClass().getSimpleName(), getId(), name, startingPrice, description);
     }
 
-    // ── Getters / Setters ────────────────────────────────────────────────────
+    //Getters / Setters
 
     public String getName() { return name; }
 

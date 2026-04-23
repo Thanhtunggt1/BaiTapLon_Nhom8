@@ -11,12 +11,12 @@ import javafx.scene.control.*;
 
 public class LoginController {
 
-    // ── Login fields ──────────────────────────────────────────────────────────
+    // Login fields
     @FXML private TextField loginUsername;
     @FXML private PasswordField loginPassword;
     @FXML private Label loginError;
 
-    // ── Register fields ───────────────────────────────────────────────────────
+    // Register fields
     @FXML private TextField regUsername;
     @FXML private PasswordField regPassword;
     @FXML private TextField regEmail;
@@ -82,7 +82,6 @@ public class LoginController {
             regError.setStyle("-fx-text-fill: #27ae60;");
             regError.setText("Đăng ký thành công! Hãy chuyển sang tab Đăng nhập.");
             regUsername.clear(); regPassword.clear(); regEmail.clear();
-            // Đã xóa lệnh regBalance.clear(); ở cuối dòng trên
         } catch (IllegalArgumentException e) {
             setError(regError, e.getMessage());
         }

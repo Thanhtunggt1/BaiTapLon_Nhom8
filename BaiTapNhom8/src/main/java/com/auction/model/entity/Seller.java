@@ -24,7 +24,7 @@ public class Seller extends User {
         this.auctions = new ArrayList<>();
     }
 
-    // ── Item management ───────────────────────────────────────────────────────
+    // Item management
 
     /**
      * Tạo sản phẩm mới thông qua ItemFactory.
@@ -91,7 +91,6 @@ public class Seller extends User {
 
     /**
      * Xóa sản phẩm khỏi danh sách (không thể xóa nếu đang trong phiên RUNNING).
-     *
      * @param item sản phẩm cần xóa
      * @return true nếu xóa thành công
      */
@@ -113,11 +112,10 @@ public class Seller extends User {
         return true;
     }
 
-    // ── Auction management ────────────────────────────────────────────────────
+    // Auction management
 
     /**
      * Tạo phiên đấu giá mới cho sản phẩm.
-     *
      * @param item      sản phẩm muốn đấu giá (phải thuộc Seller này)
      * @param startTime thời gian bắt đầu
      * @param endTime   thời gian kết thúc
@@ -147,7 +145,7 @@ public class Seller extends User {
         return auction;
     }
 
-    // ── Getters ───────────────────────────────────────────────────────────────
+    // Getters
 
     /*
      * Collections.unmodifiableList(items)

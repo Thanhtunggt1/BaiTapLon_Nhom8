@@ -40,7 +40,7 @@ public abstract class Item extends Entity {
     public void printInfo() {
         System.out.printf("[%s] id=%s | Tên: %s | Giá khởi điểm: %.2f%n  Mô tả: %s%n",
                 getClass().getSimpleName(), getId(), name, startingPrice, description);
-        // Cái printf nó na ná bên C++ : Chuôỗi định dạng
+        // Cái printf : Chuôỗi định dạng
         // %n để xuống dòng
         //[Electronics] id=9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d | Tên: MacBook Pro M3 | Giá khởi điểm: 35000000.50
         //  Mô tả: Hàng lướt 99%, sạc 10 lần.

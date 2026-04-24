@@ -51,7 +51,7 @@ public class ItemFactory {
      * @param name          tên sản phẩm
      * @param description   mô tả
      * @param startingPrice giá khởi điểm
-     * @param params        thuộc tính đặc thù (xem bảng bên dưới)
+     * @param params        thuộc tính chi tiết từng loại (xem bảng bên dưới)
      * @return Item vừa tạo
      *
      */
@@ -71,22 +71,22 @@ public class ItemFactory {
 
     private Electronics createElectronics(String name, String description,
                                           double startingPrice, Map<String, Object> params) {
-        String brand = getRequired(params, "brand", String.class);
-        int warrantyMonths = getRequired(params, "warrantyMonths", Integer.class);
+        String brand = getRequired(params, "brand", String.class); // nhãn mác
+        int warrantyMonths = getRequired(params, "warrantyMonths", Integer.class); //thời gian bảo hành
         return new Electronics(name, description, startingPrice, brand, warrantyMonths);
     }
 
     private Art createArt(String name, String description,
                           double startingPrice, Map<String, Object> params) {
-        String artistName = getRequired(params, "artistName", String.class);
-        int creationYear = getRequired(params, "creationYear", Integer.class);
+        String artistName = getRequired(params, "artistName", String.class); // tên tác phẩm
+        int creationYear = getRequired(params, "creationYear", Integer.class); // năm sáng tác
         return new Art(name, description, startingPrice, artistName, creationYear);
     }
 
     private Vehicle createVehicle(String name, String description,
                                   double startingPrice, Map<String, Object> params) {
-        double mileage = getRequired(params, "mileage", Double.class);
-        String licensePlate = getRequired(params, "licensePlate", String.class);
+        double mileage = getRequired(params, "mileage", Double.class); // dặm
+        String licensePlate = getRequired(params, "licensePlate", String.class); //biển số
         return new Vehicle(name, description, startingPrice, mileage, licensePlate);
     }
 

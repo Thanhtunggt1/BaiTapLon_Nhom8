@@ -7,41 +7,72 @@ enum ItemType { //các loại mặt hàng
     VEHICLE,
     OTHER
 }
-class Item {
-    private String id;
-    private String name;
-    private String description; //miêu tả
-    private double startingPrice;
-    private double currentMaxBid;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
-    private ItemType type;
-    private String sellerUsername; // để biết sản phẩm này của ai
-    public Item(String id, String name, String description, double startingPrice, LocalDateTime startTime, LocalDateTime endTime, ItemType type, String sellerUsername) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.startingPrice = startingPrice;
-        this.currentMaxBid = startingPrice; // giá cao nhất lúc đầu là giá khởi điểm
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.type = type;
-        this.sellerUsername = sellerUsername;
-    }
-    public String getId() { return id; }
-    public String getName() { return name; }
-    public String getDescription() { return description; }
-    public double getStartingPrice() { return startingPrice; }
-    public double getCurrentMaxBid() { return currentMaxBid; }
-    public LocalDateTime getStartTime() { return startTime; }
-    public LocalDateTime getEndTime() { return endTime; }
-    public ItemType getType() { return type; }
-    public String getSellerUsername() { return sellerUsername; }
+public abstract class Item extends Entity {
 
-    public void setName(String name) { this.name = name; }
-    public void setDescription(String description) { this.description = description; }
-    public void setCurrentMaxBid(double currentMaxBid) { this.currentMaxBid = currentMaxBid; }
-    public void setEndTime(LocalDateTime endTime) { this.endTime = endTime; }
+    private String name;
+    private String description;
+    private double startingPrice;
+
+    protected Item(String name, String description, double startingPrice) {
+        super();
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Tên sản phẩm không được để trống.");
+        }
+        if (startingPrice < 0) {
+            throw new IllegalArgumentException("Giá khởi điểm không được âm.");
+        }
+        this.name = name;
+
+
+        /**
+         * Nếu biến description được truyền vào khác null thì gán giá trị đó cho thuộc tính this.description
+         * Ngược lại, nếu description là null thì gán chuỗi rỗng "" cho this.description
+         *Toán tử ba ngôi (ternary operator) để tránh lỗi NullPointerException và đảm bảo rằng this.description luôn có một giá trị hợp lệ
+         */
+        this.description = description != null ? description : "";
+        this.startingPrice = startingPrice;
+    }
+
+    // ── Abstract / Polymorphism ───────────────────────────────────────────────
+
+    /**
+     * In thông tin sản phẩm — subclass override để thêm thuộc tính đặc thù
+     */
+
+    public void printInfo() {
+        System.out.printf("[%s] id=%s | Tên: %s | Giá khởi điểm: %.2f%n  Mô tả: %s%n",
+                getClass().getSimpleName(), getId(), name, startingPrice, description);
+        // Cái printf : Chuôỗi định dạng
+        // %n để xuống dòng
+        //[Electronics] id=9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d | Tên: MacBook Pro M3 | Giá khởi điểm: 35000000.50
+        //  Mô tả: Hàng lướt 99%, sạc 10 lần.
+    }
+
+    // ── Getters / Setters ────────────────────────────────────────────────────
+
+    public String getName() { return name; }
+
+    public void setName(String name) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Tên sản phẩm không được để trống.");
+        }
+        this.name = name;
+    }
+
+    public String getDescription() { return description; }
+
+    public void setDescription(String description) {
+        this.description = description != null ? description : "";
+    }
+
+    public double getStartingPrice() { return startingPrice; }
+
+    public void setStartingPrice(double startingPrice) {
+        if (startingPrice < 0) {
+            throw new IllegalArgumentException("Giá khởi điểm không được âm.");
+        }
+        this.startingPrice = startingPrice;
+    }
 }
 class ProductManager {
     private ArrayList<Item> items;

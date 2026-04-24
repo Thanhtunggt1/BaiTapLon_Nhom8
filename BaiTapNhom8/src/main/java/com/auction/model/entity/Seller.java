@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Người bán (Seller).
  * Có thể tạo, sửa, xóa sản phẩm và tạo phiên đấu giá.
  */
 public class Seller extends User {
@@ -28,13 +27,11 @@ public class Seller extends User {
 
     /**
      * Tạo sản phẩm mới thông qua ItemFactory.
-     *
-     * @param name         tên sản phẩm
-     * @param description  mô tả
-     * @param startingPrice giá khởi điểm
-     * @param type         loại sản phẩm
-     * @param extraParams  các thuộc tính đặc thù theo loại (warrantyMonths, brand, v.v.)
-     * @return Item vừa tạo
+     * name         tên sản phẩm
+     * escription  mô tả
+     * startingPrice giá khởi điểm
+     * type         loại sản phẩm
+     * extraParams  các thuộc tính đặc thù theo loại (warrantyMonths, brand)
      */
 
 
@@ -46,9 +43,7 @@ public class Seller extends User {
     * Rồi dùng phương thức put(key, value) để thêm cặp key–value
     * */
 
-    public Item createItem(String name, String description,
-                           double startingPrice, ItemType type,
-                           Map<String, Object> extraParams) {
+    public Item createItem(String name, String description, double startingPrice, ItemType type, Map<String, Object> extraParams) {
         Item item = ItemFactory.getInstance().createItem(type, name, description, startingPrice, extraParams);
         items.add(item);
         System.out.printf("[Seller:%s] Đã tạo sản phẩm '%s' (id=%s)%n",
@@ -57,21 +52,20 @@ public class Seller extends User {
     }
 
     /**
-     * Cập nhật thông tin sản phẩm.
+     * Cập nhật thông tin sản phẩm
      * Không cho phép cập nhật nếu sản phẩm đang trong phiên OPEN hoặc RUNNING
      *
-     * @param item        sản phẩm cần sửa (phải thuộc Seller này)
-     * @param newName     tên mới (null = giữ nguyên)
-     * @param newDesc     mô tả mới (null = giữ nguyên)
-     * @param newPrice    giá mới (<=0 = giữ nguyên)
-     * @return true nếu cập nhật thành công
+     * item        sản phẩm cần sửa (phải thuộc Seller này)
+     * newName     tên mới (null = giữ nguyên)
+     * newDesc     mô tả mới (null = giữ nguyên)
+     * newPrice    giá mới (<=0 = giữ nguyên)
      */
     public boolean updateItem(Item item, String newName, String newDesc, double newPrice) {
         if (!items.contains(item)) {
             throw new IllegalArgumentException("Sản phẩm không thuộc Seller này.");
         }
 
-        // KIỂM TRA CHỐT CHẶN: Cấm sửa nếu đang đấu giá hoặc đã bán xong
+        // Cấm sửa nếu đang đấu giá hoặc đã bán xong
         boolean isLocked = auctions.stream()
                 .anyMatch(a -> a.getItem().equals(item)
                         && (a.getStatus() == com.auction.model.enums.AuctionStatus.RUNNING
@@ -116,8 +110,8 @@ public class Seller extends User {
 
     /**
      * Tạo phiên đấu giá mới cho sản phẩm.
-     * @param item      sản phẩm muốn đấu giá (phải thuộc Seller này)
-     * @param startTime thời gian bắt đầu
+     * item      sản phẩm muốn đấu giá (phải thuộc Seller này)
+     * startTime thời gian bắt đầu
      * @param endTime   thời gian kết thúc
      * @return Auction vừa tạo
      */

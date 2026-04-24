@@ -1,9 +1,6 @@
 package com.auction.model.entity;
 
-/**
- * Lớp trừu tượng đại diện cho sản phẩm đấu giá.
- * Các loại cụ thể (Electronics, Art, Vehicle) kế thừa lớp này.
- */
+
 public abstract class Item extends Entity {
 
     private String name;
@@ -27,8 +24,6 @@ public abstract class Item extends Entity {
         this.description = description != null ? description : "";
         this.startingPrice = startingPrice;
     }
-
-    //Abstract / Polymorphism
 
     /**
      * In thông tin sản phẩm — subclass override để thêm thuộc tính đặc thù.

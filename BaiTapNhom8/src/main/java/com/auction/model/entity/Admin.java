@@ -4,7 +4,6 @@ import com.auction.manager.AuctionManager;
 import com.auction.model.enums.AuctionStatus;
 
 /**
- * Quản trị viên hệ thống (Admin).
  * Có quyền quản lý toàn bộ hệ thống và giải quyết tranh chấp.
  */
 public class Admin extends User {
@@ -13,10 +12,9 @@ public class Admin extends User {
         super(username, password, email);
     }
 
-    // Business methods
 
     /**
-     * Quản lý hệ thống — in tổng quan các phiên đang hoạt động.
+     * Quản lý hệ thống — in tổng quan các phiên đang hoạt động
      */
     public void manageSystem() {
         System.out.println("=== [Admin] Quản lý hệ thống ===");
@@ -26,8 +24,8 @@ public class Admin extends User {
 
     /**
      * Giải quyết tranh chấp: có thể hủy một phiên đấu giá.
-     * @param auction phiên bị tranh chấp
-     * @param reason  lý do hủy
+     * auction phiên bị tranh chấp
+     * reason  lý do hủy
      */
     public void resolveDispute(Auction auction, String reason) {
         if (auction == null) throw new IllegalArgumentException("Auction không được null.");
@@ -44,7 +42,7 @@ public class Admin extends User {
 
     /**
      * Xem thông tin chi tiết của bất kỳ phiên đấu giá nào.
-     * @param auction phiên cần xem
+     * auction phiên cần xem
      */
     public void inspectAuction(Auction auction) {
         if (auction == null) throw new IllegalArgumentException("Auction không được null.");

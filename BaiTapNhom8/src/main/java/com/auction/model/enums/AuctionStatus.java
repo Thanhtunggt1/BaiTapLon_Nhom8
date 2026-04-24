@@ -1,9 +1,6 @@
 package com.auction.model.enums;
 
-/**
- * Trạng thái của một phiên đấu giá.
- * Luồng trạng thái: OPEN → RUNNING → FINISHED → PAID / CANCELED
- */
+
 public enum AuctionStatus {
     /** Phiên đã được tạo, chưa bắt đầu */
     OPEN,

@@ -1,7 +1,6 @@
 package com.auction.model.entity;
 
 /**
- * Sản phẩm điện tử — kế thừa Item
  * Có thêm thuộc tính: thương hiệu và thời hạn bảo hành (tháng)
  */
 public class Electronics extends Item {

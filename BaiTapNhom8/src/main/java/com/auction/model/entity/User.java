@@ -1,13 +1,13 @@
 package com.auction.model.entity;
 
 /**
- * Lớp trừu tượng đại diện cho người dùng trong hệ thống.
- * Các vai trò cụ thể (Bidder, Seller, Admin) kế thừa lớp này.
+ * Lớp trừu tượng đại diện cho người dùng trong hệ thống
+ * Các vai trò cụ thể (Bidder, Seller, Admin) kế thừa lớp này
  */
 public abstract class User extends Entity {
 
     private String username;
-    private String password;   // Lưu dạng hash trong thực tế
+    private String password;
     private String email;
     private boolean loggedIn;
 
@@ -28,12 +28,12 @@ public abstract class User extends Entity {
         this.loggedIn = false;
     }
 
-    //Business methods
 
     /**
-     * Đăng nhập với username và password.
-     * @param username tên đăng nhập
-     * @param password mật khẩu
+     * Đăng nhập với username và password
+     *
+     * username tên đăng nhập
+     * password mật khẩu
      * @return true nếu thành công
      */
     public boolean login(String username, String password) {
@@ -47,7 +47,7 @@ public abstract class User extends Entity {
     }
 
     /**
-     * Đăng xuất khỏi hệ thống.
+     * Đăng xuất khỏi hệ thống
      */
     public void logout() {
         if (loggedIn) {

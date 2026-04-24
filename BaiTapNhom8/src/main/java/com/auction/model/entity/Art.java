@@ -1,8 +1,8 @@
 package com.auction.model.entity;
 
 /**
- * Tác phẩm nghệ thuật — kế thừa Item.
- * Có thêm thuộc tính: tên nghệ sĩ và năm sáng tác.
+ * Tác phẩm nghệ thuật — kế thừa Item
+ * Có thêm thuộc tính: tên nghệ sĩ và năm sáng tác
  */
 public class Art extends Item {
 
@@ -22,7 +22,6 @@ public class Art extends Item {
         this.creationYear = creationYear;
     }
 
-    //override printInfo
 
     @Override
     public void printInfo() {

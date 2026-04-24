@@ -8,29 +8,17 @@ import com.auction.model.enums.ItemType;
 
 import java.util.Map;
 
-/**
- * Factory Method Pattern — tạo các loại Item theo {@link ItemType}.
- * Là Singleton: chỉ tồn tại một instance duy nhất trong toàn hệ thống.
- *
- * <h3>Cách dùng:</h3>
- * <pre>{@code
- * Map<String, Object> params = new HashMap<>();
- * params.put("brand", "Samsung");
- * params.put("warrantyMonths", 24);
- * Item item = ItemFactory.getInstance().createItem(
- *     ItemType.ELECTRONICS, "TV 4K", "Tivi Samsung 55 inch", 15_000_000, params);
- * }</pre>
- */
+
 public class ItemFactory {
 
-    // ── Singleton ─────────────────────────────────────────────────────────────
+    // Singleton
 
     private static volatile ItemFactory instance;
 
     private ItemFactory() {}
 
     /**
-     * Trả về instance duy nhất của ItemFactory (thread-safe với double-checked locking).
+     * Trả về instance duy nhất của ItemFactory
      */
     public static ItemFactory getInstance() {
         if (instance == null) {
@@ -43,24 +31,16 @@ public class ItemFactory {
         return instance;
     }
 
-    // ── Factory Method ────────────────────────────────────────────────────────
+    // Factory Method
 
     /**
      * Tạo Item theo loại.
      *
-     * @param type          loại sản phẩm
-     * @param name          tên sản phẩm
-     * @param description   mô tả
-     * @param startingPrice giá khởi điểm
-     * @param params        thuộc tính đặc thù (xem bảng bên dưới)
-     * @return Item vừa tạo
-     *
-     * <table border="1">
-     *   <tr><th>ItemType</th><th>params keys</th></tr>
-     *   <tr><td>ELECTRONICS</td><td>brand (String), warrantyMonths (Integer)</td></tr>
-     *   <tr><td>ART</td><td>artistName (String), creationYear (Integer)</td></tr>
-     *   <tr><td>VEHICLE</td><td>mileage (Double), licensePlate (String)</td></tr>
-     * </table>
+     * type          loại sản phẩm
+     * name          tên sản phẩm
+     * description   mô tả
+     * startingPrice giá khởi điểm
+     * params        thuộc tính đặc thù (xem bảng bên dưới)
      */
     public Item createItem(ItemType type, String name, String description,
                            double startingPrice, Map<String, Object> params) {
@@ -74,7 +54,7 @@ public class ItemFactory {
         };
     }
 
-    // ── Private helpers ───────────────────────────────────────────────────────
+    // Private helpers
 
     private Electronics createElectronics(String name, String description,
                                           double startingPrice, Map<String, Object> params) {
@@ -98,7 +78,7 @@ public class ItemFactory {
     }
 
     /**
-     * Lấy tham số bắt buộc từ map và ép kiểu an toàn.
+     * Lấy tham số bắt buộc từ map và ép kiểu an toàn
      */
     @SuppressWarnings("unchecked")
     private <T> T getRequired(Map<String, Object> params, String key, Class<T> type) {

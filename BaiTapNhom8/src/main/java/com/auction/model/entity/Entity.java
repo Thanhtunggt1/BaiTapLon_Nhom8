@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
- * Lớp cơ sở trừu tượng cho mọi đối tượng trong hệ thống.
- * Cung cấp id duy nhất (UUID) và thời điểm tạo.
+ * Lớp cơ sở trừu tượng cho mọi đối tượng trong hệ thống
+ * Cung cấp id duy nhất (UUID) và thời điểm tạo
  */
 public abstract class Entity {
 
@@ -17,7 +17,7 @@ public abstract class Entity {
         this.createdAt = LocalDateTime.now();
     }
 
-    // ── Getters ──────────────────────────────────────────────────────────────
+    //Getters
 
     public String getId() {
         return id;
@@ -27,7 +27,7 @@ public abstract class Entity {
         return createdAt;
     }
 
-    // ── Object overrides ─────────────────────────────────────────────────────
+    // Object overrides
 
     @Override
     public boolean equals(Object o) {

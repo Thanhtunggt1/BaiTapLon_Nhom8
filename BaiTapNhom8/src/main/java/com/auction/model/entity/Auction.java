@@ -15,9 +15,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Phiên đấu giá — trung tâm của hệ thống.
- *
- * Implement Subject} để hỗ trợ Observer Pattern (realtime update)
- * Sử dụng ReentrantLock để xử lý Concurrent Bidding an toàn
+ * Sử dụng ReentrantLock để xử lý
  * Hỗ trợ Anti-sniping: tự động gia hạn khi có bid trong X giây cuối
  * Hỗ trợ Auto-Bidding thông qua PriorityQueue theo thời gian đăng ký
  */
@@ -112,8 +110,8 @@ public class Auction extends Entity implements Subject {
     }
 
     /**
-     * Xác nhận thanh toán — chuyển trạng thái FINISHED → PAID.
-     * Tự động trừ tiền của người dẫn đầu.
+     * Xác nhận thanh toán — chuyển trạng thái FINISHED → PAID
+     * Tự động trừ tiền của người dẫn đầu
      */
     public synchronized void markAsPaid() {
         if (status != AuctionStatus.FINISHED) {
@@ -144,9 +142,6 @@ public class Auction extends Entity implements Subject {
     /**
      * Xử lý một BidTransaction — thread-safe với ReentrantLock.
      * Sau khi bid hợp lệ, kích hoạt auto-bid từ các Bidder khác (nếu có).
-     *
-     * @param bid giao dịch đặt giá
-     * @return true nếu bid được chấp nhận
      */
     public boolean placeBid(BidTransaction bid) {
         bidLock.lock();
@@ -184,7 +179,7 @@ public class Auction extends Entity implements Subject {
     }
 
     /**
-     * Anti-sniping: nếu còn ít hơn {@value #SNIPE_WINDOW_SECONDS} giây → gia hạn thêm.
+     * Anti-sniping: nếu còn ít hơn SNIPE_WINDOW_SECONDS giây → gia hạn thêm
      */
     private void checkAndExtend() {
         LocalDateTime now = LocalDateTime.now();
@@ -194,8 +189,8 @@ public class Auction extends Entity implements Subject {
     }
 
     /**
-     * Gia hạn thời gian kết thúc phiên.
-     * @param seconds số giây gia hạn thêm
+     * Gia hạn thời gian kết thúc phiên
+     * seconds số giây gia hạn thêm
      */
     public void extendTime(int seconds) {
         if (seconds <= 0) throw new IllegalArgumentException("Số giây gia hạn phải dương.");
@@ -205,9 +200,9 @@ public class Auction extends Entity implements Subject {
     }
 
     /**
-     * Kích hoạt auto-bid từ hàng đợi sau mỗi bid hợp lệ.
-     * Bỏ qua AutoBidConfig của bidder vừa thắng để tránh tự đấu với chính mình.
-     * @param lastBidder bidder vừa đặt giá (bỏ qua auto-bid của người này)
+     * Kích hoạt auto-bid từ hàng đợi sau mỗi bid hợp lệ
+     * Bỏ qua AutoBidConfig của bidder vừa thắng để tránh tự đấu với chính mình
+     * lastBidder bidder vừa đặt giá (bỏ qua auto-bid của người này)
      */
     private void triggerAutoBids(Bidder lastBidder) {
         // Duyệt theo thứ tự ưu tiên (thời gian đăng ký)
@@ -247,9 +242,9 @@ public class Auction extends Entity implements Subject {
     // Auto-bid registration
 
     /**
-     * Đăng ký cấu hình auto-bid.
+     * Đăng ký cấu hình auto-bid
      * Nếu Bidder đã có config trước đó, config mới thay thế config cũ.
-     * @param config cấu hình auto-bid
+     * config cấu hình auto-bid
      */
     public void registerAutoBid(AutoBidConfig config) {
         bidLock.lock();

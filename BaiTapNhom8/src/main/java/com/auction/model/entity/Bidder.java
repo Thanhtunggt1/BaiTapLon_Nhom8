@@ -6,11 +6,6 @@ import com.auction.exception.InvalidBidException;
 import com.auction.model.enums.AuctionStatus;
 import com.auction.pattern.observer.Observer;
 
-/**
- * Người tham gia đấu giá (Bidder).
- * Implement {@link Observer} để nhận cập nhật realtime khi có bid mới
- * Có thể đặt bid thủ công hoặc cài đặt auto-bid
- */
 public class Bidder extends User implements Observer {
 
     private double balance;
@@ -26,13 +21,9 @@ public class Bidder extends User implements Observer {
     //Business methods
 
     /**
-     * Đặt giá thủ công cho một phiên đấu giá.
-     * @param auction phiên đấu giá muốn tham gia
-     * @param amount  số tiền muốn đặt
-     * @return true nếu bid hợp lệ và được chấp nhận
-     * @throws AuctionClosedException     nếu phiên đã đóng
-     * @throws InvalidBidException        nếu giá không cao hơn giá hiện tại
-     * @throws InsufficientBalanceException nếu số dư không đủ
+     * Đặt giá thủ công cho một phiên đấu giá
+     * auction phiên đấu giá muốn tham gia
+     * amount  số tiền muốn đặt
      */
     public boolean placeBid(Auction auction, double amount)
             throws AuctionClosedException, InvalidBidException, InsufficientBalanceException {
@@ -60,9 +51,9 @@ public class Bidder extends User implements Observer {
     /**
      * Cài đặt auto-bid cho một phiên đấu giá.
      * Hệ thống sẽ tự động trả giá thay người dùng khi có bid từ đối thủ.
-     * @param auction   phiên đấu giá
-     * @param maxBid    giá tối đa sẵn sàng trả
-     * @param increment bước giá mỗi lần auto-bid
+     * auction   phiên đấu giá
+     * maxBid    giá tối đa sẵn sàng trả
+     * increment bước giá mỗi lần auto-bid
      */
     public void setupAutoBid(Auction auction, double maxBid, double increment) {
         if (auction == null) throw new IllegalArgumentException("Auction không được null.");
@@ -97,7 +88,7 @@ public class Bidder extends User implements Observer {
     public double getBalance() { return balance; }
 
     /**
-     * Nạp thêm tiền vào tài khoản.
+     * Nạp thêm tiền vào tài khoản
      */
     public void deposit(double amount) {
         if (amount <= 0) throw new IllegalArgumentException("Số tiền nạp phải dương.");

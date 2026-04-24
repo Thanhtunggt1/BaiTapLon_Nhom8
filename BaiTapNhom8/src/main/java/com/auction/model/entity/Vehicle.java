@@ -6,7 +6,7 @@ package com.auction.model.entity;
  */
 public class Vehicle extends Item {
 
-    private double mileage;        // km đã đi
+    private double mileage;
     private String licensePlate;
 
     public Vehicle(String name, String description, double startingPrice,
@@ -22,7 +22,6 @@ public class Vehicle extends Item {
         this.licensePlate = licensePlate;
     }
 
-    //override printInfo
 
     @Override
     public void printInfo() {

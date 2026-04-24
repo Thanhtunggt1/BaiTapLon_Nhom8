@@ -13,11 +13,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Singleton quản lý toàn bộ các phiên đấu giá trong hệ thống.
- * <ul>
- *   <li>Lưu danh sách tất cả Auction (active + closed).</li>
- *   <li>Định kỳ kiểm tra và tự động đóng các phiên hết hạn.</li>
- *   <li>Hỗ trợ xử lý concurrent bids thông qua locking bên trong Auction.</li>
- * </ul>
  */
 public class AuctionManager {
 
@@ -30,7 +25,6 @@ public class AuctionManager {
 
     private AuctionManager() {
         this.activeAuctions = new ArrayList<>();
-        // Scheduler kiểm tra mỗi 5 giây
         this.scheduler = Executors.newSingleThreadScheduledExecutor(r -> {
             Thread t = new Thread(r, "AuctionManager-Scheduler");
             t.setDaemon(true);
@@ -40,7 +34,7 @@ public class AuctionManager {
     }
 
     /**
-     * Trả về instance duy nhất (thread-safe, double-checked locking).
+     * Trả về instance duy nhất
      */
     public static AuctionManager getInstance() {
         if (instance == null) {
@@ -57,8 +51,6 @@ public class AuctionManager {
 
     /**
      * Đăng ký phiên đấu giá mới vào hệ thống.
-     *
-     * @param auction phiên cần thêm
      */
     public synchronized void registerAuction(Auction auction) {
         if (auction == null) throw new IllegalArgumentException("Auction không được null.");
@@ -70,9 +62,7 @@ public class AuctionManager {
     }
 
     /**
-     * Bắt đầu một phiên đấu giá đã đăng ký.
-     *
-     * @param auction phiên cần bắt đầu
+     * Bắt đầu một phiên đấu giá đã đăng ký
      */
     public void startAuction(Auction auction) {
         if (!activeAuctions.contains(auction)) {
@@ -83,7 +73,7 @@ public class AuctionManager {
 
     /**
      * Tự động kiểm tra và đóng các phiên đã hết thời gian.
-     * Được gọi định kỳ bởi scheduler.
+     * Được gọi định kỳ bởi scheduler
      */
     public synchronized void checkAndCloseExpiredAuctions() {
         for (Auction auction : activeAuctions) {
@@ -92,7 +82,6 @@ public class AuctionManager {
                         auction.getId());
                 auction.endAuction();
             }
-            // Chuyển OPEN → RUNNING nếu đến giờ bắt đầu
             if (auction.getStatus() == AuctionStatus.OPEN
                     && !auction.getStartTime().isAfter(java.time.LocalDateTime.now())) {
                 auction.startAuction();
@@ -100,13 +89,7 @@ public class AuctionManager {
         }
     }
 
-    /**
-     * Xử lý concurrent bid: delegate đến Auction.placeBid() đã có lock.
-     * Phương thức này là entry point cho server khi nhận bid từ client.
-     *
-     * @param bid giao dịch đặt giá từ client
-     * @return true nếu bid được chấp nhận
-     */
+
     public boolean processConcurrentBid(BidTransaction bid) {
         if (bid == null) throw new IllegalArgumentException("BidTransaction không được null.");
         return bid.getAuction().placeBid(bid);
@@ -124,7 +107,7 @@ public class AuctionManager {
     }
 
     /**
-     * Lấy toàn bộ danh sách phiên (bao gồm đã đóng).
+     * Lấy toàn bộ danh sách phiên (bao gồm đã đóng)
      */
     public synchronized List<Auction> getAllAuctions() {
         return Collections.unmodifiableList(new ArrayList<>(activeAuctions));
@@ -132,9 +115,6 @@ public class AuctionManager {
 
     /**
      * Tìm phiên theo id.
-     *
-     * @param id id cần tìm
-     * @return Auction nếu tìm thấy, null nếu không
      */
     public synchronized Auction findById(String id) {
         return activeAuctions.stream()
@@ -144,7 +124,7 @@ public class AuctionManager {
     }
 
     /**
-     * In tổng quan hệ thống (dùng cho Admin).
+     * In tổng quan hệ thống (dùng cho Admin)
      */
     public synchronized void printSystemSummary() {
         System.out.println("=== Tổng quan hệ thống ===");

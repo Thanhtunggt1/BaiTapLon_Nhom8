@@ -4,8 +4,8 @@ import com.auction.manager.AuctionManager;
 import com.auction.model.enums.AuctionStatus;
 
 /**
- * Quản trị viên hệ thống (Admin).
- * Có quyền quản lý toàn bộ hệ thống và giải quyết tranh chấp.
+ * Quản trị viên hệ thống (Admin)
+ * Có quyền quản lý toàn bộ hệ thống và giải quyết tranh chấp
  */
 public class Admin extends User {
 
@@ -26,7 +26,6 @@ public class Admin extends User {
 
     /**
      * Giải quyết tranh chấp: có thể hủy một phiên đấu giá.
-     *
      * @param auction phiên bị tranh chấp
      * @param reason  lý do hủy
      */
@@ -45,7 +44,6 @@ public class Admin extends User {
 
     /**
      * Xem thông tin chi tiết của bất kỳ phiên đấu giá nào.
-     *
      * @param auction phiên cần xem
      */
     public void inspectAuction(Auction auction) {

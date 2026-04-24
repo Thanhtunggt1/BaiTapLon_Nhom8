@@ -3,10 +3,9 @@ package com.auction.model.entity;
 import java.time.LocalDateTime;
 
 /**
- * Cấu hình Auto-Bid của một Bidder cho một phiên đấu giá cụ thể.
- * <p>
+ * Cấu hình Auto-Bid của một Bidder cho một phiên đấu giá cụ thể
  * Khi có bid mới từ đối thủ, AuctionManager sẽ kiểm tra các AutoBidConfig
- * và tự động đặt giá theo thứ tự ưu tiên (thời điểm đăng ký sớm hơn → ưu tiên hơn).
+ * và tự động đặt giá theo thứ tự ưu tiên (thời điểm đăng ký sớm hơn → ưu tiên hơn)
  */
 public class AutoBidConfig extends Entity implements Comparable<AutoBidConfig> {
 
@@ -33,14 +32,19 @@ public class AutoBidConfig extends Entity implements Comparable<AutoBidConfig> {
     // ── Business methods ─────────────────────────────────────────────────────
 
     /**
-     * Tính giá auto-bid tiếp theo dựa trên giá hiện tại của phiên.
-     *
+     * Tính giá auto-bid tiếp theo dựa trên giá hiện tại của phiên
      * @param currentPrice giá hiện tại cao nhất
      * @return giá auto-bid đề xuất, hoặc -1 nếu vượt quá maxBid
      */
     public double computeNextBid(double currentPrice) {
         double nextBid = currentPrice + increment;
         return nextBid <= maxBid ? nextBid : -1;
+        /*
+        * -1 là giá trị lính canh
+        * Bởi vì giá tiền đấu giá thì luôn luôn lớn hơn 0
+        * Nên khi hệ thống bên ngoài gọi hàm này mà nhận được kết quả là -1
+        * Nó sẽ ngầm hiểu ngay lập tức là thằng bidder này khoong đủ tiền
+        * */
     }
 
     /**

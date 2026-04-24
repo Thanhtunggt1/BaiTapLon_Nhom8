@@ -1,7 +1,7 @@
 package com.auction.model.entity;
 
 /**
- * Sản phẩm điện tử — kế thừa {@link Item}.
+ * kế thừa Item
  * Có thêm thuộc tính: thương hiệu và thời hạn bảo hành (tháng).
  */
 public class Electronics extends Item {
@@ -9,8 +9,7 @@ public class Electronics extends Item {
     private String brand;
     private int warrantyMonths;
 
-    public Electronics(String name, String description, double startingPrice,
-                       String brand, int warrantyMonths) {
+    public Electronics(String name, String description, double startingPrice, String brand, int warrantyMonths) {
         super(name, description, startingPrice);
         if (brand == null || brand.isBlank()) {
             throw new IllegalArgumentException("Thương hiệu không được để trống.");
@@ -22,7 +21,7 @@ public class Electronics extends Item {
         this.warrantyMonths = warrantyMonths;
     }
 
-    // ── Polymorphism: override printInfo ─────────────────────────────────────
+    // ── override printInfo ─────────────────────────────────────
 
     @Override
     public void printInfo() {

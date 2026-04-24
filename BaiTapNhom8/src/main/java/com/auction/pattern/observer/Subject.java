@@ -1,13 +1,13 @@
 package com.auction.pattern.observer;
 
 /**
- * Observer Pattern — phía phát sự kiện.
- * Auction implement interface này để quản lý danh sách Observer.
+ * Observer Pattern — phía phát sự kiện
+ * Auction implement interface này để quản lý danh sách Observer
  */
 public interface Subject {
 
     /**
-     * Đăng ký một Observer vào danh sách theo dõi.
+     * Đăng ký một Observer vào danh sách theo dõi
      *
      * @param observer observer cần thêm
      */

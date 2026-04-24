@@ -4,7 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c6a107e-68c0-4fa4-9118-006d3961becd" name="Changes" comment="" />
+    <list default="true" id="0c6a107e-68c0-4fa4-9118-006d3961becd" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/LoginController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/LoginController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/SellerController$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/SellerController$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/SellerController$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/SellerController$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/SellerController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/SellerController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/model/entity/Admin.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/model/entity/Admin.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/model/entity/Auction.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/model/entity/Auction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/model/entity/AutoBidConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/model/entity/AutoBidConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/model/entity/BidTransaction.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/model/entity/BidTransaction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/model/entity/Bidder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/model/entity/Bidder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/model/entity/Seller.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/model/entity/Seller.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/model/entity/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/model/entity/User.class" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -80,7 +92,7 @@
       <workItem from="1776935127517" duration="958000" />
       <workItem from="1776944414403" duration="17000" />
       <workItem from="1776976436117" duration="179000" />
-      <workItem from="1776976630459" duration="329000" />
+      <workItem from="1776976630459" duration="21287000" />
     </task>
     <servers />
   </component>

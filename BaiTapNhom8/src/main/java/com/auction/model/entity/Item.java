@@ -1,9 +1,10 @@
 package com.auction.model.entity;
 
 /**
- * Lớp trừu tượng đại diện cho sản phẩm đấu giá.
- * Các loại cụ thể (Electronics, Art, Vehicle) kế thừa lớp này.
+ * Lớp trừu tượng đại diện cho sản phẩm đấu giá
+ * Electronics, Art, Vehicle kế thừa lớp này
  */
+
 public abstract class Item extends Entity {
 
     private String name;
@@ -19,6 +20,8 @@ public abstract class Item extends Entity {
             throw new IllegalArgumentException("Giá khởi điểm không được âm.");
         }
         this.name = name;
+
+
         /**
          * Nếu biến description được truyền vào khác null thì gán giá trị đó cho thuộc tính this.description
          * Ngược lại, nếu description là null thì gán chuỗi rỗng "" cho this.description
@@ -31,11 +34,16 @@ public abstract class Item extends Entity {
     // ── Abstract / Polymorphism ───────────────────────────────────────────────
 
     /**
-     * In thông tin sản phẩm — subclass override để thêm thuộc tính đặc thù.
+     * In thông tin sản phẩm — subclass override để thêm thuộc tính đặc thù
      */
+
     public void printInfo() {
         System.out.printf("[%s] id=%s | Tên: %s | Giá khởi điểm: %.2f%n  Mô tả: %s%n",
                 getClass().getSimpleName(), getId(), name, startingPrice, description);
+        // Cái printf nó na ná bên C++ : Chuôỗi định dạng
+        // %n để xuống dòng
+        //[Electronics] id=9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d | Tên: MacBook Pro M3 | Giá khởi điểm: 35000000.50
+        //  Mô tả: Hàng lướt 99%, sạc 10 lần.
     }
 
     // ── Getters / Setters ────────────────────────────────────────────────────

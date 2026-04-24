@@ -1,16 +1,18 @@
 package com.auction.model.entity;
 
 /**
- * Lớp trừu tượng đại diện cho người dùng trong hệ thống.
- * Các vai trò cụ thể (Bidder, Seller, Admin) kế thừa lớp này.
+ * Lớp trừu tượng đại diện cho người dùng trong hệ thống
+ * Bidder, Seller, Admin kế thừa lớp này
  */
 public abstract class User extends Entity {
 
     private String username;
     private String password;   // Lưu dạng hash trong thực tế
     private String email;
-    private boolean loggedIn;
+    private boolean loggedIn; // Để xem hiện có đang trong trạng thái đã đăng nhập hay chưa
 
+
+    // Bản chất cái contructor này chẳng khác gì việc tạo tài khoản nên cũng chẳng cần phương thức register
     protected User(String username, String password, String email) {
         super();
         if (username == null || username.isBlank()) {
@@ -19,6 +21,8 @@ public abstract class User extends Entity {
         if (password == null || password.length() < 6) {
             throw new IllegalArgumentException("Password phải có ít nhất 6 ký tự.");
         }
+
+        // Nếu không có dấu @ thì không là email
         if (email == null || !email.contains("@")) {
             throw new IllegalArgumentException("Email không hợp lệ.");
         }

@@ -14,13 +14,11 @@ import java.util.PriorityQueue;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Phiên đấu giá — trung tâm của hệ thống.
- * <ul>
- *   <li>Implement {@link Subject} để hỗ trợ Observer Pattern (realtime update).</li>
- *   <li>Sử dụng {@link ReentrantLock} để xử lý Concurrent Bidding an toàn.</li>
- *   <li>Hỗ trợ Anti-sniping: tự động gia hạn khi có bid trong X giây cuối.</li>
- *   <li>Hỗ trợ Auto-Bidding thông qua PriorityQueue theo thời gian đăng ký.</li>
- * </ul>
+ * Phiên đấu giá — trung tâm của hệ thống
+ * Implement Subject để hỗ trợ Observer Pattern (realtime update)
+ * Sử dụng ReentrantLock để xử lý Concurrent Bidding an toàn
+ * Hỗ trợ Anti-sniping: tự động gia hạn khi có bid trong X giây cuối
+ * Hỗ trợ Auto-Bidding thông qua PriorityQueue theo thời gian đăng ký
  */
 public class Auction extends Entity implements Subject {
 
@@ -43,9 +41,38 @@ public class Auction extends Entity implements Subject {
     private final List<BidTransaction> bidHistory;
     private final List<Observer> observers;
     private final PriorityQueue<AutoBidConfig> autoBidQueue;  // ưu tiên theo thời gian đăng ký
+    /*
+    * Hàng đợi thường (Queue): Giống như đi xếp hàng mua vé xem phim. Ai đến trước thì được mua trước, ai đến sau đứng xếp sau
+    * Hàng đợi ưu tiên (PriorityQueue): Dễ hình dung thì cho VD như này nhá:
+    * Có 3 đại gia cùng cài đặt Auto-Bid cho 1 sản phẩm
+    * Đại gia A: Cài lúc 8h sáng, ngân sách tối đa (maxBid) = 100 triệu
+    * Đại gia B: Cài lúc 9h sáng, ngân sách tối đa (maxBid) = 500 triệu
+    * Đại gia C: Cài lúc 10h sáng, ngân sách tối đa (maxBid) = 50 triệu
+    * Nếu dùng ArrayList hoặc Queue, hệ thống sẽ ưu tiên xử lý ông A (đến sớm nhất)
+    * Nhưng như thế là sai logic kinh doanh. Ông B sẵn sàng trả giá cao nhất, ông B phải là khách VIP được hệ thống ưu tiên
+    * Đó là lý do có PriorityQueue
+    * Java sẽ tự động so sánh nó với các tờ AutoBidConfig (dựa trên một bộ luật tự viết, VD: Ai có maxBid cao hơn thì người đó có mức ưu tiên cao hơn)
+    * Để cái PriorityQueue này hoạt động mà không bị báo lỗi đỏ lòm
+    * Lớp AutoBidConfig bắt buộc phải dạy cho Java biết thế nào là ưu tiên bằng cách implements Comparable<AutoBidConfig> và override compareTo()
+    *
+    * */
 
     // ── Concurrency ───────────────────────────────────────────────────────────
     private final ReentrantLock bidLock = new ReentrantLock();
+    /*
+     * Từ "Re-entrant" dịch nôm na là "Được phép vào lại"
+     * ReentrantLock trong Java là một cơ chế khóa (lock) nâng cao, thay thế cho từ khóa synchronized
+     * Cho phép kiểm soát đồng bộ trong môi trường đa luồng với nhiều tính năng linh hoạt hơn
+     *
+     * Tưởng tượng ta có đúng 1 chiếc chìa khóa và một căn phòng:
+     * Dùng chìa khóa đó để mở cửa chính bước vào phòng, sau đó chốt cửa lại từ bên trong (để không ai khác được vào). Chiếc chìa khóa lúc này đang cắm ở ổ khóa cửa chính
+     * Đang đứng trong phòng, ta nhìn thấy một cái Két Sắt. Nhưng cái Két Sắt này yêu cầu đúng chiếc chìa khóa cửa chính kia mới mở được
+     * Ta không thể ra rút chìa ở cửa chính được (vì rút ra là cửa mở, người khác xông vào mất) -> Chôn chân
+     *
+     * Với ReentrantLock:
+     * Nó sẽ tự hiểu là mình đã đóng cửa rồi -> Tức là có chìa khóa của chính nó
+     * Két sắt sẽ tự động ở ra ma không cần rút chìa khóa ở cửa chính
+     * */
 
     public Auction(Item item, Seller seller, LocalDateTime startTime, LocalDateTime endTime) {
         super();
@@ -66,10 +93,11 @@ public class Auction extends Entity implements Subject {
         this.autoBidQueue = new PriorityQueue<>();
     }
 
+
     // ── Lifecycle ─────────────────────────────────────────────────────────────
 
     /**
-     * Bắt đầu phiên đấu giá (OPEN → RUNNING).
+     * Bắt đầu phiên đấu giá (OPEN → RUNNING)
      */
     public synchronized void startAuction() {
         if (status != AuctionStatus.OPEN) {
@@ -80,6 +108,23 @@ public class Auction extends Entity implements Subject {
                 getId(), item.getName(), currentHighestPrice);
         notifyObservers();
     }
+    /*
+    * Phương thức startAuction() có vẻ rất đơn giản: chỉ là đổi trạng thái và in ra màn hình
+    * Vậy tại sao lại phải cất công gắn cái "ổ khóa" synchronized vào làm gì?
+    *
+    * Nếu không có synchronized:
+    * Nhịp 1 (Check): Kiểm tra xem cửa đã mở chưa if (status != AuctionStatus.OPEN)
+    * Nhịp 2 (Act): Đổi trạng thái sang đang chạy status = RUNNING; và gọi notifyObservers()
+    * Hệ thống của bạn có tính năng cho phép Admin bấm nút "Bắt đầu" (OPEN -> RUNNING)
+    * Đồng thời cũng có một bộ đếm giờ tự động (Timer) kích hoạt phiên đấu giá khi đến giờ G
+    * Giả dụ Admin cũng ấn Bắt đầu vào cùng thời điểm G
+    * Luồng của Admin chạy đến Nhịp 1, thấy status đang là OPEN - Hợp lệ, -> RUNNING
+    * Luồng của Timer cũng chạy đến Nhịp 1. Vì Luồng Admin chưa kịp đổi trạng thái, Timer vẫn thấy status đang là OPEN - Cũng hợp lệ, -> RUNNING
+    * Cả 2 luồng cùng tràn xuống Nhịp 2
+    * Hàm notifyObservers() bị gọi 2 lần liên tiếp
+    * Toàn bộ người tham gia (Bidder) sẽ bị hệ thống spam 2 cái email/thông báo báo hiệu phiên đấu giá bắt đầu
+    *
+    * */
 
     /**
      * Kết thúc phiên đấu giá (RUNNING → FINISHED hoặc CANCELED nếu không có bid).
@@ -99,9 +144,14 @@ public class Auction extends Entity implements Subject {
         }
         notifyObservers();
     }
+    /*
+    * Lý dó cũng dùng synchonized cũng giống như lý do startAuction
+    * Từ VD không dùng synchonized của startAuction
+    * Thì dòng thông báo kết thúc sẽ được in ra 2 lần nếu cùng kết thúc ở cùng thời điểm
+    * */
 
     /**
-     * Hủy phiên đấu giá (dùng cho Admin hoặc khi có tranh chấp).
+     * Hủy phiên đấu giá (dùng cho Admin hoặc khi có tranh chấp)
      */
     public synchronized void cancelAuction() {
         if (status == AuctionStatus.PAID) {
@@ -121,20 +171,24 @@ public class Auction extends Entity implements Subject {
             throw new IllegalStateException("Chỉ phiên FINISHED mới có thể đánh dấu PAID.");
         }
 
-        // --- GỌI HÀM TRỪ TIỀN (DEDUCT) ĐÃ CÓ SẴN TRONG BIDDER ---
+        // GỌI HÀM TRỪ TIỀN (DEDUCT) ĐÃ CÓ SẴN TRONG BIDDER
         if (currentLeader != null) {
             try {
-                // Gọi hàm deduct() thay vì setBalance(). Hàm này sẽ tự động kiểm tra số dư.
                 currentLeader.deduct(currentHighestPrice);
 
                 System.out.printf("[Payment] Đã trừ %.2f VNĐ từ tài khoản %s%n",
                         currentHighestPrice, currentLeader.getUsername());
             } catch (Exception e) {
-                // Bắt lỗi InsufficientBalanceException nếu Bidder không đủ tiền
+                // Bắt lỗi nếu Bidder không đủ tiền
+                /*
+                * Lý do có hàm này
+                * Giả dụ có 2 phiên đã FINISHED và cùng 1 Bidder dẫn đầu
+                * Bidder đó đã trả tiền cho 1 phiên nhưng lại không có đủ tiền cho phiên con lại
+                * */
                 throw new IllegalStateException("Thanh toán thất bại! Tài khoản [" + currentLeader.getUsername() + "] báo lỗi: " + e.getMessage());
             }
         }
-        // --------------------------------------------------------
+
 
         status = AuctionStatus.PAID;
         System.out.printf("[Auction:%s] Đã thanh toán thành công.%n", getId());
@@ -184,20 +238,43 @@ public class Auction extends Entity implements Subject {
             bidLock.unlock();
         }
     }
+    /*
+    * Nếu không có khóa, VD:
+    * Giá hiện tại: 100$
+    * Người A trả 110$, Người B trả 105$ cùng một lúc
+    * Cả hai luồng A và B cùng đọc thấy giá là 100$. Cả hai đều thấy giá mình trả (110 và 105) là hợp lệ
+    * Luồng A cập nhật giá lên 110$. Ngay sau đó, luồng B đè lên và cập nhật giá thành 105$
+    * Một người trả giá thấp hơn 105$ lại chiến thắng người trả giá cao hơn 110$
+    * Nó cũng tránh việc lỗi nếu dunùng bidHistory.add(newTransaction)
+    * Nếu nhiều luồng cùng gọi hàm add() vào một danh sách ArrayList cùng lúc văng lỗi ConcurrentModificationException
+    *
+    * Vậy tại sao không dùng synchronized
+    * Giả dụ: Ở những giây cuối cùng, có thể có 50 người cùng bấm nút "Đặt giá"
+    *
+    * Nếu dùng synchronized:
+    * synchronized hoạt động như một cuộc bốc thăm trúng thưởng
+    * Java sẽ chọn ngẫu nhiên 1 trong 50 người để cho vào, không quan tâm ai đến trước, ai đến sau
+    *
+    * Với ReentrantLock: có một tính chất là tính Công bằng
+    * 50 người sẽ bị ép xếp thành một hàng dọc theo đúng thứ tự mili-giây họ bấm nút
+    * Ai bấm trước chắc chắn 100% sẽ được hệ thống xử lý trước
+    *
+    * */
 
     /**
-     * Anti-sniping: nếu còn ít hơn {@value #SNIPE_WINDOW_SECONDS} giây → gia hạn thêm.
+     * Anti-sniping: nếu còn ít hơn SNIPE_WINDOW_SECONDS giây → gia hạn thêm.
      */
     private void checkAndExtend() {
         LocalDateTime now = LocalDateTime.now();
         if (now.isAfter(endTime.minusSeconds(SNIPE_WINDOW_SECONDS))) {
             extendTime(EXTENSION_SECONDS);
+            // endTime.minusSeconds(SNIPE_WINDOW_SECONDS): endTime - SNIPE_WINDOW_SECONDS
+            // isAfter(...) xem thời gian (now) qua thời gian (endTime - SNIPE_WINDOW_SECONDS) chưa
         }
     }
 
     /**
-     * Gia hạn thời gian kết thúc phiên.
-     *
+     * Gia hạn thời gian kết thúc phiên
      * @param seconds số giây gia hạn thêm
      */
     public void extendTime(int seconds) {
@@ -208,11 +285,11 @@ public class Auction extends Entity implements Subject {
     }
 
     /**
-     * Kích hoạt auto-bid từ hàng đợi sau mỗi bid hợp lệ.
-     * Bỏ qua AutoBidConfig của bidder vừa thắng để tránh tự đấu với chính mình.
-     *
+     * Kích hoạt auto-bid từ hàng đợi sau mỗi bid hợp lệ
+     * Bỏ qua AutoBidConfig của bidder vừa thắng để tránh tự đấu với chính mình
      * @param lastBidder bidder vừa đặt giá (bỏ qua auto-bid của người này)
      */
+
     private void triggerAutoBids(Bidder lastBidder) {
         // Duyệt theo thứ tự ưu tiên (thời gian đăng ký)
         List<AutoBidConfig> sorted = new ArrayList<>(autoBidQueue);
@@ -247,15 +324,26 @@ public class Auction extends Entity implements Subject {
             }
         }
     }
+    /*
+     * Lý do có phương thức triggerAutoBids()
+     * VD: Giả sử hàm chỉ trơ trọi là triggerAutoBids()
+     * Bidder cài Auto-Bid với ngân sách 50 triệu bước nhảy là 1 triệu
+     * Đang rảnh rỗi, Bidder đó vào bấm nút đặt giá bằng tay là 30 triệu. Hệ thống ghi nhận Bidder đó đang dẫn đầu
+     * Hàm triggerAutoBids() được gọi một cách mù quáng
+     * Hệ thống lập tức tính toán: Giá mới = 30 + 1 = 31 triệu
+     * */
 
     // ── Auto-bid registration ─────────────────────────────────────────────────
 
     /**
-     * Đăng ký cấu hình auto-bid.
+     * Đăng ký cấu hình auto-bid
      * Nếu Bidder đã có config trước đó, config mới thay thế config cũ.
      *
      * @param config cấu hình auto-bid
      */
+
+
+
     public void registerAutoBid(AutoBidConfig config) {
         bidLock.lock();
         try {
@@ -266,6 +354,29 @@ public class Auction extends Entity implements Subject {
             bidLock.unlock();
         }
     }
+
+    /*
+    * Khi các hàm cùng chọc vào một tài nguyên chung (ở đây là autoBidQueue)
+    * Chúng bắt buộc phải dùng chung một chiếc chìa khóa
+    * Đã lỡ dùng ReentrantLock cho placeBid thì registerAutoBid cũng phải dùng đúng cái bidLock đó để đảm bảo chúng chặn được nhau
+    *
+    *Giả dụ:
+    * Khi dùng từ khóa synchronized ở tên hàm, Java sẽ ngầm định dùng chìa khóa mặc định của class (tức là ổ khóa this).
+    * Tạm gọi đây là Khóa Đỏ
+    *
+    * Trong khi đó, ở hàm placeBid (hàm đặt giá), bạn lại đang dùng bidLock.lock()
+    * Tạm gọi đây là Khóa Xanh
+    *
+    * Luồng 1 (Người A): Đang thực hiện placeBid
+    * Nó chốt Khóa Xanh lại, bước vào phòng và bắt đầu lật cuốn sổ autoBidQueue ra để đọc do có sử dụng triggerAutoBid() mà nó có dùng đến ds autoBidQueue
+    *
+    * Luồng 2 (Người B): Cùng lúc đó, bấm nút đăng ký Auto-Bid. Luồng này chạy vào hàm registerAutoBid
+    * Hệ thống kiểm tra xem Khóa Đỏ có ai dùng không? Câu trả lời là không (vì Người A đang cầm Khóa Xanh)
+    *
+    * Thế là hệ thống mở cửa cho Người B
+    * Người B chạy ngay dòng lệnh removeIf(...) — tức là xé bỏ dữ liệu trong cuốn sổ
+    * Hậu quả: Người A đang lật sổ ra đọc, Người B lao vào xé sổ. Java sẽ lập tức ném ra lỗi ConcurrentModificationException
+    * */
 
     // ── Observer (Subject interface) ──────────────────────────────────────────
 
@@ -291,7 +402,7 @@ public class Auction extends Entity implements Subject {
     // ── Utility ───────────────────────────────────────────────────────────────
 
     /**
-     * Kiểm tra phiên có hết hạn chưa dựa vào thời gian thực.
+     * Kiểm tra phiên có hết hạn chưa dựa vào thời gian thực
      */
     public boolean isExpired() {
         return LocalDateTime.now().isAfter(endTime);

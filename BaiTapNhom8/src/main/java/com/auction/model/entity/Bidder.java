@@ -8,13 +8,11 @@ import com.auction.pattern.observer.Observer;
 
 /**
  * Người tham gia đấu giá (Bidder).
- * <ul>
- *   <li>Implement {@link Observer} để nhận cập nhật realtime khi có bid mới.</li>
- *   <li>Có thể đặt bid thủ công hoặc cài đặt auto-bid.</li>
- * </ul>
+ * Implement Observer để nhận cập nhật realtime khi có bid mới
+ * Có thể đặt bid thủ công hoặc cài đặt auto-bid
  */
 public class Bidder extends User implements Observer {
-
+    //Có thêm thuộc tính mới là số dư: balance
     private double balance;
 
     public Bidder(String username, String password, String email, double initialBalance) {
@@ -28,16 +26,17 @@ public class Bidder extends User implements Observer {
     // ── Business methods ─────────────────────────────────────────────────────
 
     /**
-     * Đặt giá thủ công cho một phiên đấu giá.
-     *
+     * Đặt giá thủ công cho một phiên đấu giá
      * @param auction phiên đấu giá muốn tham gia
      * @param amount  số tiền muốn đặt
      * @return true nếu bid hợp lệ và được chấp nhận
-     * @throws AuctionClosedException     nếu phiên đã đóng
-     * @throws InvalidBidException        nếu giá không cao hơn giá hiện tại
-     * @throws InsufficientBalanceException nếu số dư không đủ
      */
     public boolean placeBid(Auction auction, double amount)
+            /*
+            * Từ khóa throws như một biển báo nguy hiểm
+            * Bất kỳ ai muốn gọi cái hàm placeBid() này rằng quá trình đặt giá này không phải lúc nào cũng suôn sẻ đâu
+            * Nó có thể fail và văng ra 1 trong 3 cái lỗi này
+            * */
             throws AuctionClosedException, InvalidBidException, InsufficientBalanceException {
 
         if (auction == null) throw new IllegalArgumentException("Auction không được null.");
@@ -55,6 +54,7 @@ public class Bidder extends User implements Observer {
             throw new InsufficientBalanceException("Số dư khả dụng (" + balance + ") không đủ!");
         }
 
+        // Nếu mọi thứ thỏa mãn rồi thì tạo BidTransaction (Như là 1 biên lai vậy)
         BidTransaction tx = new BidTransaction(this, auction, amount);
         return auction.placeBid(tx);
     }
@@ -63,7 +63,6 @@ public class Bidder extends User implements Observer {
     /**
      * Cài đặt auto-bid cho một phiên đấu giá.
      * Hệ thống sẽ tự động trả giá thay người dùng khi có bid từ đối thủ.
-     *
      * @param auction   phiên đấu giá
      * @param maxBid    giá tối đa sẵn sàng trả
      * @param increment bước giá mỗi lần auto-bid

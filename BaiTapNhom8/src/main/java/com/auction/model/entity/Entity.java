@@ -21,6 +21,7 @@ public abstract class Entity {
         * Luôn gồm 36 ký tự theo định dạng 8-4-4-4-12, ký tự chỉ bao gồm các số từ 0-9 và các chữ cái từ a-f
         * Tỷ lệ sinh ra 2 mã UUID ngẫu nhiên giống hệt nhau là cực kỳ thấp (gần như bằng 0)
         * .toString ép ra kiểu String
+        * Nhưng do toString() đã được override ở dưới rồi nên kết gán là như VD: "Bidder{id='f47ac10b-58cc-4372-a567-0e02b2c3d479'}"
         * */
 
         this.createdAt = LocalDateTime.now(); // Gán bằng thời gian thực
@@ -36,19 +37,19 @@ public abstract class Entity {
         return createdAt;
     }
 
-    //Object overrides
+    //Object override
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Entity)) return false;
-        Entity other = (Entity) o;
-        return id.equals(other.id);
+        Entity other = (Entity) o;  // Sau khi vượt qua dòng trên, hệ thống đã chắc chắn o là một Entity. Ép nó thành kiểu Entity
+        return id.equals(other.id); // So sánh 2 id với nhau
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode(); // .hasCode chuyển String id -> int id
+        return id.hashCode(); // .hasCode() chuyển String id -> int id
     }
 
     @Override

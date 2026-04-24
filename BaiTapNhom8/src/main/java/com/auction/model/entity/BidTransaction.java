@@ -3,9 +3,9 @@ package com.auction.model.entity;
 import java.time.LocalDateTime;
 
 /**
- * Giao dịch đặt giá (BidTransaction).
+ * Giao dịch đặt giá (BidTransaction)
  * Mỗi lần một Bidder đặt giá hợp lệ sẽ tạo ra một BidTransaction
- * và lưu vào lịch sử của Auction.
+ * và lưu vào lịch sử của Auction
  */
 public class BidTransaction extends Entity {
 
@@ -29,11 +29,9 @@ public class BidTransaction extends Entity {
     // ── Business methods ─────────────────────────────────────────────────────
 
     /**
-     * Kiểm tra tính hợp lệ của giao dịch:
-     * <ul>
-     *   <li>Phiên đang ở trạng thái RUNNING</li>
-     *   <li>Số tiền cao hơn giá hiện tại của phiên</li>
-     * </ul>
+     * Kiểm tra tính hợp lệ của giao dịch
+     * Phiên đang ở trạng thái RUNNING
+     * Số tiền cao hơn giá hiện tại của phiên
      *
      * @return true nếu hợp lệ
      */

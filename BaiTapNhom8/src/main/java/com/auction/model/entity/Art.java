@@ -1,8 +1,8 @@
 package com.auction.model.entity;
 
 /**
- * Tác phẩm nghệ thuật — kế thừa {@link Item}.
- * Có thêm thuộc tính: tên nghệ sĩ và năm sáng tác.
+ * kế thừa Item
+ * Có thêm thuộc tính: tên nghệ sĩ và năm sáng tác
  */
 public class Art extends Item {
 
@@ -22,7 +22,7 @@ public class Art extends Item {
         this.creationYear = creationYear;
     }
 
-    // ── Polymorphism: override printInfo ─────────────────────────────────────
+    // ── override printInfo ─────────────────────────────────────
 
     @Override
     public void printInfo() {

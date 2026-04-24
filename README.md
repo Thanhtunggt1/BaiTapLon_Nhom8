@@ -6,4 +6,4 @@ Trần Quang Minh: Quản lý người dùng gồm abstract class User và các 
 
 Ngô Hữu Ngọc Tiến: Hoàn thiện 2 interface Observer và Subject và làm thêm phần Auto Bidding.
 
-Trần Thanh Tùng: Thiết kế một UML để dựa và làm theo, tạo một class Auction có đối tượng tương ứng với một cuộc đấu giá và áp dụng Singleton cho AuctionManager để quản lý các các cuộc đấu giá đó. Merge các nhánh lại với nhau. Thực hiện và hoàn thành JavaFX GUI
+Trần Thanh Tùng: Thiết kế một UML để dựa và làm theo, tạo một class Auction có đối tượng tương ứng với một cuộc đấu giá và cần quản lý các các cuộc đấu giá đó. Merge các nhánh lại với nhau. Thực hiện và hoàn thành JavaFX GUI

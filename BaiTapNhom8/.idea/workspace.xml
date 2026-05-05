@@ -5,17 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0c6a107e-68c0-4fa4-9118-006d3961becd" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/LoginController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/LoginController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/SellerController$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/SellerController$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/SellerController$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/SellerController$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/SellerController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/SellerController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/model/entity/Admin.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/model/entity/Admin.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/model/entity/Auction.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/model/entity/Auction.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/model/entity/AutoBidConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/model/entity/AutoBidConfig.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/model/entity/BidTransaction.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/model/entity/BidTransaction.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/model/entity/Bidder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/model/entity/Bidder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/model/entity/Seller.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/model/entity/Seller.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/model/entity/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/model/entity/User.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,11 +40,14 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "tung",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/thanh/OneDrive/Documents/BaiTapNhom8/BaiTapNhom8",
     "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -93,6 +87,7 @@
       <workItem from="1776944414403" duration="17000" />
       <workItem from="1776976436117" duration="179000" />
       <workItem from="1776976630459" duration="21287000" />
+      <workItem from="1777943028963" duration="79000" />
     </task>
     <servers />
   </component>

@@ -9,9 +9,7 @@ import com.auction.model.entity.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -27,6 +25,7 @@ public class MainController {
 
     @FXML private Label userInfoLabel;
     @FXML private Label userBalanceLabel;
+    @FXML private Button headerDepositButton; // Nút nạp tiền mới trên Header
     @FXML private TabPane mainTabPane;
 
     @FXML
@@ -47,6 +46,8 @@ public class MainController {
             // Khởi tạo các Tab dựa trên quyền hạn của User
             addTab("Danh Sách Đấu Giá", "/com/auction/gui/auction_list.fxml");
 
+            // ĐÃ XÓA TAB "Lịch Sử Của Tôi" (bidder.fxml) TẠI ĐÂY THEO YÊU CẦU
+
             if (user instanceof Seller) {
                 addTab("Quản Lý Bán Hàng", "/com/auction/gui/seller.fxml");
             }
@@ -66,10 +67,66 @@ public class MainController {
         if (user instanceof Bidder bidder) {
             NumberFormat nf = NumberFormat.getInstance(new Locale("vi", "VN"));
             userBalanceLabel.setText("Số dư: " + nf.format(bidder.getBalance()) + " ₫");
+
+            // Hiện cả số dư và nút nạp tiền cho Bidder
             userBalanceLabel.setVisible(true);
+            userBalanceLabel.setManaged(true);
+            if (headerDepositButton != null) {
+                headerDepositButton.setVisible(true);
+                headerDepositButton.setManaged(true);
+            }
         } else {
+            // Ẩn đi đối với Seller và Admin
             userBalanceLabel.setVisible(false);
+            userBalanceLabel.setManaged(false);
+            if (headerDepositButton != null) {
+                headerDepositButton.setVisible(false);
+                headerDepositButton.setManaged(false);
+            }
         }
+    }
+
+    /**
+     * Chức năng nạp tiền trực tiếp từ màn hình chính
+     */
+    @FXML
+    private void handleDeposit() {
+        User user = SessionManager.getCurrentUser();
+        if (!(user instanceof Bidder bidder)) return;
+
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Nạp Tiền");
+        dialog.setHeaderText("Nạp thêm tiền vào tài khoản");
+        dialog.setContentText("Nhập số tiền cần nạp (VNĐ):");
+
+        dialog.showAndWait().ifPresent(input -> {
+            try {
+                // Xóa các dấu phẩy, chấm nếu người dùng nhập sai
+                double amount = Double.parseDouble(input.replace(",", "").replace(".", "").trim());
+                if (amount <= 0) {
+                    Alert a = new Alert(Alert.AlertType.ERROR, "Số tiền nạp phải lớn hơn 0.");
+                    a.setHeaderText("Lỗi nhập liệu");
+                    a.showAndWait();
+                    return;
+                }
+
+                // Thực hiện nạp tiền và làm mới UI trên Header
+                bidder.deposit(amount);
+                refreshBalanceView();
+
+                // Báo thành công
+                NumberFormat nf = NumberFormat.getInstance(new Locale("vi", "VN"));
+                Alert a = new Alert(Alert.AlertType.INFORMATION, "Nạp thành công " + nf.format(amount) + " ₫!");
+                a.setTitle("Thành công");
+                a.setHeaderText(null);
+                a.showAndWait();
+
+            } catch (NumberFormatException ex) {
+                Alert a = new Alert(Alert.AlertType.ERROR, "Số tiền không hợp lệ. Vui lòng chỉ nhập số.");
+                a.setHeaderText("Lỗi định dạng");
+                a.showAndWait();
+            }
+        });
     }
 
     private void addTab(String title, String fxmlPath) throws Exception {

@@ -64,12 +64,10 @@ public class AuctionDetailController implements Observer {
     private Auction auction;
     private XYChart.Series<String, Number> priceSeries;
     private Timeline countdown;
-    private int bidCount = 0; // used as x-axis label
+    private int bidCount = 0;
 
     private static final NumberFormat NF  = NumberFormat.getInstance(new Locale("vi", "VN"));
     private static final DateTimeFormatter DTF = DateTimeFormatter.ofPattern("HH:mm:ss");
-
-    // ── Init ───────────────────────────────────────────────────────────────────
 
     @FXML
     public void initialize() {
@@ -85,8 +83,6 @@ public class AuctionDetailController implements Observer {
         configurePermissions();
     }
 
-    // ── Permissions ────────────────────────────────────────────────────────────
-
     private void configurePermissions() {
         User user = SessionManager.getCurrentUser();
         boolean isBidder = user instanceof Bidder;
@@ -99,19 +95,20 @@ public class AuctionDetailController implements Observer {
 
         if (isBidder) {
             Bidder bidder = (Bidder) user;
+            // SỬA: Font chữ bình thường, không màu, không đậm
             balanceLabel.setText("Tài khoản [" + bidder.getUsername() + "]  |  Số dư: " + NF.format(bidder.getBalance()) + " ₫");
-            depositButton.setVisible(true);  // Hiện nút Nạp tiền
+            balanceLabel.setStyle("-fx-font-weight: normal; -fx-text-fill: black;");
+            depositButton.setVisible(true);
             depositButton.setManaged(true);
         } else {
             balanceLabel.setText("Tài khoản [" + user.getUsername() + "]  |  Vai trò: " + user.getClass().getSimpleName());
-            depositButton.setVisible(false); // Ẩn nút Nạp tiền
+            balanceLabel.setStyle("-fx-font-weight: normal; -fx-text-fill: black;");
+            depositButton.setVisible(false);
             depositButton.setManaged(false);
             bidMessage.setText("Chỉ tài khoản Bidder mới có thể đặt giá.");
             autoBidMessage.setText("Chỉ tài khoản Bidder mới có thể dùng Auto-Bid.");
         }
     }
-
-    // ── Table setup ────────────────────────────────────────────────────────────
 
     private void setupBidHistoryTable() {
         colBidder.setCellValueFactory(d ->
@@ -130,8 +127,6 @@ public class AuctionDetailController implements Observer {
         priceChart.setCreateSymbols(true);
         priceChart.setLegendVisible(false);
     }
-
-    // ── Refresh UI ─────────────────────────────────────────────────────────────
 
     private void refreshUI() {
         if (auction == null) return;
@@ -161,12 +156,10 @@ public class AuctionDetailController implements Observer {
         sellerLabel.setText("Người bán: " + auction.getSeller().getUsername());
         startPriceLabel.setText("Giá khởi điểm: " + NF.format(item.getStartingPrice()) + " ₫");
 
-        // Bid history (newest first)
         List<BidTransaction> history = new ArrayList<>(auction.getBidHistory());
         Collections.reverse(history);
         bidHistoryTable.setItems(FXCollections.observableArrayList(history));
 
-        // Update chart with any new bids
         int histSize = auction.getBidHistory().size();
         while (bidCount < histSize) {
             BidTransaction bt = auction.getBidHistory().get(bidCount);
@@ -175,7 +168,6 @@ public class AuctionDetailController implements Observer {
             bidCount++;
         }
 
-        // --- Logic nhắc nhở nạp tiền cho người thắng cuộc ---
         User user = SessionManager.getCurrentUser();
         if (auction.getStatus() == AuctionStatus.FINISHED && user instanceof Bidder bidder) {
             boolean isWinner = auction.getCurrentLeader() != null &&
@@ -194,7 +186,6 @@ public class AuctionDetailController implements Observer {
             }
         }
 
-        // Update bid/autobid buttons based on current status
         configurePermissions();
     }
 
@@ -208,8 +199,6 @@ public class AuctionDetailController implements Observer {
         };
     }
 
-    // ── Countdown ──────────────────────────────────────────────────────────────
-
     private void startCountdown() {
         if (countdown != null) countdown.stop();
         countdown = new Timeline(new KeyFrame(Duration.seconds(1), e -> tick()));
@@ -221,7 +210,6 @@ public class AuctionDetailController implements Observer {
         if (auction == null) return;
         LocalDateTime now = LocalDateTime.now();
 
-        // --- Logic đếm ngược cho phiên đang chạy ---
         if (auction.getStatus() == AuctionStatus.RUNNING) {
             LocalDateTime end = auction.getEndTime();
             if (now.isAfter(end)) {
@@ -232,9 +220,8 @@ public class AuctionDetailController implements Observer {
             displayTime(secs, "Kết thúc sau: ");
             if (secs < 30) timeRemainingLabel.setStyle("-fx-text-fill: #e74c3c; -fx-font-size: 15; -fx-font-weight: bold;");
         }
-        // --- Logic đếm ngược 12 GIỜ cho hạn thanh toán ---
         else if (auction.getStatus() == AuctionStatus.FINISHED && auction.getFinishedTime() != null) {
-            LocalDateTime deadline = auction.getFinishedTime().plusHours(12); // ĐÃ ĐỔI THÀNH 12 GIỜ
+            LocalDateTime deadline = auction.getFinishedTime().plusHours(12);
             if (now.isAfter(deadline)) {
                 timeRemainingLabel.setText("Quá hạn thanh toán");
                 timeRemainingLabel.setStyle("-fx-text-fill: #e74c3c; -fx-font-weight: bold;");
@@ -255,8 +242,6 @@ public class AuctionDetailController implements Observer {
         timeRemainingLabel.setText(prefix + String.format("%02d:%02d:%02d", h, m, s));
     }
 
-    // ── Actions ────────────────────────────────────────────────────────────────
-
     @FXML
     private void handlePlaceBid() {
         User user = SessionManager.getCurrentUser();
@@ -276,7 +261,7 @@ public class AuctionDetailController implements Observer {
         } catch (NumberFormatException e) {
             setMsg(bidMessage, " Số tiền không hợp lệ.", true);
         } catch (Exception e) {
-            setMsg(bidMessage, " " + e.getMessage(), true);
+            setMsg(bidMessage, "❌ " + e.getMessage(), true);
         }
     }
 
@@ -285,7 +270,6 @@ public class AuctionDetailController implements Observer {
         User user = SessionManager.getCurrentUser();
         if (!(user instanceof Bidder bidder)) return;
 
-        // Mở hộp thoại nhập số tiền
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Nạp Tiền");
         dialog.setHeaderText("Nạp thêm tiền vào tài khoản");
@@ -293,27 +277,19 @@ public class AuctionDetailController implements Observer {
 
         dialog.showAndWait().ifPresent(input -> {
             try {
-                // Xóa các dấu phẩy, chấm nếu người dùng lỡ nhập sai định dạng
                 double amount = Double.parseDouble(input.replace(",", "").replace(".", "").trim());
-
                 if (amount <= 0) {
                     setMsg(bidMessage, " Số tiền nạp phải lớn hơn 0.", true);
                     return;
                 }
-
-                // Gọi hàm nạp tiền của class Bidder
                 bidder.deposit(amount);
 
-                // Cập nhật lại UI số dư ngay lập tức bên trong cửa sổ này VÀ HIỆN CẢ TÊN TÀI KHOẢN
                 balanceLabel.setText("Tài khoản [" + bidder.getUsername() + "]  |  Số dư: " + NF.format(bidder.getBalance()) + " ₫");
                 setMsg(bidMessage, " Nạp thành công " + NF.format(amount) + " ₫!", false);
 
-                // ĐỒNG BỘ: CẬP NHẬT LÊN THANH HEADER BÊN NGOÀI NGAY LẬP TỨC
                 if (MainController.getInstance() != null) {
                     MainController.getInstance().refreshBalanceView();
                 }
-
-                // Refresh UI để cập nhật cảnh báo nhắc nạp tiền nếu có
                 refreshUI();
 
             } catch (NumberFormatException ex) {
@@ -346,12 +322,9 @@ public class AuctionDetailController implements Observer {
         lbl.setText(msg);
     }
 
-    // ── Observer callback ──────────────────────────────────────────────────────
-
     @Override
     public void update(Auction auction) {
         Platform.runLater(() -> {
-            // Auto-detach if window is closed
             if (priceChart.getScene() == null
                     || priceChart.getScene().getWindow() == null
                     || !priceChart.getScene().getWindow().isShowing()) {

@@ -115,11 +115,11 @@ public class AuctionDetailController implements Observer {
 
     private void setupBidHistoryTable() {
         colBidder.setCellValueFactory(d ->
-            new SimpleStringProperty(d.getValue().getBidder().getUsername()));
+                new SimpleStringProperty(d.getValue().getBidder().getUsername()));
         colAmount.setCellValueFactory(d ->
-            new SimpleStringProperty(NF.format(d.getValue().getAmount()) + " ₫"));
+                new SimpleStringProperty(NF.format(d.getValue().getAmount()) + " ₫"));
         colTime.setCellValueFactory(d ->
-            new SimpleStringProperty(d.getValue().getTimestamp().format(DTF)));
+                new SimpleStringProperty(d.getValue().getTimestamp().format(DTF)));
     }
 
     private void setupChart() {
@@ -142,18 +142,18 @@ public class AuctionDetailController implements Observer {
 
         if (item instanceof Electronics e) {
             itemDetailLabel.setText("Thương hiệu: " + e.getBrand()
-                + " | Bảo hành: " + e.getWarrantyMonths() + " tháng");
+                    + " | Bảo hành: " + e.getWarrantyMonths() + " tháng");
         } else if (item instanceof Art a) {
             itemDetailLabel.setText("Nghệ sĩ: " + a.getArtistName()
-                + " | Năm sáng tác: " + a.getCreationYear());
+                    + " | Năm sáng tác: " + a.getCreationYear());
         } else if (item instanceof Vehicle v) {
             itemDetailLabel.setText("Biển số: " + v.getLicensePlate()
-                + " | Số km: " + NF.format(v.getMileage()));
+                    + " | Số km: " + NF.format(v.getMileage()));
         }
 
         currentPriceLabel.setText(NF.format(auction.getCurrentHighestPrice()) + " ₫");
         leaderLabel.setText(auction.getCurrentLeader() != null
-            ? auction.getCurrentLeader().getUsername() : "—");
+                ? auction.getCurrentLeader().getUsername() : "—");
         statusLabel.setText(auction.getStatus().toString());
         statusLabel.setStyle(statusStyle(auction.getStatus()));
 
@@ -171,8 +171,27 @@ public class AuctionDetailController implements Observer {
         while (bidCount < histSize) {
             BidTransaction bt = auction.getBidHistory().get(bidCount);
             priceSeries.getData().add(
-                new XYChart.Data<>(String.valueOf(bidCount + 1), bt.getAmount()));
+                    new XYChart.Data<>(String.valueOf(bidCount + 1), bt.getAmount()));
             bidCount++;
+        }
+
+        // --- Logic nhắc nhở nạp tiền cho người thắng cuộc ---
+        User user = SessionManager.getCurrentUser();
+        if (auction.getStatus() == AuctionStatus.FINISHED && user instanceof Bidder bidder) {
+            boolean isWinner = auction.getCurrentLeader() != null &&
+                    auction.getCurrentLeader().equals(bidder);
+            if (isWinner) {
+                double finalPrice = auction.getCurrentHighestPrice();
+                if (bidder.getBalance() < finalPrice) {
+                    double missing = finalPrice - bidder.getBalance();
+                    bidMessage.setText("⚠ BẠN ĐÃ THẮNG! Vui lòng nạp thêm ít nhất "
+                            + NF.format(missing) + " ₫ để có thể thanh toán.");
+                    bidMessage.setStyle("-fx-text-fill: #e74c3c; -fx-font-weight: bold; -fx-background-color: #fdeaea; -fx-padding: 5;");
+                } else {
+                    bidMessage.setText("🎉 Chúc mừng! Bạn đã thắng. Hãy thanh toán ngay để nhận sản phẩm.");
+                    bidMessage.setStyle("-fx-text-fill: #27ae60; -fx-font-weight: bold;");
+                }
+            }
         }
 
         // Update bid/autobid buttons based on current status
@@ -201,17 +220,39 @@ public class AuctionDetailController implements Observer {
     private void tick() {
         if (auction == null) return;
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime end = auction.getEndTime();
 
-        if (now.isAfter(end)) {
-            timeRemainingLabel.setText("Đã kết thúc");
-            if (countdown != null) countdown.stop();
-            return;
+        // --- Logic đếm ngược cho phiên đang chạy ---
+        if (auction.getStatus() == AuctionStatus.RUNNING) {
+            LocalDateTime end = auction.getEndTime();
+            if (now.isAfter(end)) {
+                timeRemainingLabel.setText("Đang xử lý...");
+                return;
+            }
+            long secs = ChronoUnit.SECONDS.between(now, end);
+            displayTime(secs, "Kết thúc sau: ");
+            if (secs < 30) timeRemainingLabel.setStyle("-fx-text-fill: #e74c3c; -fx-font-size: 15; -fx-font-weight: bold;");
         }
-        long secs  = ChronoUnit.SECONDS.between(now, end);
+        // --- Logic đếm ngược 12 giờ cho hạn thanh toán ---
+        else if (auction.getStatus() == AuctionStatus.FINISHED && auction.getFinishedTime() != null) {
+            LocalDateTime deadline = auction.getFinishedTime().plusHours(12);
+            if (now.isAfter(deadline)) {
+                timeRemainingLabel.setText("Quá hạn thanh toán");
+                timeRemainingLabel.setStyle("-fx-text-fill: #e74c3c; -fx-font-weight: bold;");
+                return;
+            }
+            long secs = ChronoUnit.SECONDS.between(now, deadline);
+            displayTime(secs, "Hạn thanh toán: ");
+            timeRemainingLabel.setStyle("-fx-text-fill: #e67e22; -fx-font-size: 15; -fx-font-weight: bold;");
+        }
+        else {
+            timeRemainingLabel.setText("Phiên đã đóng");
+            if (countdown != null) countdown.stop();
+        }
+    }
+
+    private void displayTime(long secs, String prefix) {
         long h = secs / 3600, m = (secs % 3600) / 60, s = secs % 60;
-        timeRemainingLabel.setText(String.format("%02d:%02d:%02d", h, m, s));
-        if (secs < 30) timeRemainingLabel.setStyle("-fx-text-fill: #e74c3c; -fx-font-size: 15; -fx-font-weight: bold;");
+        timeRemainingLabel.setText(prefix + String.format("%02d:%02d:%02d", h, m, s));
     }
 
     // ── Actions ────────────────────────────────────────────────────────────────
@@ -265,6 +306,9 @@ public class AuctionDetailController implements Observer {
                 // Cập nhật lại UI số dư ngay lập tức
                 balanceLabel.setText("Số dư: " + NF.format(bidder.getBalance()) + " ₫");
                 setMsg(bidMessage, "Nạp thành công " + NF.format(amount) + " ₫!", false);
+
+                // Refresh UI để cập nhật cảnh báo nhắc nạp tiền nếu có
+                refreshUI();
 
             } catch (NumberFormatException ex) {
                 setMsg(bidMessage, "Số tiền không hợp lệ. Vui lòng chỉ nhập số.", true);

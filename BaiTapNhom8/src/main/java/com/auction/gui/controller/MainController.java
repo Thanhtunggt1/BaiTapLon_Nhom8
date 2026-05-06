@@ -47,11 +47,6 @@ public class MainController {
             // Khởi tạo các Tab dựa trên quyền hạn của User
             addTab("Danh Sách Đấu Giá", "/com/auction/gui/auction_list.fxml");
 
-            // Tab dành riêng cho Bidder xem lịch sử và số dư
-            if (user instanceof Bidder) {
-                addTab("Lịch Sử Của Tôi", "/com/auction/gui/bidder.fxml");
-            }
-
             if (user instanceof Seller) {
                 addTab("Quản Lý Bán Hàng", "/com/auction/gui/seller.fxml");
             }

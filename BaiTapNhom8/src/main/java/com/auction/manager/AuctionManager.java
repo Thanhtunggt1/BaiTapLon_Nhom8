@@ -4,6 +4,7 @@ import com.auction.model.entity.Auction;
 import com.auction.model.entity.BidTransaction;
 import com.auction.model.enums.AuctionStatus;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -86,7 +87,9 @@ public class AuctionManager {
      * Được gọi định kỳ bởi scheduler.
      */
     public synchronized void checkAndCloseExpiredAuctions() {
+        LocalDateTime now = LocalDateTime.now();
         for (Auction auction : activeAuctions) {
+            // Chuyển RUNNING -> FINISHED nếu hết thời gian
             if (auction.getStatus() == AuctionStatus.RUNNING && auction.isExpired()) {
                 System.out.printf("[AuctionManager] Phiên [%s] hết hạn → tự động đóng.%n",
                         auction.getId());
@@ -94,8 +97,17 @@ public class AuctionManager {
             }
             // Chuyển OPEN → RUNNING nếu đến giờ bắt đầu
             if (auction.getStatus() == AuctionStatus.OPEN
-                    && !auction.getStartTime().isAfter(java.time.LocalDateTime.now())) {
+                    && !auction.getStartTime().isAfter(now)) {
                 auction.startAuction();
+            }
+
+            // Tự động HỦY phiên nếu ở trạng thái FINISHED quá 12 giờ mà chưa thanh toán
+            if (auction.getStatus() == AuctionStatus.FINISHED && auction.getFinishedTime() != null) {
+                if (now.isAfter(auction.getFinishedTime().plusHours(12))) {
+                    System.out.printf("[AuctionManager] Phiên [%s] quá hạn thanh toán 12h → tự động HỦY.%n",
+                            auction.getId());
+                    auction.cancelAuction();
+                }
             }
         }
     }

@@ -6,13 +6,18 @@ import com.auction.manager.AuctionManager;
 import com.auction.model.entity.Admin;
 import com.auction.model.entity.Auction;
 import com.auction.model.enums.AuctionStatus;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.util.Duration;
 
 import java.text.NumberFormat;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Locale;
 
@@ -152,8 +157,46 @@ public class AdminController {
         try {
             sel.markAsPaid();
             loadData();
-        } catch (Exception e) {
-            alert("Lỗi", e.getMessage());
+            alert("Thành công", "Đã đánh dấu thanh toán thành công."); // Cải thiện báo thành công
+        } catch (Exception ex) {
+            // --- TÙY CHỈNH THÔNG BÁO CHO QUẢN TRỊ VIÊN ---
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Thao tác thất bại");
+            alert.setHeaderText("Không thể đánh dấu thanh toán");
+
+            // Gom logic tạo chữ vào một luồng lặp lại
+            Runnable updateText = () -> {
+                String warningMsg = "Chi tiết lỗi: " + ex.getMessage();
+
+                if (sel.getStatus() == AuctionStatus.FINISHED && sel.getFinishedTime() != null) {
+                    LocalDateTime now = LocalDateTime.now();
+                    LocalDateTime deadline = sel.getFinishedTime().plusHours(12);
+
+                    if (now.isBefore(deadline)) {
+                        long secs = ChronoUnit.SECONDS.between(now, deadline);
+                        long h = secs / 3600, m = (secs % 3600) / 60, s = secs % 60;
+
+                        warningMsg += String.format("\n\n THỜI GIAN CHỜ THANH TOÁN CÒN: %02d:%02d:%02d.", h, m, s);
+                        warningMsg += "\n(Phiên sẽ tự động bị HỦY nếu người thắng không nạp đủ tiền khi hết giờ!)";
+                    } else {
+                        warningMsg += "\n\n Đã quá thời hạn 12h! Phiên này đang chờ hệ thống tự động quét và hủy.";
+                    }
+                }
+                alert.setContentText(warningMsg);
+            };
+
+            // Gọi chạy ngay lập tức lần đầu
+            updateText.run();
+
+            // Khởi tạo đồng hồ đếm ngược mỗi 1 giây giống hệt giao diện Bidder
+            Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> updateText.run()));
+            timeline.setCycleCount(Timeline.INDEFINITE);
+            timeline.play();
+
+            // Dừng đồng hồ khi Admin tắt bảng thông báo
+            alert.setOnHidden(e -> timeline.stop());
+
+            alert.showAndWait();
         }
     }
 

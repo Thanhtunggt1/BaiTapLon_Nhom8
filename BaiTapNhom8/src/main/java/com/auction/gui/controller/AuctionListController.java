@@ -7,6 +7,8 @@ import com.auction.model.entity.Bidder;
 import com.auction.model.entity.Seller;
 import com.auction.model.entity.User;
 import com.auction.model.enums.AuctionStatus;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -14,9 +16,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.text.NumberFormat;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -142,7 +147,7 @@ public class AuctionListController {
             confirm.setTitle("Thanh toán trực tiếp");
 
             if (confirm.showAndWait().orElse(ButtonType.NO) == ButtonType.YES) {
-                // Thực hiện trừ tiền và đổi trạng thái[cite: 2, 5]
+                // Thực hiện trừ tiền và đổi trạng thái
                 auction.markAsPaid();
 
                 // CẬP NHẬT SỐ DƯ TRÊN HEADER NGAY LẬP TỨC
@@ -154,7 +159,43 @@ public class AuctionListController {
                 new Alert(Alert.AlertType.INFORMATION, "Thanh toán thành công!").showAndWait();
             }
         } catch (Exception ex) {
-            new Alert(Alert.AlertType.ERROR, "Lỗi thanh toán: " + ex.getMessage()).showAndWait();
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Yêu cầu nạp tiền");
+            alert.setHeaderText("Thanh toán không thành công");
+
+            // Đóng gói logic tạo thông báo vào một Runnable để chạy đi chạy lại
+            Runnable updateText = () -> {
+                String warningMsg = "Số dư tài khoản của bạn không đủ để thanh toán cho món hàng này!";
+
+                if (auction.getStatus() == AuctionStatus.FINISHED && auction.getFinishedTime() != null) {
+                    LocalDateTime now = LocalDateTime.now();
+                    LocalDateTime deadline = auction.getFinishedTime().plusHours(12); // Đã set đúng 12 giờ
+
+                    if (now.isBefore(deadline)) {
+                        long secs = ChronoUnit.SECONDS.between(now, deadline);
+                        long h = secs / 3600, m = (secs % 3600) / 60, s = secs % 60;
+
+                        warningMsg += String.format("\n\n⏱ BẠN CÒN ĐÚNG %02d:%02d:%02d ĐỂ GIỮ HÀNG.", h, m, s);
+                        warningMsg += "\nHãy nạp thêm tiền ngay để hoàn tất mua hàng. Nếu quá hạn, hệ thống sẽ tự động hủy phiên đấu giá của bạn!";
+                    } else {
+                        warningMsg += "\n\n⚠ Đã quá thời hạn thanh toán! Hệ thống đang tiến hành hủy phiên đấu giá.";
+                    }
+                }
+                alert.setContentText(warningMsg);
+            };
+
+            // Gọi chạy ngay lần đầu tiên để hộp thoại hiển thị chữ lập tức
+            updateText.run();
+
+            // Tạo bộ đếm gọi lại hàm updateText mỗi 1 giây
+            Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> updateText.run()));
+            timeline.setCycleCount(Timeline.INDEFINITE);
+            timeline.play();
+
+            // Quan trọng: Phải dừng đồng hồ khi người dùng bấm OK hoặc tắt cửa sổ đi
+            alert.setOnHidden(e -> timeline.stop());
+
+            alert.showAndWait();
         }
     }
 

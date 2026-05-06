@@ -32,11 +32,11 @@ public class Bidder extends User implements Observer {
      * @return true nếu bid hợp lệ và được chấp nhận
      */
     public boolean placeBid(Auction auction, double amount)
-            /*
-            * Từ khóa throws như một biển báo nguy hiểm
-            * Bất kỳ ai muốn gọi cái hàm placeBid() này rằng quá trình đặt giá này không phải lúc nào cũng suôn sẻ đâu
-            * Nó có thể fail và văng ra 1 trong 3 cái lỗi này
-            * */
+    /*
+     * Từ khóa throws như một biển báo nguy hiểm
+     * Bất kỳ ai muốn gọi cái hàm placeBid() này rằng quá trình đặt giá này không phải lúc nào cũng suôn sẻ đâu
+     * Nó có thể fail và văng ra 1 trong 3 cái lỗi này
+     * */
             throws AuctionClosedException, InvalidBidException, InsufficientBalanceException {
 
         if (auction == null) throw new IllegalArgumentException("Auction không được null.");
@@ -51,7 +51,7 @@ public class Bidder extends User implements Observer {
                             + auction.getCurrentHighestPrice() + ").");
         }
         if (amount > balance) {
-            throw new InsufficientBalanceException("Số dư khả dụng (" + balance + ") không đủ!");
+            throw new InsufficientBalanceException("Số dư (" + balance + ") không đủ!");
         }
 
         // Nếu mọi thứ thỏa mãn rồi thì tạo BidTransaction (Như là 1 biên lai vậy)

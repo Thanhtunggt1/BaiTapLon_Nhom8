@@ -6,25 +6,18 @@
   <component name="ChangeListManager">
     <list default="true" id="0c6a107e-68c0-4fa4-9118-006d3961becd" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/gui/DataInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/gui/DataInitializer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/gui/controller/AdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/gui/controller/AdminController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/gui/controller/AuctionDetailController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/gui/controller/AuctionDetailController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/gui/controller/AuctionListController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/gui/controller/AuctionListController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/gui/controller/BidderController.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/gui/controller/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/gui/controller/MainController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/manager/AuctionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/manager/AuctionManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/model/entity/Auction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/model/entity/Auction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/auction/gui/bidder.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/DataInitializer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/DataInitializer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/AdminController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/AdminController$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/AdminController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/AdminController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/model/entity/Bidder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/model/entity/Bidder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/auction/gui/auction_list.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/auction/gui/auction_list.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/auction/gui/seller.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/auction/gui/seller.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/auction_list.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/auction_list.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/AuctionDetailController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/AuctionDetailController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/AuctionListController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/AuctionListController$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/AuctionListController$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/AuctionListController$2.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/AuctionListController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/AuctionListController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/MainController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/MainController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/manager/AuctionManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/manager/AuctionManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/model/entity/Auction.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/model/entity/Auction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/seller.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/seller.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/model/entity/Bidder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/model/entity/Bidder.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -210,7 +203,7 @@
       <workItem from="1778037086395" duration="6775000" />
       <workItem from="1778046943911" duration="7986000" />
       <workItem from="1778065737184" duration="447000" />
-      <workItem from="1778066385701" duration="5004000" />
+      <workItem from="1778066385701" duration="7487000" />
     </task>
     <servers />
   </component>

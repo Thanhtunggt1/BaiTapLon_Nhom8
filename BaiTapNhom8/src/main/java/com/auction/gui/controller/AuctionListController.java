@@ -219,18 +219,8 @@ public class AuctionListController {
     }
 
     private void updateTotalEarnings() {
-        if (totalEarningsLabel == null) return;
-        User currentUser = SessionManager.getCurrentUser();
-        if (currentUser instanceof Seller) {
-            Seller seller = (Seller) currentUser;
-            double total = seller.getAuctions().stream()
-                    .filter(a -> a.getStatus() == AuctionStatus.PAID)
-                    .mapToDouble(Auction::getCurrentHighestPrice)
-                    .sum();
-            totalEarningsLabel.setText("Tổng doanh thu: " + NF.format(total) + " đ");
-            totalEarningsLabel.setVisible(true);
-        } else {
-            totalEarningsLabel.setVisible(false);
+        if (MainController.getInstance() != null) {
+            MainController.getInstance().refreshBalanceView();
         }
     }
 

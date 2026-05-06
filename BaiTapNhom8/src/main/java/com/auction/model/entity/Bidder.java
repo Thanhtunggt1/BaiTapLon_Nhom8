@@ -69,12 +69,29 @@ public class Bidder extends User implements Observer {
      */
     public void setupAutoBid(Auction auction, double maxBid, double increment) {
         if (auction == null) throw new IllegalArgumentException("Auction không được null.");
+
         if (maxBid <= auction.getCurrentHighestPrice()) {
             throw new IllegalArgumentException(
                     "maxBid phải lớn hơn giá hiện tại (" + auction.getCurrentHighestPrice() + ").");
         }
+
         if (increment <= 0) {
             throw new IllegalArgumentException("Bước giá phải dương.");
+        }
+
+        // 1. Chặn MaxBid lớn hơn số dư
+        if (maxBid > this.balance) {
+            throw new IllegalArgumentException("Giá tối đa (MaxBid) không được vượt quá số dư hiện tại. Vui lòng nạp thêm tiền!");
+        }
+
+        // 2. Chặn Bước nhảy lớn hơn số dư
+        if (increment > this.balance) {
+            throw new IllegalArgumentException("Bước giá không được lớn hơn số dư hiện tại!");
+        }
+
+        // 3. Logic thêm: Bước nhảy không thể lớn hơn chính MaxBid
+        if (increment > maxBid) {
+            throw new IllegalArgumentException("Bước giá vô lý! Không được lớn hơn Giá tối đa (MaxBid).");
         }
 
         AutoBidConfig config = new AutoBidConfig(this, auction, maxBid, increment);

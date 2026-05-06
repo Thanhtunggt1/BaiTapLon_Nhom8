@@ -99,11 +99,13 @@ public class AuctionDetailController implements Observer {
 
         if (isBidder) {
             Bidder bidder = (Bidder) user;
-            balanceLabel.setText("Số dư: " + NF.format(bidder.getBalance()) + " ₫");
+            // ---> SỬA Ở ĐÂY: Ghim TÊN TÀI KHOẢN hiển thị ngay trước SỐ DƯ
+            balanceLabel.setText("Tài khoản [" + bidder.getUsername() + "]  |  Số dư: " + NF.format(bidder.getBalance()) + " ₫");
             depositButton.setVisible(true);  // Hiện nút Nạp tiền
             depositButton.setManaged(true);
         } else {
-            balanceLabel.setText("");
+            // ---> SỬA Ở ĐÂY: Nếu là Admin hoặc Seller vào xem, cũng cho hiện tên tài khoản luôn cho rõ ràng
+            balanceLabel.setText("Tài khoản [" + user.getUsername() + "]  |  Vai trò: " + user.getClass().getSimpleName());
             depositButton.setVisible(false); // Ẩn nút Nạp tiền
             depositButton.setManaged(false);
             bidMessage.setText("Chỉ tài khoản Bidder mới có thể đặt giá.");
@@ -232,9 +234,10 @@ public class AuctionDetailController implements Observer {
             displayTime(secs, "Kết thúc sau: ");
             if (secs < 30) timeRemainingLabel.setStyle("-fx-text-fill: #e74c3c; -fx-font-size: 15; -fx-font-weight: bold;");
         }
-        // --- Logic đếm ngược 12 giờ cho hạn thanh toán ---
+        // --- Logic đếm ngược 1 PHÚT cho hạn thanh toán (Để test) ---
         else if (auction.getStatus() == AuctionStatus.FINISHED && auction.getFinishedTime() != null) {
-            LocalDateTime deadline = auction.getFinishedTime().plusHours(12);
+            // Nhớ đổi thành plusHours(12) khi triển khai thực tế nhé!
+            LocalDateTime deadline = auction.getFinishedTime().plusMinutes(1);
             if (now.isAfter(deadline)) {
                 timeRemainingLabel.setText("Quá hạn thanh toán");
                 timeRemainingLabel.setStyle("-fx-text-fill: #e74c3c; -fx-font-weight: bold;");
@@ -261,22 +264,22 @@ public class AuctionDetailController implements Observer {
     private void handlePlaceBid() {
         User user = SessionManager.getCurrentUser();
         if (!(user instanceof Bidder bidder)) {
-            setMsg(bidMessage, "❌ Chỉ Bidder mới có thể đặt giá.", true);
+            setMsg(bidMessage, " Chỉ Bidder mới có thể đặt giá.", true);
             return;
         }
         String text = bidAmountField.getText().trim();
-        if (text.isEmpty()) { setMsg(bidMessage, "❌ Vui lòng nhập số tiền.", true); return; }
+        if (text.isEmpty()) { setMsg(bidMessage, " Vui lòng nhập số tiền.", true); return; }
         try {
             double amount = Double.parseDouble(text.replace(",", "").replace(".", ""));
             boolean ok = bidder.placeBid(auction, amount);
             if (ok) {
-                setMsg(bidMessage, "✅ Đặt giá " + NF.format(amount) + " ₫ thành công!", false);
+                setMsg(bidMessage, " Đặt giá " + NF.format(amount) + " ₫ thành công!", false);
                 bidAmountField.clear();
             }
         } catch (NumberFormatException e) {
-            setMsg(bidMessage, "❌ Số tiền không hợp lệ.", true);
+            setMsg(bidMessage, " Số tiền không hợp lệ.", true);
         } catch (Exception e) {
-            setMsg(bidMessage, "❌ " + e.getMessage(), true);
+            setMsg(bidMessage, " " + e.getMessage(), true);
         }
     }
 
@@ -296,16 +299,21 @@ public class AuctionDetailController implements Observer {
                 // Xóa các dấu phẩy, chấm nếu người dùng lỡ nhập sai định dạng
                 double amount = Double.parseDouble(input.replace(",", "").replace(".", "").trim());
                 if (amount <= 0) {
-                    setMsg(bidMessage, "❌ Số tiền nạp phải lớn hơn 0.", true);
+                    setMsg(bidMessage, " Số tiền nạp phải lớn hơn 0.", true);
                     return;
                 }
 
                 // Gọi hàm nạp tiền của class Bidder
                 bidder.deposit(amount);
 
-                // Cập nhật lại UI số dư ngay lập tức
-                balanceLabel.setText("Số dư: " + NF.format(bidder.getBalance()) + " ₫");
+                // Cập nhật lại UI số dư ngay lập tức bên trong cửa sổ này VÀ HIỆN CẢ TÊN TÀI KHOẢN
+                balanceLabel.setText("Tài khoản [" + bidder.getUsername() + "]  |  Số dư: " + NF.format(bidder.getBalance()) + " ₫");
                 setMsg(bidMessage, "Nạp thành công " + NF.format(amount) + " ₫!", false);
+
+                // ĐỒNG BỘ: CẬP NHẬT LÊN THANH HEADER BÊN NGOÀI NGAY LẬP TỨC
+                if (MainController.getInstance() != null) {
+                    MainController.getInstance().refreshBalanceView();
+                }
 
                 // Refresh UI để cập nhật cảnh báo nhắc nạp tiền nếu có
                 refreshUI();
@@ -320,16 +328,16 @@ public class AuctionDetailController implements Observer {
     private void handleSetupAutoBid() {
         User user = SessionManager.getCurrentUser();
         if (!(user instanceof Bidder bidder)) {
-            setMsg(autoBidMessage, "❌ Chỉ Bidder mới có thể cài Auto-Bid.", true);
+            setMsg(autoBidMessage, " Chỉ Bidder mới có thể cài Auto-Bid.", true);
             return;
         }
         try {
             double maxBid   = Double.parseDouble(maxBidField.getText().trim().replace(",", ""));
             double increment = Double.parseDouble(incrementField.getText().trim().replace(",", ""));
             bidder.setupAutoBid(auction, maxBid, increment);
-            setMsg(autoBidMessage, "✅ Đã cài Auto-Bid! Max=" + NF.format(maxBid) + "₫, Bước=" + NF.format(increment) + "₫", false);
+            setMsg(autoBidMessage, " Đã cài Auto-Bid! Max=" + NF.format(maxBid) + "₫, Bước=" + NF.format(increment) + "₫", false);
         } catch (NumberFormatException e) {
-            setMsg(autoBidMessage, "❌ Giá trị không hợp lệ.", true);
+            setMsg(autoBidMessage, " Giá trị không hợp lệ.", true);
         } catch (Exception e) {
             setMsg(autoBidMessage, "❌ " + e.getMessage(), true);
         }

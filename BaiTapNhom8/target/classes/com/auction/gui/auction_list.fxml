@@ -11,7 +11,6 @@
 
         <Region HBox.hgrow="ALWAYS" />
 
-        <Label fx:id="totalEarningsLabel" style="-fx-font-weight: bold; -fx-text-fill: #27ae60; -fx-font-size: 15px;" />
         <Button text="Làm mới" onAction="#handleRefresh" />
     </HBox>
 

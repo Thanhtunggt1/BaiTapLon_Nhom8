@@ -3,9 +3,11 @@ package com.auction.gui.controller;
 import com.auction.Main;
 import com.auction.gui.SessionManager;
 import com.auction.model.entity.Admin;
+import com.auction.model.entity.Auction;
 import com.auction.model.entity.Bidder;
 import com.auction.model.entity.Seller;
 import com.auction.model.entity.User;
+import com.auction.model.enums.AuctionStatus;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -16,7 +18,6 @@ import java.util.Locale;
 
 public class MainController {
 
-    // Tạo một instance static để các Controller khác có thể truy cập và ra lệnh cập nhật UI
     private static MainController instance;
 
     public static MainController getInstance() {
@@ -25,28 +26,23 @@ public class MainController {
 
     @FXML private Label userInfoLabel;
     @FXML private Label userBalanceLabel;
-    @FXML private Button headerDepositButton; // Nút nạp tiền mới trên Header
+    @FXML private Button headerDepositButton;
     @FXML private TabPane mainTabPane;
 
     @FXML
     public void initialize() {
-        instance = this; // Gán instance hiện tại
+        instance = this;
 
         User user = SessionManager.getCurrentUser();
         if (user == null) return;
 
-        // Xác định vai trò để hiển thị trên Header
         String role = (user instanceof Admin) ? "Admin" : (user instanceof Seller ? "Seller" : "Bidder");
         userInfoLabel.setText(user.getUsername() + "  |  " + role);
 
-        // Hiển thị số dư ban đầu
         refreshBalanceView();
 
         try {
-            // Khởi tạo các Tab dựa trên quyền hạn của User
             addTab("Danh Sách Đấu Giá", "/com/auction/gui/auction_list.fxml");
-
-            // ĐÃ XÓA TAB "Lịch Sử Của Tôi" (bidder.fxml) TẠI ĐÂY THEO YÊU CẦU
 
             if (user instanceof Seller) {
                 addTab("Quản Lý Bán Hàng", "/com/auction/gui/seller.fxml");
@@ -60,23 +56,41 @@ public class MainController {
     }
 
     /**
-     * Hàm cập nhật lại số dư trên Header cho Bidder
+     * Hàm cập nhật giao diện Header:
+     * - Bidder: Hiện Số dư + Nút nạp tiền
+     * - Seller: Hiện Tổng doanh thu
+     * - Admin: Ẩn cả hai
      */
     public void refreshBalanceView() {
         User user = SessionManager.getCurrentUser();
-        if (user instanceof Bidder bidder) {
-            NumberFormat nf = NumberFormat.getInstance(new Locale("vi", "VN"));
-            userBalanceLabel.setText("Số dư: " + nf.format(bidder.getBalance()) + " ₫");
+        NumberFormat nf = NumberFormat.getInstance(new Locale("vi", "VN"));
 
-            // Hiện cả số dư và nút nạp tiền cho Bidder
+        if (user instanceof Bidder bidder) {
+            userBalanceLabel.setText("Số dư: " + nf.format(bidder.getBalance()) + " ₫");
             userBalanceLabel.setVisible(true);
             userBalanceLabel.setManaged(true);
             if (headerDepositButton != null) {
                 headerDepositButton.setVisible(true);
                 headerDepositButton.setManaged(true);
             }
+        } else if (user instanceof Seller seller) {
+            // ---> LOGIC TÍNH TỔNG DOANH THU CHO SELLER <---
+            double totalEarnings = seller.getAuctions().stream()
+                    .filter(a -> a.getStatus() == AuctionStatus.PAID)
+                    .mapToDouble(Auction::getCurrentHighestPrice)
+                    .sum();
+
+            userBalanceLabel.setText("Tổng doanh thu: " + nf.format(totalEarnings) + " ₫");
+            userBalanceLabel.setVisible(true);
+            userBalanceLabel.setManaged(true);
+
+            // Seller thì không cần nút nạp tiền
+            if (headerDepositButton != null) {
+                headerDepositButton.setVisible(false);
+                headerDepositButton.setManaged(false);
+            }
         } else {
-            // Ẩn đi đối với Seller và Admin
+            // Admin thì ẩn hết
             userBalanceLabel.setVisible(false);
             userBalanceLabel.setManaged(false);
             if (headerDepositButton != null) {
@@ -86,9 +100,6 @@ public class MainController {
         }
     }
 
-    /**
-     * Chức năng nạp tiền trực tiếp từ màn hình chính
-     */
     @FXML
     private void handleDeposit() {
         User user = SessionManager.getCurrentUser();
@@ -101,7 +112,6 @@ public class MainController {
 
         dialog.showAndWait().ifPresent(input -> {
             try {
-                // Xóa các dấu phẩy, chấm nếu người dùng nhập sai
                 double amount = Double.parseDouble(input.replace(",", "").replace(".", "").trim());
                 if (amount <= 0) {
                     Alert a = new Alert(Alert.AlertType.ERROR, "Số tiền nạp phải lớn hơn 0.");
@@ -110,11 +120,9 @@ public class MainController {
                     return;
                 }
 
-                // Thực hiện nạp tiền và làm mới UI trên Header
                 bidder.deposit(amount);
                 refreshBalanceView();
 
-                // Báo thành công
                 NumberFormat nf = NumberFormat.getInstance(new Locale("vi", "VN"));
                 Alert a = new Alert(Alert.AlertType.INFORMATION, "Nạp thành công " + nf.format(amount) + " ₫!");
                 a.setTitle("Thành công");

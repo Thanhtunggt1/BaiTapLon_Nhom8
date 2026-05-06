@@ -5,11 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0c6a107e-68c0-4fa4-9118-006d3961becd" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/gui/DataInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/gui/DataInitializer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/model/entity/Bidder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/model/entity/Bidder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/DataInitializer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/DataInitializer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/model/entity/Bidder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/model/entity/Bidder.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -194,6 +190,7 @@
       <workItem from="1777949952998" duration="11000" />
       <workItem from="1778037086395" duration="6775000" />
       <workItem from="1778046943911" duration="7986000" />
+      <workItem from="1778065737184" duration="370000" />
     </task>
     <servers />
   </component>

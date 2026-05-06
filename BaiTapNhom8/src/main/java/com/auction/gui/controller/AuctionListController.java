@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -65,7 +66,6 @@ public class AuctionListController {
         colStatus.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getStatus().toString()));
         colEndTime.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getEndTime().format(DTF)));
 
-        // Định dạng màu sắc trạng thái bằng Switch truyền thống để tránh lỗi phiên bản Java
         colStatus.setCellFactory(col -> new TableCell<Auction, String>() {
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -95,7 +95,6 @@ public class AuctionListController {
             }
         });
 
-        // Cột xem chi tiết
         colAction.setCellFactory(col -> new TableCell<Auction, Void>() {
             private final Button btn = new Button("Xem");
             {
@@ -109,7 +108,6 @@ public class AuctionListController {
             }
         });
 
-        // Cột thanh toán cho người thắng
         colPay.setCellFactory(col -> new TableCell<Auction, Void>() {
             private final Button btnPay = new Button("Thanh toán");
             {
@@ -125,7 +123,6 @@ public class AuctionListController {
                     Auction a = getTableView().getItems().get(getIndex());
                     User user = SessionManager.getCurrentUser();
 
-                    // Chỉ hiện nút cho Bidder thắng cuộc khi phiên ở trạng thái FINISHED
                     boolean isWinner = (user instanceof Bidder) && a.getCurrentLeader() != null
                             && a.getCurrentLeader().equals(user);
 
@@ -144,32 +141,64 @@ public class AuctionListController {
             Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
                     "Xác nhận thanh toán " + NF.format(auction.getCurrentHighestPrice()) + " ₫?",
                     ButtonType.YES, ButtonType.NO);
+            confirm.setGraphic(null); // Tắt icon
             confirm.setTitle("Thanh toán trực tiếp");
 
             if (confirm.showAndWait().orElse(ButtonType.NO) == ButtonType.YES) {
                 // Thực hiện trừ tiền và đổi trạng thái
                 auction.markAsPaid();
 
-                // CẬP NHẬT SỐ DƯ TRÊN HEADER NGAY LẬP TỨC
                 if (MainController.getInstance() != null) {
                     MainController.getInstance().refreshBalanceView();
                 }
 
                 handleRefresh();
-                new Alert(Alert.AlertType.INFORMATION, "Thanh toán thành công!").showAndWait();
+
+                // TẠO BIÊN LAI MUA HÀNG
+                String receipt = String.format("""
+                    🎉 GIAO DỊCH HOÀN TẤT!
+                    
+                    🧾 BIÊN LAI MUA HÀNG
+                    --------------------------------------------------
+                    Mã phiên đấu giá: %s
+                    Tên sản phẩm: %s
+                    Giá thanh toán: %s ₫
+                    
+                    📦 THÔNG TIN GIAO NHẬN
+                    Người bán: %s
+                    Trạng thái: Chờ người bán bàn giao sản phẩm
+                    
+                    (Vui lòng liên hệ người bán qua hệ thống để thống nhất thời gian và địa điểm giao nhận hàng).
+                    --------------------------------------------------
+                    Cảm ơn bạn đã sử dụng Hệ Thống Đấu Giá Trực Tuyến!
+                    """,
+                        auction.getId().substring(0, 8).toUpperCase(),
+                        auction.getItem().getName(),
+                        NF.format(auction.getCurrentHighestPrice()),
+                        auction.getSeller().getUsername()
+                );
+
+                Alert success = new Alert(Alert.AlertType.INFORMATION);
+                success.setGraphic(null); // Tắt icon
+                success.setTitle("Biên lai thanh toán");
+                success.setHeaderText("Đã thanh toán thành công!");
+                success.setContentText(receipt);
+                success.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+                success.showAndWait();
             }
         } catch (Exception ex) {
+            // KHÔI PHỤC LẠI BẢNG ĐẾM NGƯỢC KHI THIẾU TIỀN
             Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setGraphic(null); // Tắt icon
             alert.setTitle("Yêu cầu nạp tiền");
             alert.setHeaderText("Thanh toán không thành công");
 
-            // Đóng gói logic tạo thông báo vào một Runnable để chạy đi chạy lại
             Runnable updateText = () -> {
                 String warningMsg = "Số dư tài khoản của bạn không đủ để thanh toán cho món hàng này!";
 
                 if (auction.getStatus() == AuctionStatus.FINISHED && auction.getFinishedTime() != null) {
                     LocalDateTime now = LocalDateTime.now();
-                    LocalDateTime deadline = auction.getFinishedTime().plusHours(12); // Đã set đúng 12 giờ
+                    LocalDateTime deadline = auction.getFinishedTime().plusHours(12);
 
                     if (now.isBefore(deadline)) {
                         long secs = ChronoUnit.SECONDS.between(now, deadline);
@@ -184,15 +213,12 @@ public class AuctionListController {
                 alert.setContentText(warningMsg);
             };
 
-            // Gọi chạy ngay lần đầu tiên để hộp thoại hiển thị chữ lập tức
             updateText.run();
 
-            // Tạo bộ đếm gọi lại hàm updateText mỗi 1 giây
             Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> updateText.run()));
             timeline.setCycleCount(Timeline.INDEFINITE);
             timeline.play();
 
-            // Quan trọng: Phải dừng đồng hồ khi người dùng bấm OK hoặc tắt cửa sổ đi
             alert.setOnHidden(e -> timeline.stop());
 
             alert.showAndWait();

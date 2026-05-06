@@ -12,8 +12,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class MainController {
@@ -153,7 +157,20 @@ public class MainController {
             currentUser.logout();
         }
         SessionManager.logout();
+
+        // ---> LOGIC ĐÓNG TẤT CẢ CÁC CỬA SỔ CON TRƯỚC KHI ĐĂNG XUẤT <---
+        // Lấy danh sách toàn bộ các cửa sổ đang mở trên màn hình
+        List<Window> openWindows = new ArrayList<>(Window.getWindows());
+
+        for (Window window : openWindows) {
+            // Đóng tất cả các cửa sổ, NGOẠI TRỪ cửa sổ gốc (PrimaryStage) của hệ thống
+            if (window instanceof Stage && window != Main.getPrimaryStage()) {
+                ((Stage) window).close();
+            }
+        }
+
         try {
+            // Sau khi dọn dẹp sạch sẽ cửa sổ con, trả cửa sổ gốc về màn hình Login
             Main.showLogin();
         } catch (Exception e) {
             e.printStackTrace();

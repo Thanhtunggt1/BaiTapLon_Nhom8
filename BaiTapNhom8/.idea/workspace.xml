@@ -4,28 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c6a107e-68c0-4fa4-9118-006d3961becd" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/auction/gui/controller/BidderController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/auction/gui/bidder.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/gui/controller/AuctionListController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/gui/controller/AuctionListController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/gui/controller/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/gui/controller/MainController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/gui/controller/SellerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/gui/controller/SellerController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/model/entity/Seller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/model/entity/Seller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/auction/gui/auction_list.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/auction/gui/auction_list.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/auction/gui/main.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/auction/gui/main.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/auction/gui/seller.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/auction/gui/seller.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/auction_list.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/auction_list.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/AuctionListController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/AuctionListController$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/AuctionListController$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/AuctionListController$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/AuctionListController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/AuctionListController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/MainController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/MainController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/SellerController$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/SellerController$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/SellerController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/SellerController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/main.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/main.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/seller.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/seller.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/model/entity/Seller.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/model/entity/Seller.class" afterDir="false" />
-    </list>
+    <list default="true" id="0c6a107e-68c0-4fa4-9118-006d3961becd" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -41,6 +20,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/.." value="tung" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="MavenImportPreferences">

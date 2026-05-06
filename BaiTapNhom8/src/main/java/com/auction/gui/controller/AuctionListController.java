@@ -3,6 +3,7 @@ package com.auction.gui.controller;
 import com.auction.gui.SessionManager;
 import com.auction.manager.AuctionManager;
 import com.auction.model.entity.Auction;
+import com.auction.model.entity.Bidder;
 import com.auction.model.entity.Seller;
 import com.auction.model.entity.User;
 import com.auction.model.enums.AuctionStatus;
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
 public class AuctionListController {
 
     @FXML private ComboBox<String> statusFilter;
-    @FXML private Label totalEarningsLabel; // Label hiển thị doanh thu
+    @FXML private Label totalEarningsLabel;
 
     @FXML private TableView<Auction> auctionTable;
     @FXML private TableColumn<Auction, String> colItem;
@@ -34,6 +35,7 @@ public class AuctionListController {
     @FXML private TableColumn<Auction, String> colStatus;
     @FXML private TableColumn<Auction, String> colEndTime;
     @FXML private TableColumn<Auction, Void>   colAction;
+    @FXML private TableColumn<Auction, Void>   colPay;
 
     private static final NumberFormat NF  = NumberFormat.getInstance(new Locale("vi", "VN"));
     private static final DateTimeFormatter DTF = DateTimeFormatter.ofPattern("dd/MM HH:mm:ss");
@@ -47,32 +49,29 @@ public class AuctionListController {
     }
 
     private void setupColumns() {
-        colItem.setCellValueFactory(d ->
-                new SimpleStringProperty(d.getValue().getItem().getName()));
-        colType.setCellValueFactory(d ->
-                new SimpleStringProperty(d.getValue().getItem().getClass().getSimpleName()));
-        colStartPrice.setCellValueFactory(d ->
-                new SimpleStringProperty(NF.format(d.getValue().getItem().getStartingPrice()) + " ₫"));
-        colCurrentPrice.setCellValueFactory(d ->
-                new SimpleStringProperty(NF.format(d.getValue().getCurrentHighestPrice()) + " ₫"));
+        colItem.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getItem().getName()));
+        colType.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getItem().getClass().getSimpleName()));
+        colStartPrice.setCellValueFactory(d -> new SimpleStringProperty(NF.format(d.getValue().getItem().getStartingPrice()) + " ₫"));
+        colCurrentPrice.setCellValueFactory(d -> new SimpleStringProperty(NF.format(d.getValue().getCurrentHighestPrice()) + " ₫"));
         colLeader.setCellValueFactory(d -> {
             var leader = d.getValue().getCurrentLeader();
             return new SimpleStringProperty(leader != null ? leader.getUsername() : "—");
         });
-        colStatus.setCellValueFactory(d ->
-                new SimpleStringProperty(d.getValue().getStatus().toString()));
-        colEndTime.setCellValueFactory(d ->
-                new SimpleStringProperty(d.getValue().getEndTime().format(DTF)));
+        colStatus.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getStatus().toString()));
+        colEndTime.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getEndTime().format(DTF)));
 
-        // Color status cell - ĐÃ SỬA CÚ PHÁP SWITCH TRUYỀN THỐNG
-        colStatus.setCellFactory(col -> new TableCell<>() {
+        // Định dạng màu sắc trạng thái bằng Switch truyền thống để tránh lỗi phiên bản Java
+        colStatus.setCellFactory(col -> new TableCell<Auction, String>() {
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty || item == null) { setText(null); setStyle(""); return; }
+                if (empty || item == null) {
+                    setText(null);
+                    setStyle("");
+                    return;
+                }
                 setText(item);
-
-                String style = "-fx-text-fill: #f39c12;"; // Màu mặc định (vàng cam)
+                String style = "-fx-text-fill: #f39c12;";
                 switch (item) {
                     case "RUNNING":
                         style = "-fx-text-fill: #27ae60;";
@@ -91,8 +90,8 @@ public class AuctionListController {
             }
         });
 
-        // Action button
-        colAction.setCellFactory(col -> new TableCell<>() {
+        // Cột xem chi tiết
+        colAction.setCellFactory(col -> new TableCell<Auction, Void>() {
             private final Button btn = new Button("Xem");
             {
                 btn.setStyle("-fx-background-color: #2980b9; -fx-text-fill: white; -fx-cursor: hand;");
@@ -104,13 +103,64 @@ public class AuctionListController {
                 setGraphic(empty ? null : btn);
             }
         });
+
+        // Cột thanh toán cho người thắng
+        colPay.setCellFactory(col -> new TableCell<Auction, Void>() {
+            private final Button btnPay = new Button("Thanh toán");
+            {
+                btnPay.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white; -fx-cursor: hand;");
+                btnPay.setOnAction(e -> handleDirectPay(getTableView().getItems().get(getIndex())));
+            }
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    Auction a = getTableView().getItems().get(getIndex());
+                    User user = SessionManager.getCurrentUser();
+
+                    // Chỉ hiện nút cho Bidder thắng cuộc khi phiên ở trạng thái FINISHED
+                    boolean isWinner = (user instanceof Bidder) && a.getCurrentLeader() != null
+                            && a.getCurrentLeader().equals(user);
+
+                    if (a.getStatus() == AuctionStatus.FINISHED && isWinner) {
+                        setGraphic(btnPay);
+                    } else {
+                        setGraphic(null);
+                    }
+                }
+            }
+        });
     }
 
-    @FXML
-    private void handleFilter() { loadAuctions(); }
+    private void handleDirectPay(Auction auction) {
+        try {
+            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
+                    "Xác nhận thanh toán " + NF.format(auction.getCurrentHighestPrice()) + " ₫?",
+                    ButtonType.YES, ButtonType.NO);
+            confirm.setTitle("Thanh toán trực tiếp");
 
-    @FXML
-    public void handleRefresh() {
+            if (confirm.showAndWait().orElse(ButtonType.NO) == ButtonType.YES) {
+                // Thực hiện trừ tiền và đổi trạng thái[cite: 2, 5]
+                auction.markAsPaid();
+
+                // CẬP NHẬT SỐ DƯ TRÊN HEADER NGAY LẬP TỨC
+                if (MainController.getInstance() != null) {
+                    MainController.getInstance().refreshBalanceView();
+                }
+
+                handleRefresh();
+                new Alert(Alert.AlertType.INFORMATION, "Thanh toán thành công!").showAndWait();
+            }
+        } catch (Exception ex) {
+            new Alert(Alert.AlertType.ERROR, "Lỗi thanh toán: " + ex.getMessage()).showAndWait();
+        }
+    }
+
+    @FXML private void handleFilter() { loadAuctions(); }
+
+    @FXML public void handleRefresh() {
         AuctionManager.getInstance().checkAndCloseExpiredAuctions();
         loadAuctions();
     }
@@ -124,24 +174,18 @@ public class AuctionListController {
         }
         auctionTable.setItems(FXCollections.observableArrayList(all));
         auctionTable.refresh();
-
-        // Gọi hàm cập nhật doanh thu
         updateTotalEarnings();
     }
 
-    // Hàm tính tổng doanh thu cho Seller
     private void updateTotalEarnings() {
         if (totalEarningsLabel == null) return;
-
         User currentUser = SessionManager.getCurrentUser();
-
         if (currentUser instanceof Seller) {
             Seller seller = (Seller) currentUser;
             double total = seller.getAuctions().stream()
-                    .filter(a -> a.getStatus() == com.auction.model.enums.AuctionStatus.PAID)
-                    .mapToDouble(a -> a.getCurrentHighestPrice())
+                    .filter(a -> a.getStatus() == AuctionStatus.PAID)
+                    .mapToDouble(Auction::getCurrentHighestPrice)
                     .sum();
-
             totalEarningsLabel.setText("Tổng doanh thu: " + NF.format(total) + " đ");
             totalEarningsLabel.setVisible(true);
         } else {
@@ -151,19 +195,15 @@ public class AuctionListController {
 
     private void openDetail(Auction auction) {
         try {
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/com/auction/gui/auction_detail.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/auction/gui/auction_detail.fxml"));
             Scene scene = new Scene(loader.load(), 960, 680);
             AuctionDetailController ctrl = loader.getController();
             ctrl.setAuction(auction);
-
             Stage stage = new Stage();
             stage.setTitle("Chi Tiết – " + auction.getItem().getName());
             stage.setScene(scene);
             stage.setOnHidden(e -> handleRefresh());
             stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) { e.printStackTrace(); }
     }
 }

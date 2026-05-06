@@ -36,16 +36,6 @@ public class Seller extends User {
      * @param extraParams  các thuộc tính đặc thù theo loại (warrantyMonths, brand, v.v.)
      * @return Item vừa tạo
      */
-
-
-    /*
-    * Map<String, Object> extraParams trong Java có nghĩa là một tập hợp (map) chứa các cặp key–value, trong đó:
-    * Key: là một chuỗi (String) dùng để đặt tên cho tham số bổ sung.
-    * Value: là một đối tượng (Object) có thể mang bất kỳ kiểu dữ liệu nào (số, chuỗi, boolean, thậm chí là một đối tượng phức tạp)
-    * Có thể điền dữ liệu vào Map<String, Object> bằng cách tạo một HashMap (hoặc bất kỳ implementation nào của Map)
-    * Rồi dùng phương thức put(key, value) để thêm cặp key–value
-    * */
-
     public Item createItem(String name, String description,
                            double startingPrice, ItemType type,
                            Map<String, Object> extraParams) {
@@ -147,12 +137,42 @@ public class Seller extends User {
         return auction;
     }
 
-    // ── Getters ───────────────────────────────────────────────────────────────
+    /**
+     * Hủy một phiên đấu giá do chính Seller này tạo ra.
+     *
+     * @param auction phiên đấu giá cần hủy
+     * @param reason  lý do hủy (VD: Hàng bị hỏng đột xuất)
+     */
+    public void cancelAuction(Auction auction, String reason) {
+        if (auction == null) throw new IllegalArgumentException("Auction không được null.");
 
-    /*
-     * Collections.unmodifiableList(items)
-     * Dùng để tạo ra một danh sách không thể chỉnh sửa (read-only view) từ danh sách gốc items
-     * */
+        // Rào cản quan trọng: Kiểm tra xem phiên này có đúng là của Seller này tạo ra không
+        if (!auctions.contains(auction)) {
+            throw new IllegalArgumentException("Từ chối quyền! Phiên đấu giá này không thuộc về Seller: " + getUsername());
+        }
+
+        // Gọi hàm cancelAuction() đã được định nghĩa sẵn trong class Auction
+        auction.cancelAuction();
+
+        System.out.printf("[Seller:%s] Đã chủ động hủy phiên [%s]. Lý do: %s%n",
+                getUsername(), auction.getId(), reason);
+    }
+
+    /**
+     * Kết thúc sớm phiên đấu giá và bán cho người đang trả giá cao nhất.
+     */
+    public void endAuctionEarly(Auction auction) {
+        if (!auctions.contains(auction)) {
+            throw new IllegalArgumentException("Từ chối quyền! Phiên đấu giá này không thuộc về Seller: " + getUsername());
+        }
+
+        // Gọi hàm endAuction của Auction để chuyển sang FINISHED và chốt người thắng
+        auction.endAuction();
+        System.out.printf("[Seller:%s] Đã chốt kết thúc sớm phiên [%s] để bán cho người đang dẫn đầu.%n",
+                getUsername(), auction.getId());
+    }
+
+    // ── Getters ───────────────────────────────────────────────────────────────
 
     public List<Item> getItems() { return Collections.unmodifiableList(items); }
 

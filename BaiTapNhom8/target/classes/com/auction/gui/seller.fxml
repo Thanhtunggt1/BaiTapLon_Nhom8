@@ -30,10 +30,12 @@
             <HBox alignment="CENTER_LEFT" spacing="10.0">
                 <Button text="Tạo Phiên Đấu Giá Mới" onAction="#handleCreateAuction" style="-fx-base: #2980b9; -fx-text-fill: white;"/>
                 <Button text="Bắt Đầu Phiên" onAction="#handleStartAuction"/>
+
+                <!-- THÊM NÚT MỚI Ở ĐÂY -->
+                <Button text="Hủy / Kết thúc sớm" onAction="#handleCancelOrEndEarly" style="-fx-base: #e67e22; -fx-text-fill: white;"/>
+
                 <Region HBox.hgrow="ALWAYS"/>
-
                 <Label fx:id="totalEarningsLabel" text="Tổng doanh thu: 0 đ" style="-fx-font-weight: bold; -fx-text-fill: #27ae60; -fx-font-size: 15px;"/>
-
                 <Button text="Làm mới" onAction="#handleRefreshAuctions"/>
             </HBox>
             <TableView fx:id="auctionTable" VBox.vgrow="ALWAYS">

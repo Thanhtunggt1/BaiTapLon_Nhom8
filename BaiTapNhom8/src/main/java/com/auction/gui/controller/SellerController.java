@@ -237,12 +237,27 @@ public class SellerController {
     @FXML
     private void handleDeleteItem() {
         Item sel = itemTable.getSelectionModel().getSelectedItem();
-        if (sel == null) { alert("Chưa chọn", "Hãy chọn sản phẩm cần xóa."); return; }
+        if (sel == null) {
+            alert("Chưa chọn", "Hãy chọn sản phẩm cần xóa.");
+            return;
+        }
+
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
-            "Xóa sản phẩm \"" + sel.getName() + "\"?", ButtonType.YES, ButtonType.NO);
+                "Xóa sản phẩm \"" + sel.getName() + "\"?", ButtonType.YES, ButtonType.NO);
         confirm.setTitle("Xác nhận xóa");
+
         confirm.showAndWait().ifPresent(b -> {
-            if (b == ButtonType.YES) { getSeller().deleteItem(sel); loadData(); }
+            if (b == ButtonType.YES) {
+                // Hứng kết quả trả về từ hàm deleteItem (true nếu xóa thành công, false nếu thất bại)
+                boolean isDeleted = getSeller().deleteItem(sel);
+
+                if (isDeleted) {
+                    loadData(); // Cập nhật lại bảng nếu xóa thành công
+                } else {
+                    // Hiển thị thông báo Popup trên giao diện thay vì in ra Terminal
+                    alert("Không thể xóa", "Sản phẩm này đang nằm trong phiên đấu giá (Mở hoặc Đang chạy).\nBạn phải hủy hoặc kết thúc phiên đấu giá liên quan trước khi xóa sản phẩm này!");
+                }
+            }
         });
     }
 
@@ -329,6 +344,82 @@ public class SellerController {
             alert("Lỗi", e.getMessage());
             loadData(); // Chốt chặn cuối: tải lại dữ liệu nếu có bất kỳ lỗi nào xảy ra
         }
+    }
+
+    @FXML
+    private void handleCancelOrEndEarly() {
+        Auction sel = auctionTable.getSelectionModel().getSelectedItem();
+        if (sel == null) {
+            alert("Chưa chọn", "Hãy chọn phiên đấu giá cần xử lý.");
+            return;
+        }
+
+        // Chỉ xử lý khi phiên đang RUNNING hoặc OPEN
+        if (sel.getStatus() != com.auction.model.enums.AuctionStatus.RUNNING &&
+                sel.getStatus() != com.auction.model.enums.AuctionStatus.OPEN) {
+            alert("Không hợp lệ", "Chỉ có thể can thiệp vào các phiên đang Mở hoặc Đang chạy.");
+            return;
+        }
+
+        // Tính toán thời gian còn lại và xem đã có người đặt giá chưa
+        long minutesRemaining = java.time.temporal.ChronoUnit.MINUTES.between(
+                java.time.LocalDateTime.now(), sel.getEndTime());
+        boolean hasBids = sel.getCurrentLeader() != null;
+
+        // --- TRƯỜNG HỢP 1: CÒN >= 60 PHÚT ---
+        if (minutesRemaining >= 60) {
+            if (!hasBids) {
+                if (confirm("Xác nhận", "Chưa có ai đặt giá. Bạn có chắc chắn muốn hủy bài không? (Không mất phí)")) {
+                    getSeller().cancelAuction(sel, "Người bán tự hủy (>= 60p, chưa có bid)");
+                    loadData();
+                }
+            } else {
+                ChoiceDialog<String> dialog = new ChoiceDialog<>(
+                        "Hủy toàn bộ (chịu phí phạt)", // Lựa chọn mặc định
+                        "Hủy toàn bộ (chịu phí phạt)",
+                        "Kết thúc sớm và bán cho người cao nhất"
+                );
+                dialog.setTitle("Lựa chọn xử lý");
+                dialog.setHeaderText("Phiên đấu giá đã có người trả giá.\nBạn có 2 lựa chọn (Thời gian còn " + minutesRemaining + " phút):");
+                dialog.setContentText("Hành động:");
+
+                dialog.showAndWait().ifPresent(choice -> {
+                    if (choice.equals("Hủy toàn bộ (chịu phí phạt)")) {
+                        getSeller().cancelAuction(sel, "Người bán tự hủy (>= 60p, chấp nhận chịu phí phạt)");
+                        alert("Đã hủy", "Phiên đấu giá đã bị hủy. Hệ thống sẽ ghi nhận khoản phí phạt dựa trên giá cao nhất.");
+                    } else {
+                        getSeller().endAuctionEarly(sel);
+                        alert("Đã kết thúc", "Đã chốt bán sớm cho người trả giá cao nhất!");
+                    }
+                    loadData();
+                });
+            }
+        }
+        // --- TRƯỜNG HỢP 2: CÒN DƯỚI 60 PHÚT ---
+        else {
+            if (!hasBids) {
+                if (confirm("Xác nhận", "Chưa có ai đặt giá. Bạn có chắc chắn muốn kết thúc phiên sớm không?")) {
+                    getSeller().cancelAuction(sel, "Người bán tự hủy (< 60p, chưa có bid)");
+                    loadData();
+                }
+            } else {
+                // SỬA LẠI ĐOẠN NÀY: Chặn Hủy bài, nhưng cho phép bấm chốt Bán luôn
+                if (confirm("Bắt buộc bán", "KHÔNG THỂ HỦY BÀI!\nThời gian còn dưới 60 phút (" + minutesRemaining + "p) và đã có người đặt giá.\n\nLuật bắt buộc bạn phải bán món hàng cho người trả giá cao nhất. Bạn có muốn KẾT THÚC PHIÊN NGAY BÂY GIỜ để chốt bán không?")) {
+                    getSeller().endAuctionEarly(sel);
+                    alert("Đã kết thúc", "Đã chốt bán sớm thành công cho người trả giá cao nhất!");
+                    loadData();
+                }
+            }
+        }
+    }
+
+    // Hàm tiện ích hiển thị hộp thoại xác nhận (Yes/No)
+    private boolean confirm(String title, String msg) {
+        Alert a = new Alert(Alert.AlertType.CONFIRMATION, msg, ButtonType.YES, ButtonType.NO);
+        a.setTitle(title);
+        a.setHeaderText(null);
+        java.util.Optional<ButtonType> res = a.showAndWait();
+        return res.isPresent() && res.get() == ButtonType.YES;
     }
 
 

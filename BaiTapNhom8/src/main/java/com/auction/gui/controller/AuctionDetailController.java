@@ -1,338 +1,54 @@
 package com.auction.gui.controller;
 
-import com.auction.gui.SessionManager;
-import com.auction.model.entity.*;
-import com.auction.model.enums.AuctionStatus;
-import com.auction.pattern.observer.Observer;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
+import com.auction.network.NetworkClient;
+import com.auction.network.Message;
+import com.auction.network.dto.AuctionDto;
+import com.auction.network.dto.UserDto;
 import javafx.fxml.FXML;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
-import javafx.util.Duration;
 
-import java.text.NumberFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-
-public class AuctionDetailController implements Observer {
-
-    // ── Item info ──────────────────────────────────────────────────────────────
+public class AuctionDetailController {
     @FXML private Label itemNameLabel;
-    @FXML private Label itemDescLabel;
-    @FXML private Label itemDetailLabel;
-
-    // ── Live status bar ────────────────────────────────────────────────────────
     @FXML private Label currentPriceLabel;
-    @FXML private Label leaderLabel;
-    @FXML private Label statusLabel;
-    @FXML private Label timeRemainingLabel;
-
-    // ── Chart & history ────────────────────────────────────────────────────────
-    @FXML private LineChart<String, Number> priceChart;
-    @FXML private TableView<BidTransaction>   bidHistoryTable;
-    @FXML private TableColumn<BidTransaction, String> colBidder;
-    @FXML private TableColumn<BidTransaction, String> colAmount;
-    @FXML private TableColumn<BidTransaction, String> colTime;
-
-    // ── Manual bid panel ───────────────────────────────────────────────────────
     @FXML private TextField bidAmountField;
-    @FXML private Button    depositButton;
-    @FXML private Label     balanceLabel;
-    @FXML private Button    placeBidButton;
-    @FXML private Label     bidMessage;
+    @FXML private Label bidMessage;
 
-    // ── Auto-bid panel ─────────────────────────────────────────────────────────
-    @FXML private TextField maxBidField;
-    @FXML private TextField incrementField;
-    @FXML private Label     autoBidMessage;
+    private AuctionDto auctionDto;
 
-    // ── Info labels ────────────────────────────────────────────────────────────
-    @FXML private Label totalBidsLabel;
-    @FXML private Label sellerLabel;
-    @FXML private Label startPriceLabel;
-
-    private Auction auction;
-    private XYChart.Series<String, Number> priceSeries;
-    private Timeline countdown;
-    private int bidCount = 0;
-
-    private static final NumberFormat NF  = NumberFormat.getInstance(new Locale("vi", "VN"));
-    private static final DateTimeFormatter DTF = DateTimeFormatter.ofPattern("HH:mm:ss");
-
-    @FXML
-    public void initialize() {
-        setupBidHistoryTable();
-        setupChart();
-    }
-
-    public void setAuction(Auction auction) {
-        this.auction = auction;
-        auction.attach(this);
+    public void setAuctionDto(AuctionDto dto) {
+        this.auctionDto = dto;
         refreshUI();
-        startCountdown();
-        configurePermissions();
-    }
-
-    private void configurePermissions() {
-        User user = SessionManager.getCurrentUser();
-        boolean isBidder = user instanceof Bidder;
-        boolean canBid   = isBidder && auction.getStatus() == AuctionStatus.RUNNING;
-
-        bidAmountField.setDisable(!canBid);
-        placeBidButton.setDisable(!canBid);
-        maxBidField.setDisable(!isBidder);
-        incrementField.setDisable(!isBidder);
-
-        if (isBidder) {
-            Bidder bidder = (Bidder) user;
-            // SỬA: Font chữ bình thường, không màu, không đậm
-            balanceLabel.setText("Tài khoản [" + bidder.getUsername() + "]  |  Số dư: " + NF.format(bidder.getBalance()) + " ₫");
-            balanceLabel.setStyle("-fx-font-weight: normal; -fx-text-fill: black;");
-            depositButton.setVisible(true);
-            depositButton.setManaged(true);
-        } else {
-            balanceLabel.setText("Tài khoản [" + user.getUsername() + "]  |  Vai trò: " + user.getClass().getSimpleName());
-            balanceLabel.setStyle("-fx-font-weight: normal; -fx-text-fill: black;");
-            depositButton.setVisible(false);
-            depositButton.setManaged(false);
-            bidMessage.setText("Chỉ tài khoản Bidder mới có thể đặt giá.");
-            autoBidMessage.setText("Chỉ tài khoản Bidder mới có thể dùng Auto-Bid.");
-        }
-    }
-
-    private void setupBidHistoryTable() {
-        colBidder.setCellValueFactory(d ->
-                new SimpleStringProperty(d.getValue().getBidder().getUsername()));
-        colAmount.setCellValueFactory(d ->
-                new SimpleStringProperty(NF.format(d.getValue().getAmount()) + " ₫"));
-        colTime.setCellValueFactory(d ->
-                new SimpleStringProperty(d.getValue().getTimestamp().format(DTF)));
-    }
-
-    private void setupChart() {
-        priceSeries = new XYChart.Series<>();
-        priceSeries.setName("Giá đặt");
-        priceChart.getData().add(priceSeries);
-        priceChart.setAnimated(false);
-        priceChart.setCreateSymbols(true);
-        priceChart.setLegendVisible(false);
     }
 
     private void refreshUI() {
-        if (auction == null) return;
-        Item item = auction.getItem();
-
-        itemNameLabel.setText(item.getName());
-        itemDescLabel.setText(item.getDescription());
-
-        if (item instanceof Electronics e) {
-            itemDetailLabel.setText("Thương hiệu: " + e.getBrand()
-                    + " | Bảo hành: " + e.getWarrantyMonths() + " tháng");
-        } else if (item instanceof Art a) {
-            itemDetailLabel.setText("Nghệ sĩ: " + a.getArtistName()
-                    + " | Năm sáng tác: " + a.getCreationYear());
-        } else if (item instanceof Vehicle v) {
-            itemDetailLabel.setText("Biển số: " + v.getLicensePlate()
-                    + " | Số km: " + NF.format(v.getMileage()));
-        }
-
-        currentPriceLabel.setText(NF.format(auction.getCurrentHighestPrice()) + " ₫");
-        leaderLabel.setText(auction.getCurrentLeader() != null
-                ? auction.getCurrentLeader().getUsername() : "—");
-        statusLabel.setText(auction.getStatus().toString());
-        statusLabel.setStyle(statusStyle(auction.getStatus()));
-
-        totalBidsLabel.setText("Tổng bid: " + auction.getBidHistory().size());
-        sellerLabel.setText("Người bán: " + auction.getSeller().getUsername());
-        startPriceLabel.setText("Giá khởi điểm: " + NF.format(item.getStartingPrice()) + " ₫");
-
-        List<BidTransaction> history = new ArrayList<>(auction.getBidHistory());
-        Collections.reverse(history);
-        bidHistoryTable.setItems(FXCollections.observableArrayList(history));
-
-        int histSize = auction.getBidHistory().size();
-        while (bidCount < histSize) {
-            BidTransaction bt = auction.getBidHistory().get(bidCount);
-            priceSeries.getData().add(
-                    new XYChart.Data<>(String.valueOf(bidCount + 1), bt.getAmount()));
-            bidCount++;
-        }
-
-        User user = SessionManager.getCurrentUser();
-        if (auction.getStatus() == AuctionStatus.FINISHED && user instanceof Bidder bidder) {
-            boolean isWinner = auction.getCurrentLeader() != null &&
-                    auction.getCurrentLeader().equals(bidder);
-            if (isWinner) {
-                double finalPrice = auction.getCurrentHighestPrice();
-                if (bidder.getBalance() < finalPrice) {
-                    double missing = finalPrice - bidder.getBalance();
-                    bidMessage.setText("⚠ BẠN ĐÃ THẮNG! Vui lòng nạp thêm ít nhất "
-                            + NF.format(missing) + " ₫ để có thể thanh toán.");
-                    bidMessage.setStyle("-fx-text-fill: #e74c3c; -fx-font-weight: bold; -fx-background-color: #fdeaea; -fx-padding: 5;");
-                } else {
-                    bidMessage.setText("🎉 Chúc mừng! Bạn đã thắng. Hãy thanh toán ngay để nhận sản phẩm.");
-                    bidMessage.setStyle("-fx-text-fill: #27ae60; -fx-font-weight: bold;");
-                }
-            }
-        }
-
-        configurePermissions();
-    }
-
-    private String statusStyle(AuctionStatus s) {
-        return switch (s) {
-            case RUNNING  -> "-fx-text-fill: #27ae60; -fx-font-size: 15; -fx-font-weight: bold;";
-            case FINISHED -> "-fx-text-fill: #2980b9; -fx-font-size: 15; -fx-font-weight: bold;";
-            case PAID     -> "-fx-text-fill: #8e44ad; -fx-font-size: 15; -fx-font-weight: bold;";
-            case CANCELED -> "-fx-text-fill: #e74c3c; -fx-font-size: 15; -fx-font-weight: bold;";
-            default       -> "-fx-text-fill: #f39c12; -fx-font-size: 15; -fx-font-weight: bold;";
-        };
-    }
-
-    private void startCountdown() {
-        if (countdown != null) countdown.stop();
-        countdown = new Timeline(new KeyFrame(Duration.seconds(1), e -> tick()));
-        countdown.setCycleCount(Timeline.INDEFINITE);
-        countdown.play();
-    }
-
-    private void tick() {
-        if (auction == null) return;
-        LocalDateTime now = LocalDateTime.now();
-
-        if (auction.getStatus() == AuctionStatus.RUNNING) {
-            LocalDateTime end = auction.getEndTime();
-            if (now.isAfter(end)) {
-                timeRemainingLabel.setText("Đang xử lý...");
-                return;
-            }
-            long secs = ChronoUnit.SECONDS.between(now, end);
-            displayTime(secs, "Kết thúc sau: ");
-            if (secs < 30) timeRemainingLabel.setStyle("-fx-text-fill: #e74c3c; -fx-font-size: 15; -fx-font-weight: bold;");
-        }
-        else if (auction.getStatus() == AuctionStatus.FINISHED && auction.getFinishedTime() != null) {
-            LocalDateTime deadline = auction.getFinishedTime().plusHours(12);
-            if (now.isAfter(deadline)) {
-                timeRemainingLabel.setText("Quá hạn thanh toán");
-                timeRemainingLabel.setStyle("-fx-text-fill: #e74c3c; -fx-font-weight: bold;");
-                return;
-            }
-            long secs = ChronoUnit.SECONDS.between(now, deadline);
-            displayTime(secs, "Hạn thanh toán: ");
-            timeRemainingLabel.setStyle("-fx-text-fill: #e67e22; -fx-font-size: 15; -fx-font-weight: bold;");
-        }
-        else {
-            timeRemainingLabel.setText("Phiên đã đóng");
-            if (countdown != null) countdown.stop();
-        }
-    }
-
-    private void displayTime(long secs, String prefix) {
-        long h = secs / 3600, m = (secs % 3600) / 60, s = secs % 60;
-        timeRemainingLabel.setText(prefix + String.format("%02d:%02d:%02d", h, m, s));
+        itemNameLabel.setText(auctionDto.itemName);
+        currentPriceLabel.setText(String.format("%,.0f ₫", auctionDto.currentPrice));
+        // Cập nhật các label khác tương tự...
     }
 
     @FXML
     private void handlePlaceBid() {
-        User user = SessionManager.getCurrentUser();
-        if (!(user instanceof Bidder bidder)) {
-            setMsg(bidMessage, " Chỉ Bidder mới có thể đặt giá.", true);
-            return;
-        }
-        String text = bidAmountField.getText().trim();
-        if (text.isEmpty()) { setMsg(bidMessage, " Vui lòng nhập số tiền.", true); return; }
         try {
-            double amount = Double.parseDouble(text.replace(",", "").replace(".", ""));
-            boolean ok = bidder.placeBid(auction, amount);
-            if (ok) {
-                setMsg(bidMessage, " Đặt giá " + NF.format(amount) + " ₫ thành công!", false);
-                bidAmountField.clear();
+            double amount = Double.parseDouble(bidAmountField.getText().trim());
+            Message response = NetworkClient.getInstance().placeBid(auctionDto.id, amount);
+
+            if (response.isSuccess()) {
+                bidMessage.setText("Đặt giá thành công!");
+                bidMessage.setStyle("-fx-text-fill: #27ae60;");
+                this.auctionDto = response.getPayload(AuctionDto.class);
+                refreshUI();
+            } else {
+                bidMessage.setText(response.getErrorMessage());
+                bidMessage.setStyle("-fx-text-fill: #e74c3c;");
             }
-        } catch (NumberFormatException e) {
-            setMsg(bidMessage, " Số tiền không hợp lệ.", true);
         } catch (Exception e) {
-            setMsg(bidMessage, "❌ " + e.getMessage(), true);
+            bidMessage.setText("Số tiền không hợp lệ.");
         }
     }
 
     @FXML
     private void handleDeposit() {
-        User user = SessionManager.getCurrentUser();
-        if (!(user instanceof Bidder bidder)) return;
-
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Nạp Tiền");
-        dialog.setHeaderText("Nạp thêm tiền vào tài khoản");
-        dialog.setContentText("Nhập số tiền cần nạp (VNĐ):");
-
-        dialog.showAndWait().ifPresent(input -> {
-            try {
-                double amount = Double.parseDouble(input.replace(",", "").replace(".", "").trim());
-                if (amount <= 0) {
-                    setMsg(bidMessage, " Số tiền nạp phải lớn hơn 0.", true);
-                    return;
-                }
-                bidder.deposit(amount);
-
-                balanceLabel.setText("Tài khoản [" + bidder.getUsername() + "]  |  Số dư: " + NF.format(bidder.getBalance()) + " ₫");
-                setMsg(bidMessage, " Nạp thành công " + NF.format(amount) + " ₫!", false);
-
-                if (MainController.getInstance() != null) {
-                    MainController.getInstance().refreshBalanceView();
-                }
-                refreshUI();
-
-            } catch (NumberFormatException ex) {
-                setMsg(bidMessage, " Số tiền không hợp lệ. Vui lòng chỉ nhập số.", true);
-            }
-        });
-    }
-
-    @FXML
-    private void handleSetupAutoBid() {
-        User user = SessionManager.getCurrentUser();
-        if (!(user instanceof Bidder bidder)) {
-            setMsg(autoBidMessage, " Chỉ Bidder mới có thể cài Auto-Bid.", true);
-            return;
-        }
-        try {
-            double maxBid   = Double.parseDouble(maxBidField.getText().trim().replace(",", ""));
-            double increment = Double.parseDouble(incrementField.getText().trim().replace(",", ""));
-            bidder.setupAutoBid(auction, maxBid, increment);
-            setMsg(autoBidMessage, " Đã cài Auto-Bid! Max=" + NF.format(maxBid) + "₫, Bước=" + NF.format(increment) + "₫", false);
-        } catch (NumberFormatException e) {
-            setMsg(autoBidMessage, " Giá trị không hợp lệ.", true);
-        } catch (Exception e) {
-            setMsg(autoBidMessage, "❌ " + e.getMessage(), true);
-        }
-    }
-
-    private void setMsg(Label lbl, String msg, boolean error) {
-        lbl.setStyle(error ? "-fx-text-fill: #e74c3c;" : "-fx-text-fill: #27ae60;");
-        lbl.setText(msg);
-    }
-
-    @Override
-    public void update(Auction auction) {
-        Platform.runLater(() -> {
-            if (priceChart.getScene() == null
-                    || priceChart.getScene().getWindow() == null
-                    || !priceChart.getScene().getWindow().isShowing()) {
-                auction.detach(this);
-                if (countdown != null) countdown.stop();
-                return;
-            }
-            refreshUI();
-        });
+        // Tương tự, gọi NetworkClient.getInstance().deposit(amount)
+        // Cập nhật lại số dư trong UI sau khi Server phản hồi thành công
     }
 }

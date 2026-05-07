@@ -2,21 +2,17 @@ package com.auction.gui.controller;
 
 import com.auction.Main;
 import com.auction.gui.SessionManager;
-import com.auction.gui.UserStore;
-import com.auction.model.entity.Bidder;
-import com.auction.model.entity.Seller;
-import com.auction.model.entity.User;
+import com.auction.network.NetworkClient;
+import com.auction.network.Message;
+import com.auction.network.dto.UserDto;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 public class LoginController {
-
-    // ── Login fields ──────────────────────────────────────────────────────────
     @FXML private TextField loginUsername;
     @FXML private PasswordField loginPassword;
     @FXML private Label loginError;
 
-    // ── Register fields ───────────────────────────────────────────────────────
     @FXML private TextField regUsername;
     @FXML private PasswordField regPassword;
     @FXML private TextField regEmail;
@@ -39,18 +35,23 @@ public class LoginController {
             return;
         }
 
-        User user = UserStore.findByUsername(username);
-        if (user == null || !user.login(username, password)) {
-            setError(loginError, "Sai tên đăng nhập hoặc mật khẩu.");
+        // Gửi yêu cầu đăng nhập qua mạng
+        Message response = NetworkClient.getInstance().login(username, password);
+
+        if (!response.isSuccess()) {
+            setError(loginError, response.getErrorMessage());
             return;
         }
 
-        SessionManager.setCurrentUser(user);
+        // Lưu thông tin người dùng từ DTO trả về
+        UserDto userDto = response.getPayload(UserDto.class);
+        NetworkClient.getInstance().setCurrentUser(userDto);
+        SessionManager.setCurrentUserDto(userDto); // Cần thêm phương thức này vào SessionManager
+
         try {
             Main.showMain();
         } catch (Exception e) {
             setError(loginError, "Lỗi khi mở màn hình chính: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
@@ -59,32 +60,20 @@ public class LoginController {
         String username = regUsername.getText().trim();
         String password = regPassword.getText();
         String email    = regEmail.getText().trim();
-        String role     = regRole.getValue();
+        String role     = regRole.getValue().toUpperCase();
 
         if (username.isEmpty() || password.isEmpty() || email.isEmpty()) {
             setError(regError, "Vui lòng nhập đầy đủ thông tin.");
             return;
         }
-        if (UserStore.usernameExists(username)) {
-            setError(regError, "Tên đăng nhập đã tồn tại.");
-            return;
-        }
 
-        try {
-            User newUser;
-            if ("Bidder".equals(role)) {
-                // Tự động gán số dư = 0 cho Bidder mới
-                newUser = new Bidder(username, password, email, 0);
-            } else {
-                newUser = new Seller(username, password, email);
-            }
-            UserStore.addUser(newUser);
+        Message response = NetworkClient.getInstance().register(username, password, email, role);
+        if (response.isSuccess()) {
             regError.setStyle("-fx-text-fill: #27ae60;");
-            regError.setText("Đăng ký thành công! Hãy chuyển sang tab Đăng nhập.");
+            regError.setText("Đăng ký thành công! Hãy chuyển sang Đăng nhập.");
             regUsername.clear(); regPassword.clear(); regEmail.clear();
-            // Đã xóa lệnh regBalance.clear(); ở cuối dòng trên
-        } catch (IllegalArgumentException e) {
-            setError(regError, e.getMessage());
+        } else {
+            setError(regError, response.getErrorMessage());
         }
     }
 

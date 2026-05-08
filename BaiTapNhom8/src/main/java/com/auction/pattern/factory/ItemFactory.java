@@ -8,29 +8,12 @@ import com.auction.model.enums.ItemType;
 
 import java.util.Map;
 
-/*
-* Factory Method Pattern — tạo các loại Item theo ItemType
-* Là Singleton: chỉ tồn tại một instance duy nhất trong toàn hệ thống
-* */
-
-
 public class ItemFactory {
-/*
-* Việc sử dụng Singleton lý do là:
-* Giả dụ có 2 người seller A và B đều tạo ra sản phẩm
-* Chúng sử dụng 2 cái ItemFactory khác nhau
-* Sẽ có khả năng tạo ra một sản phẩm có cùng một mã ID
-*
-* */
-    // ── Singleton ─────────────────────────────────────────────────────────────
 
     private static volatile ItemFactory instance;
 
     private ItemFactory() {}
 
-    /**
-     * Trả về instance duy nhất của ItemFactory
-     */
     public static ItemFactory getInstance() {
         if (instance == null) {
             synchronized (ItemFactory.class) {
@@ -42,19 +25,6 @@ public class ItemFactory {
         return instance;
     }
 
-    // ── Factory Method ────────────────────────────────────────────────────────
-
-    /**
-     * Tạo Item theo loại
-     *
-     * @param type          loại sản phẩm
-     * @param name          tên sản phẩm
-     * @param description   mô tả
-     * @param startingPrice giá khởi điểm
-     * @param params        thuộc tính đặc thù (xem bảng bên dưới)
-     * @return Item vừa tạo
-     *
-     */
     public Item createItem(ItemType type, String name, String description,
                            double startingPrice, Map<String, Object> params) {
         if (type == null) throw new IllegalArgumentException("ItemType không được null.");
@@ -66,8 +36,6 @@ public class ItemFactory {
             case VEHICLE -> createVehicle(name, description, startingPrice, params);
         };
     }
-
-    // ── Private helpers ───────────────────────────────────────────────────────
 
     private Electronics createElectronics(String name, String description,
                                           double startingPrice, Map<String, Object> params) {
@@ -90,15 +58,21 @@ public class ItemFactory {
         return new Vehicle(name, description, startingPrice, mileage, licensePlate);
     }
 
-    /**
-     * Lấy tham số bắt buộc từ map và ép kiểu an toàn.
-     */
     @SuppressWarnings("unchecked")
     private <T> T getRequired(Map<String, Object> params, String key, Class<T> type) {
         Object value = params.get(key);
         if (value == null) {
             throw new IllegalArgumentException("Thiếu tham số bắt buộc: '" + key + "'");
         }
+
+        if (value instanceof Number num) {
+            if (type == Integer.class) {
+                return (T) Integer.valueOf(num.intValue());
+            } else if (type == Double.class) {
+                return (T) Double.valueOf(num.doubleValue());
+            }
+        }
+
         if (!type.isInstance(value)) {
             throw new IllegalArgumentException(
                     "Tham số '" + key + "' phải là " + type.getSimpleName()

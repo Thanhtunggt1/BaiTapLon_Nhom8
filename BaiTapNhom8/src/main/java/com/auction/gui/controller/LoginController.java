@@ -35,7 +35,6 @@ public class LoginController {
             return;
         }
 
-        // Gửi yêu cầu đăng nhập qua mạng
         Message response = NetworkClient.getInstance().login(username, password);
 
         if (!response.isSuccess()) {
@@ -43,10 +42,16 @@ public class LoginController {
             return;
         }
 
-        // Lưu thông tin người dùng từ DTO trả về
         UserDto userDto = response.getPayload(UserDto.class);
         NetworkClient.getInstance().setCurrentUser(userDto);
-        SessionManager.setCurrentUserDto(userDto); // Cần thêm phương thức này vào SessionManager
+        SessionManager.setCurrentUserDto(userDto);
+
+        // ĐỒNG BỘ LOCAL DATA ĐỂ CỨU TAB SELLER/ADMIN KHỎI TRẮNG MÀN HÌNH
+        if (com.auction.gui.UserStore.getAllUsers().isEmpty()) {
+            com.auction.gui.DataInitializer.init();
+        }
+        com.auction.model.entity.User localUser = com.auction.gui.UserStore.findByUsername(userDto.username);
+        SessionManager.setCurrentUser(localUser);
 
         try {
             Main.showMain();

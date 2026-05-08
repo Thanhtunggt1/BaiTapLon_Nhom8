@@ -2,12 +2,10 @@ package com.auction.gui.controller;
 
 import com.auction.Main;
 import com.auction.gui.SessionManager;
-import com.auction.model.entity.Admin;
-import com.auction.model.entity.Auction;
-import com.auction.model.entity.Bidder;
-import com.auction.model.entity.Seller;
-import com.auction.model.entity.User;
-import com.auction.model.enums.AuctionStatus;
+import com.auction.network.NetworkClient;
+import com.auction.network.Message;
+import com.auction.network.dto.AuctionDto;
+import com.auction.network.dto.UserDto;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -37,21 +35,25 @@ public class MainController {
     public void initialize() {
         instance = this;
 
-        User user = SessionManager.getCurrentUser();
+        UserDto user = SessionManager.getCurrentUserDto();
         if (user == null) return;
 
-        String role = (user instanceof Admin) ? "Admin" : (user instanceof Seller ? "Seller" : "Bidder");
-        userInfoLabel.setText(user.getUsername() + "  |  " + role);
+        String role = "";
+        if ("ADMIN".equals(user.role)) role = "Admin";
+        else if ("SELLER".equals(user.role)) role = "Seller";
+        else role = "Bidder";
+
+        userInfoLabel.setText(user.username + "  |  " + role);
 
         refreshBalanceView();
 
         try {
             addTab("Danh Sách Đấu Giá", "/com/auction/gui/auction_list.fxml");
 
-            if (user instanceof Seller) {
+            if ("SELLER".equals(user.role)) {
                 addTab("Quản Lý Bán Hàng", "/com/auction/gui/seller.fxml");
             }
-            if (user instanceof Admin) {
+            if ("ADMIN".equals(user.role)) {
                 addTab("Quản Trị Hệ Thống", "/com/auction/gui/admin.fxml");
             }
         } catch (Exception e) {
@@ -59,42 +61,40 @@ public class MainController {
         }
     }
 
-    /**
-     * Hàm cập nhật giao diện Header:
-     * - Bidder: Hiện Số dư + Nút nạp tiền
-     * - Seller: Hiện Tổng doanh thu
-     * - Admin: Ẩn cả hai
-     */
     public void refreshBalanceView() {
-        User user = SessionManager.getCurrentUser();
+        UserDto user = SessionManager.getCurrentUserDto();
+        if (user == null) return;
         NumberFormat nf = NumberFormat.getInstance(new Locale("vi", "VN"));
 
-        if (user instanceof Bidder bidder) {
-            userBalanceLabel.setText("Số dư: " + nf.format(bidder.getBalance()) + " ₫");
+        if ("BIDDER".equals(user.role)) {
+            userBalanceLabel.setText("Số dư: " + nf.format(user.balance) + " ₫");
             userBalanceLabel.setVisible(true);
             userBalanceLabel.setManaged(true);
             if (headerDepositButton != null) {
                 headerDepositButton.setVisible(true);
                 headerDepositButton.setManaged(true);
             }
-        } else if (user instanceof Seller seller) {
-            // ---> LOGIC TÍNH TỔNG DOANH THU CHO SELLER <---
-            double totalEarnings = seller.getAuctions().stream()
-                    .filter(a -> a.getStatus() == AuctionStatus.PAID)
-                    .mapToDouble(Auction::getCurrentHighestPrice)
-                    .sum();
+        } else if ("SELLER".equals(user.role)) {
+            // --- GỌI MẠNG LẤY TỔNG DOANH THU THAY VÌ LẤY Ở LOCAL ---
+            Message response = NetworkClient.getInstance().getAuctions();
+            double totalEarnings = 0;
+            if (response.isSuccess()) {
+                List<AuctionDto> dtos = response.getPayload(new com.google.gson.reflect.TypeToken<List<AuctionDto>>(){}.getType());
+                totalEarnings = dtos.stream()
+                        .filter(a -> "PAID".equals(a.status) && user.username.equals(a.sellerUsername))
+                        .mapToDouble(a -> a.currentPrice)
+                        .sum();
+            }
 
             userBalanceLabel.setText("Tổng doanh thu: " + nf.format(totalEarnings) + " ₫");
             userBalanceLabel.setVisible(true);
             userBalanceLabel.setManaged(true);
 
-            // Seller thì không cần nút nạp tiền
             if (headerDepositButton != null) {
                 headerDepositButton.setVisible(false);
                 headerDepositButton.setManaged(false);
             }
         } else {
-            // Admin thì ẩn hết
             userBalanceLabel.setVisible(false);
             userBalanceLabel.setManaged(false);
             if (headerDepositButton != null) {
@@ -106,8 +106,8 @@ public class MainController {
 
     @FXML
     private void handleDeposit() {
-        User user = SessionManager.getCurrentUser();
-        if (!(user instanceof Bidder bidder)) return;
+        UserDto user = SessionManager.getCurrentUserDto();
+        if (user == null || !"BIDDER".equals(user.role)) return;
 
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Nạp Tiền");
@@ -119,23 +119,37 @@ public class MainController {
                 double amount = Double.parseDouble(input.replace(",", "").replace(".", "").trim());
                 if (amount <= 0) {
                     Alert a = new Alert(Alert.AlertType.ERROR, "Số tiền nạp phải lớn hơn 0.");
-                    a.setHeaderText("Lỗi nhập liệu");
                     a.showAndWait();
                     return;
                 }
 
-                bidder.deposit(amount);
-                refreshBalanceView();
+                Message response = NetworkClient.getInstance().deposit(amount);
 
-                NumberFormat nf = NumberFormat.getInstance(new Locale("vi", "VN"));
-                Alert a = new Alert(Alert.AlertType.INFORMATION, "Nạp thành công " + nf.format(amount) + " ₫!");
-                a.setTitle("Thành công");
-                a.setHeaderText(null);
-                a.showAndWait();
+                if (response.isSuccess()) {
+                    UserDto updatedUser = response.getPayload(UserDto.class);
+                    SessionManager.setCurrentUserDto(updatedUser);
+
+                    com.auction.model.entity.User localUser = SessionManager.getCurrentUser();
+                    if (localUser instanceof com.auction.model.entity.Bidder bidder) {
+                        bidder.deposit(amount);
+                    }
+
+                    refreshBalanceView();
+                    try {
+                        AuctionDetailController.updateAllBalances();
+                    } catch (Exception ignored) {}
+
+                    NumberFormat nf = NumberFormat.getInstance(new Locale("vi", "VN"));
+                    Alert a = new Alert(Alert.AlertType.INFORMATION, "Nạp thành công " + nf.format(amount) + " ₫!");
+                    a.setHeaderText(null);
+                    a.showAndWait();
+                } else {
+                    Alert a = new Alert(Alert.AlertType.ERROR, response.getErrorMessage());
+                    a.showAndWait();
+                }
 
             } catch (NumberFormatException ex) {
                 Alert a = new Alert(Alert.AlertType.ERROR, "Số tiền không hợp lệ. Vui lòng chỉ nhập số.");
-                a.setHeaderText("Lỗi định dạng");
                 a.showAndWait();
             }
         });
@@ -152,25 +166,18 @@ public class MainController {
 
     @FXML
     private void handleLogout() {
-        User currentUser = SessionManager.getCurrentUser();
-        if (currentUser != null) {
-            currentUser.logout();
-        }
+        com.auction.model.entity.User currentUser = SessionManager.getCurrentUser();
+        if (currentUser != null) currentUser.logout();
         SessionManager.logout();
 
-        // ---> LOGIC ĐÓNG TẤT CẢ CÁC CỬA SỔ CON TRƯỚC KHI ĐĂNG XUẤT <---
-        // Lấy danh sách toàn bộ các cửa sổ đang mở trên màn hình
         List<Window> openWindows = new ArrayList<>(Window.getWindows());
-
         for (Window window : openWindows) {
-            // Đóng tất cả các cửa sổ, NGOẠI TRỪ cửa sổ gốc (PrimaryStage) của hệ thống
             if (window instanceof Stage && window != Main.getPrimaryStage()) {
                 ((Stage) window).close();
             }
         }
 
         try {
-            // Sau khi dọn dẹp sạch sẽ cửa sổ con, trả cửa sổ gốc về màn hình Login
             Main.showLogin();
         } catch (Exception e) {
             e.printStackTrace();

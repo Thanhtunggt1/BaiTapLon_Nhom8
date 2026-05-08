@@ -1,43 +1,21 @@
 package com.auction.network;
 
 public enum MessageType {
-    // ── Auth ──────────────────────────────────────────
-    LOGIN,              // Client → Server: đăng nhập
-    LOGIN_RESPONSE,     // Server → Client: kết quả đăng nhập
+    LOGIN, LOGIN_RESPONSE,
+    REGISTER, REGISTER_RESPONSE,
+    GET_AUCTIONS, AUCTIONS_RESPONSE,
+    PLACE_BID, BID_RESPONSE,
+    BID_UPDATE,
+    CREATE_ITEM, CREATE_ITEM_RESPONSE,
 
-    REGISTER,           // Client → Server: đăng ký
-    REGISTER_RESPONSE,  // Server → Client: kết quả đăng ký
+    // --- MỚI THÊM: Tín hiệu cập nhật sản phẩm ---
+    UPDATE_ITEM, UPDATE_ITEM_RESPONSE,
 
-    // ── Auction ───────────────────────────────────────
-    GET_AUCTIONS,       // Client → Server: lấy danh sách phiên
-    AUCTIONS_RESPONSE,  // Server → Client: trả về danh sách
-
-    PLACE_BID,          // Client → Server: đặt giá
-    BID_RESPONSE,       // Server → Client: kết quả đặt giá
-
-    BID_UPDATE,         // Server → ALL clients: có bid mới (push)
-
-    // ── Seller ────────────────────────────────────────
-    CREATE_ITEM,        // Client → Server
-    CREATE_ITEM_RESPONSE,
-
-    CREATE_AUCTION,     // Client → Server
-    CREATE_AUCTION_RESPONSE,
-
-    END_AUCTION,        // Client → Server: kết thúc phiên sớm
-    CANCEL_AUCTION,
-
-    // ── Admin ─────────────────────────────────────────
-    ADMIN_CANCEL_AUCTION,
-
-    // ── Payment ───────────────────────────────────────
-    MARK_PAID,
-    MARK_PAID_RESPONSE,
-
-    // ── Deposit ───────────────────────────────────────
-    DEPOSIT,
-    DEPOSIT_RESPONSE,
-
-    // ── Error ─────────────────────────────────────────
-    ERROR               // Server → Client: thông báo lỗi chung
+    CREATE_AUCTION, CREATE_AUCTION_RESPONSE,
+    END_AUCTION, CANCEL_AUCTION, ADMIN_CANCEL_AUCTION,
+    MARK_PAID, MARK_PAID_RESPONSE,
+    DEPOSIT, DEPOSIT_RESPONSE,
+    SETUP_AUTOBID, SETUP_AUTOBID_RESPONSE,
+    START_AUCTION, START_AUCTION_RESPONSE,
+    ERROR
 }

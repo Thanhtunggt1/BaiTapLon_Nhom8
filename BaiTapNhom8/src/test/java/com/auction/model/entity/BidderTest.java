@@ -47,7 +47,6 @@ class BidderTest {
     void testDepositAndDeduct_Success() {
         bidder.deposit(500.0);
         assertEquals(1500.0, bidder.getBalance());
-
         bidder.deduct(200.0);
         assertEquals(1300.0, bidder.getBalance());
     }

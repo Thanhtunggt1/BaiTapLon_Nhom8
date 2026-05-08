@@ -46,11 +46,23 @@ public class LoginController {
         NetworkClient.getInstance().setCurrentUser(userDto);
         SessionManager.setCurrentUserDto(userDto);
 
-        // ĐỒNG BỘ LOCAL DATA ĐỂ CỨU TAB SELLER/ADMIN KHỎI TRẮNG MÀN HÌNH
         if (com.auction.gui.UserStore.getAllUsers().isEmpty()) {
             com.auction.gui.DataInitializer.init();
         }
+
         com.auction.model.entity.User localUser = com.auction.gui.UserStore.findByUsername(userDto.username);
+
+        if (localUser == null) {
+            if ("SELLER".equals(userDto.role)) {
+                localUser = new com.auction.model.entity.Seller(userDto.username, "dummyPass", "dummy@mail.com");
+            } else if ("ADMIN".equals(userDto.role)) {
+                localUser = new com.auction.model.entity.Admin(userDto.username, "dummyPass", "dummy@mail.com");
+            } else {
+                localUser = new com.auction.model.entity.Bidder(userDto.username, "dummyPass", "dummy@mail.com", userDto.balance);
+            }
+            com.auction.gui.UserStore.addUser(localUser);
+        }
+
         SessionManager.setCurrentUser(localUser);
 
         try {

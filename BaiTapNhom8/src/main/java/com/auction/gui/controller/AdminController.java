@@ -49,6 +49,16 @@ public class AdminController {
     }
 
     private void setupTable() {
+        String leftAlign = "-fx-alignment: CENTER-LEFT; -fx-padding: 0 0 0 10;";
+        colId.setStyle(leftAlign);
+        colAdminItem.setStyle(leftAlign);
+        colAdminSeller.setStyle(leftAlign);
+        colAdminPrice.setStyle(leftAlign);
+        colAdminLeader.setStyle(leftAlign);
+        colAdminStatus.setStyle(leftAlign);
+        colAdminBids.setStyle(leftAlign);
+        colAdminEnd.setStyle(leftAlign);
+
         colId.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().id.substring(0, 8) + "…"));
         colAdminItem.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().itemName));
         colAdminSeller.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().sellerUsername));
@@ -69,7 +79,7 @@ public class AdminController {
         colAdminStatus.setCellFactory(col -> new TableCell<>() {
             @Override protected void updateItem(String s, boolean empty) {
                 super.updateItem(s, empty);
-                if (empty || s == null) { setText(null); setStyle(""); return; }
+                if (empty || s == null) { setText(null); setStyle(leftAlign); return; }
                 setText(s);
                 String style = "";
                 switch (s) {
@@ -79,7 +89,7 @@ public class AdminController {
                     case "CANCELED" -> style = "-fx-text-fill: #e74c3c;";
                     case "PAID" -> style = "-fx-text-fill: #8e44ad;";
                 }
-                setStyle(style);
+                setStyle(leftAlign + " " + style);
             }
         });
     }
@@ -149,7 +159,6 @@ public class AdminController {
             loadData();
             alert("Thành công", "Đã đánh dấu thanh toán thành công.");
         } else {
-            // --- KHÔI PHỤC ĐỒNG HỒ ĐẾM NGƯỢC 12 TIẾNG CHO ADMIN TẠI ĐÂY ---
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Thao tác thất bại");
             alert.setHeaderText("Không thể đánh dấu thanh toán");

@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
 
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
@@ -50,11 +51,11 @@ public class SellerController {
     }
 
     private void setupItemTable() {
-        String rightAlign = "-fx-alignment: CENTER-RIGHT; -fx-padding: 0 10 0 0;";
-        colItemName.setStyle(rightAlign);
-        colItemType.setStyle(rightAlign);
-        colItemPrice.setStyle(rightAlign);
-        colItemDesc.setStyle(rightAlign);
+        String leftAlign = "-fx-alignment: CENTER-LEFT; -fx-padding: 0 0 0 10;";
+        colItemName.setStyle(leftAlign);
+        colItemType.setStyle(leftAlign);
+        colItemPrice.setStyle(leftAlign);
+        colItemDesc.setStyle(leftAlign);
 
         colItemName.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getName()));
         colItemType.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getClass().getSimpleName()));
@@ -63,13 +64,13 @@ public class SellerController {
     }
 
     private void setupAuctionTable() {
-        String rightAlign = "-fx-alignment: CENTER-RIGHT; -fx-padding: 0 10 0 0;";
-        colAuctionItem.setStyle(rightAlign);
-        colAuctionStatus.setStyle(rightAlign);
-        colAuctionCurrent.setStyle(rightAlign);
-        colAuctionLeader.setStyle(rightAlign);
-        colAuctionBids.setStyle(rightAlign);
-        colAuctionEnd.setStyle(rightAlign);
+        String leftAlign = "-fx-alignment: CENTER-LEFT; -fx-padding: 0 0 0 10;";
+        colAuctionItem.setStyle(leftAlign);
+        colAuctionStatus.setStyle(leftAlign);
+        colAuctionCurrent.setStyle(leftAlign);
+        colAuctionLeader.setStyle(leftAlign);
+        colAuctionBids.setStyle(leftAlign);
+        colAuctionEnd.setStyle(leftAlign);
 
         colAuctionItem.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().itemName));
         colAuctionStatus.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().status));
@@ -89,7 +90,7 @@ public class SellerController {
         colAuctionStatus.setCellFactory(col -> new TableCell<>() {
             @Override protected void updateItem(String s, boolean empty) {
                 super.updateItem(s, empty);
-                if (empty || s == null) { setText(null); setStyle(rightAlign); return; }
+                if (empty || s == null) { setText(null); setStyle(leftAlign); return; }
                 setText(s);
                 String style = "";
                 switch (s) {
@@ -99,7 +100,7 @@ public class SellerController {
                     case "CANCELED" -> style = "-fx-text-fill: #e74c3c;";
                     case "PAID" -> style = "-fx-text-fill: #8e44ad;";
                 }
-                setStyle(rightAlign + " " + style);
+                setStyle(leftAlign + " " + style);
             }
         });
     }
@@ -239,7 +240,6 @@ public class SellerController {
             if (btn != saveBtn) return null;
             double np = 0; try { np = Double.parseDouble(tfPrice.getText().trim()); } catch (Exception ignored) {}
 
-            // --- GỌI MẠNG ĐỂ CẬP NHẬT TRÊN SERVER ---
             com.auction.network.Message res = com.auction.network.NetworkClient.getInstance().updateItem(sel.getId(), tfName.getText(), tfDesc.getText(), np);
 
             if (res.isSuccess()) {
@@ -399,6 +399,7 @@ public class SellerController {
                     else alert("Lỗi Server", res.getErrorMessage());
                 }
             } else {
+                // --- SỬA Ở ĐÂY: Hiện đầy đủ chữ cho thông báo Bắt buộc bán ---
                 if (confirm("Bắt buộc bán", "Thời gian còn dưới 60 phút và đã có người đặt giá.\nBạn có muốn KẾT THÚC PHIÊN NGAY BÂY GIỜ để chốt bán không?")) {
                     com.auction.network.Message res = com.auction.network.NetworkClient.getInstance().endAuction(sel.id);
                     if (res.isSuccess()) {
@@ -412,7 +413,11 @@ public class SellerController {
 
     private boolean confirm(String title, String msg) {
         Alert a = new Alert(Alert.AlertType.CONFIRMATION, msg, ButtonType.YES, ButtonType.NO);
-        a.setTitle(title); a.setHeaderText(null); java.util.Optional<ButtonType> res = a.showAndWait();
+        a.setTitle(title);
+        a.setHeaderText(null);
+        // ÉP GIÃN NỞ ĐỂ HIỆN ĐỦ NỘI DUNG
+        a.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        java.util.Optional<ButtonType> res = a.showAndWait();
         return res.isPresent() && res.get() == ButtonType.YES;
     }
 
@@ -426,6 +431,10 @@ public class SellerController {
 
     private void alert(String title, String msg) {
         Alert a = new Alert(Alert.AlertType.INFORMATION, msg, ButtonType.OK);
-        a.setTitle(title); a.setHeaderText(null); a.showAndWait();
+        a.setTitle(title);
+        a.setHeaderText(null);
+        // ÉP GIÃN NỞ ĐỂ HIỆN ĐỦ NỘI DUNG
+        a.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        a.showAndWait();
     }
 }

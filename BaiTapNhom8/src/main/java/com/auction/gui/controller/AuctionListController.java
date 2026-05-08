@@ -49,16 +49,17 @@ public class AuctionListController {
     }
 
     private void setupColumns() {
-        String rightAlign = "-fx-alignment: CENTER-RIGHT; -fx-padding: 0 10 0 0;";
-        colItem.setStyle(rightAlign);
-        colType.setStyle(rightAlign);
-        colStartPrice.setStyle(rightAlign);
-        colCurrentPrice.setStyle(rightAlign);
-        colLeader.setStyle(rightAlign);
-        colStatus.setStyle(rightAlign);
-        colEndTime.setStyle(rightAlign);
-        colAction.setStyle(rightAlign);
-        colPay.setStyle(rightAlign);
+        // Căn TRÁI và đệm 10px để không dính sát viền
+        String leftAlign = "-fx-alignment: CENTER-LEFT; -fx-padding: 0 0 0 10;";
+        colItem.setStyle(leftAlign);
+        colType.setStyle(leftAlign);
+        colStartPrice.setStyle(leftAlign);
+        colCurrentPrice.setStyle(leftAlign);
+        colLeader.setStyle(leftAlign);
+        colStatus.setStyle(leftAlign);
+        colEndTime.setStyle(leftAlign);
+        colAction.setStyle(leftAlign);
+        colPay.setStyle(leftAlign);
 
         colItem.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().itemName));
         colType.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().itemType));
@@ -70,7 +71,7 @@ public class AuctionListController {
         colStatus.setCellFactory(col -> new TableCell<>() {
             @Override protected void updateItem(String s, boolean empty) {
                 super.updateItem(s, empty);
-                if (empty || s == null) { setText(null); setStyle(rightAlign); return; }
+                if (empty || s == null) { setText(null); setStyle(leftAlign); return; }
                 setText(s);
                 String style = "";
                 switch (s) {
@@ -80,7 +81,7 @@ public class AuctionListController {
                     case "CANCELED": style = "-fx-text-fill: #e74c3c;"; break;
                     case "PAID": style = "-fx-text-fill: #8e44ad;"; break;
                 }
-                setStyle(rightAlign + " " + style);
+                setStyle(leftAlign + " " + style);
             }
         });
 

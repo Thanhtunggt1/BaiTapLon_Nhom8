@@ -24,6 +24,7 @@ public class AuctionServer {
     public static void main(String[] args) {
         // Khởi tạo dữ liệu mẫu (giống DataInitializer trong GUI cũ)
         DataInitializer.init();
+        DatabaseConnection.getConnection();
         System.out.println("[Server] Đã khởi tạo dữ liệu mẫu.");
 
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {

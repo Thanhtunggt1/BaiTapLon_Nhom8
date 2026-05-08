@@ -5,10 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0c6a107e-68c0-4fa4-9118-006d3961becd" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/auction/server/DatabaseConnection.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/auction/server/UserDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/gui/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/gui/controller/LoginController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/auction/model/entity/BidderTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/auction/model/entity/BidderTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/LoginController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/LoginController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/model/entity/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/model/entity/Entity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/server/AuctionServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/server/AuctionServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/server/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/server/ClientHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/server/AuctionServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/server/AuctionServer.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -219,7 +223,8 @@
       <workItem from="1778077332976" duration="482000" />
       <workItem from="1778136557061" duration="1900000" />
       <workItem from="1778141155611" duration="1132000" />
-      <workItem from="1778224235496" duration="3093000" />
+      <workItem from="1778224235496" duration="4517000" />
+      <workItem from="1778230721549" duration="1862000" />
     </task>
     <servers />
   </component>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<TabPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+         fx:controller="com.auction.gui.controller.LoginController"
+         prefWidth="420.0" prefHeight="480.0" tabClosingPolicy="UNAVAILABLE">
+
+    <Tab text="Đăng Nhập">
+        <VBox alignment="CENTER" spacing="15.0" style="-fx-padding: 40;">
+            <Label text="HỆ THỐNG ĐẤU GIÁ" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+            <TextField fx:id="loginUsername" promptText="Tên đăng nhập" prefHeight="35.0"/>
+            <PasswordField fx:id="loginPassword" promptText="Mật khẩu" prefHeight="35.0"/>
+            <Label fx:id="loginError" textFill="#e74c3c" wrapText="true"/>
+            <Button text="ĐĂNG NHẬP" onAction="#handleLogin" prefWidth="200.0" prefHeight="40.0"
+                    style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-font-weight: bold;"/>
+        </VBox>
+    </Tab>
+
+    <Tab text="Đăng Ký">
+        <VBox alignment="CENTER" spacing="12.0" style="-fx-padding: 30;">
+            <Label text="Tạo Tài Khoản Mới" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+            <TextField fx:id="regUsername" promptText="Tên đăng nhập" prefHeight="35.0"/>
+            <PasswordField fx:id="regPassword" promptText="Mật khẩu (tối thiểu 6 ký tự)" prefHeight="35.0"/>
+            <TextField fx:id="regEmail" promptText="Email" prefHeight="35.0"/>
+
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label text="Vai trò:"/>
+                <ComboBox fx:id="regRole" prefWidth="150.0"/>
+            </HBox>
+
+            <Label fx:id="regError" textFill="#e74c3c" wrapText="true"/>
+            <Button text="ĐĂNG KÝ" onAction="#handleRegister" prefWidth="200.0" prefHeight="40.0"
+                    style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold;"/>
+        </VBox>
+    </Tab>
+</TabPane>

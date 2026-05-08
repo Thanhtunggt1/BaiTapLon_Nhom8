@@ -1,0 +1,17 @@
+com\auction\gui\UserStoreTest.class
+com\auction\model\entity\AdminTest$1.class
+com\auction\model\entity\BidderTest$1.class
+com\auction\model\entity\AdminTest.class
+com\auction\model\entity\BidderTest.class
+com\auction\model\entity\AdminTest$2.class
+com\auction\manager\AuctionManagerTest$1.class
+com\auction\model\entity\EntityTest$TestEntity.class
+com\auction\model\entity\EntityTest.class
+com\auction\pattern\factory\ItemFactoryTest.class
+com\auction\model\entity\AuctionTest.class
+com\auction\model\entity\AutoBidConfigTest$1.class
+com\auction\model\entity\SellerTest.class
+com\auction\manager\AuctionManagerTest.class
+com\auction\model\entity\BidTransactionTest$1.class
+com\auction\model\entity\AutoBidConfigTest.class
+com\auction\model\entity\BidTransactionTest.class

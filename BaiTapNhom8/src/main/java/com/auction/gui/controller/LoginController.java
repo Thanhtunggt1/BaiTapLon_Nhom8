@@ -43,24 +43,19 @@ public class LoginController {
         }
 
         UserDto userDto = response.getPayload(UserDto.class);
+
+        // Lưu thông tin người dùng vào NetworkClient và SessionManager để các màn hình sau sử dụng
         NetworkClient.getInstance().setCurrentUser(userDto);
         SessionManager.setCurrentUserDto(userDto);
 
-        if (com.auction.gui.UserStore.getAllUsers().isEmpty()) {
-            com.auction.gui.DataInitializer.init();
-        }
-
-        com.auction.model.entity.User localUser = com.auction.gui.UserStore.findByUsername(userDto.username);
-
-        if (localUser == null) {
-            if ("SELLER".equals(userDto.role)) {
-                localUser = new com.auction.model.entity.Seller(userDto.username, "dummyPass", "dummy@mail.com");
-            } else if ("ADMIN".equals(userDto.role)) {
-                localUser = new com.auction.model.entity.Admin(userDto.username, "dummyPass", "dummy@mail.com");
-            } else {
-                localUser = new com.auction.model.entity.Bidder(userDto.username, "dummyPass", "dummy@mail.com", userDto.balance);
-            }
-            com.auction.gui.UserStore.addUser(localUser);
+        // Khởi tạo đối tượng Entity tương ứng để lưu vào SessionManager (Dùng cho logic nghiệp vụ tại Client)
+        com.auction.model.entity.User localUser;
+        if ("SELLER".equals(userDto.role)) {
+            localUser = new com.auction.model.entity.Seller(userDto.username, "dummyPass", "dummy@mail.com");
+        } else if ("ADMIN".equals(userDto.role)) {
+            localUser = new com.auction.model.entity.Admin(userDto.username, "dummyPass", "dummy@mail.com");
+        } else {
+            localUser = new com.auction.model.entity.Bidder(userDto.username, "dummyPass", "dummy@mail.com", userDto.balance);
         }
 
         SessionManager.setCurrentUser(localUser);

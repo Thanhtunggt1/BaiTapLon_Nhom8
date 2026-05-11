@@ -12,6 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class ClientHandler implements Runnable {
@@ -40,11 +41,11 @@ public class ClientHandler implements Runnable {
                     Message response = handleRequest(request);
                     if (response != null) sendMessage(response.toJson());
                 } catch (Exception e) {
-                    System.err.println("[Handler] Lỗi: " + e.getMessage());
+                    System.err.println(e.getMessage());
                 }
             }
         } catch (IOException e) {
-            System.err.println("[Server] Client ngắt kết nối.");
+            System.err.println(e.getMessage());
         } finally {
             AuctionServer.removeClient(this);
             try { socket.close(); } catch (IOException ignored) {}
@@ -97,18 +98,29 @@ public class ClientHandler implements Runnable {
                 return Message.success(MessageType.AUCTIONS_RESPONSE, dtoList);
             }
 
-            case DEPOSIT: {
-                double amount = request.getPayload(Double.class);
-                if (this.currentUser instanceof Bidder bidder) {
-                    bidder.deposit(amount);
-                    UserDAO.updateUserBalance(bidder);
-                    UserDto respDto = new UserDto();
-                    respDto.username = bidder.getUsername();
-                    respDto.role = "BIDDER";
-                    respDto.balance = bidder.getBalance();
-                    return Message.success(MessageType.DEPOSIT_RESPONSE, respDto);
+            case PROMOTE_USER: {
+                PromotePayload dto = request.getPayload(PromotePayload.class);
+                if (this.currentUser instanceof Admin) {
+                    User targetUser = UserDAO.findByUsername(dto.username);
+                    if (targetUser == null) return Message.error(MessageType.PROMOTE_USER_RESPONSE, "Không tìm thấy user.");
+
+                    if (UserDAO.updateUserRole(dto.username, dto.role)) {
+                        User newUser;
+                        if ("ADMIN".equals(dto.role)) {
+                            newUser = new Admin(targetUser.getUsername(), targetUser.getPassword(), targetUser.getEmail());
+                        } else if ("SELLER".equals(dto.role)) {
+                            newUser = new Seller(targetUser.getUsername(), targetUser.getPassword(), targetUser.getEmail());
+                        } else {
+                            newUser = new Bidder(targetUser.getUsername(), targetUser.getPassword(), targetUser.getEmail(), 0.0);
+                        }
+                        newUser.setId(targetUser.getId());
+                        UserDAO.userCache.put(targetUser.getUsername(), newUser);
+                        UserDAO.userByIdCache.put(targetUser.getId(), newUser);
+                        return Message.success(MessageType.PROMOTE_USER_RESPONSE, "Thành công");
+                    }
+                    return Message.error(MessageType.PROMOTE_USER_RESPONSE, "Lỗi cập nhật.");
                 }
-                return Message.error(MessageType.DEPOSIT_RESPONSE, "Chỉ Bidder mới có thể nạp tiền.");
+                return Message.error(MessageType.PROMOTE_USER_RESPONSE, "Từ chối quyền truy cập.");
             }
 
             case CREATE_ITEM: {
@@ -117,6 +129,7 @@ public class ClientHandler implements Runnable {
                     try {
                         Item item = seller.createItem(dto.name, dto.description, dto.startingPrice,
                                 com.auction.model.enums.ItemType.valueOf(dto.itemType), dto.params);
+                        ItemDAO.insertItem(item, seller.getId(), dto.itemType, dto.params);
                         Map<String, String> payload = new HashMap<>();
                         payload.put("id", item.getId());
                         return Message.success(MessageType.CREATE_ITEM_RESPONSE, payload);
@@ -127,23 +140,6 @@ public class ClientHandler implements Runnable {
                 return Message.error(MessageType.CREATE_ITEM_RESPONSE, "Lỗi quyền hạn.");
             }
 
-            case UPDATE_ITEM: {
-                UpdateItemPayload dto = request.getPayload(UpdateItemPayload.class);
-                if (this.currentUser instanceof Seller seller) {
-                    try {
-                        for (Item item : seller.getItems()) {
-                            if (item.getId().equals(dto.itemId)) {
-                                seller.updateItem(item, dto.name, dto.description, dto.startingPrice);
-                                return Message.success(MessageType.UPDATE_ITEM_RESPONSE, "Thành công");
-                            }
-                        }
-                    } catch (Exception e) {
-                        return Message.error(MessageType.UPDATE_ITEM_RESPONSE, e.getMessage());
-                    }
-                }
-                return Message.error(MessageType.UPDATE_ITEM_RESPONSE, "Thao tác không hợp lệ.");
-            }
-
             case CREATE_AUCTION: {
                 CreateAuctionDto dto = request.getPayload(CreateAuctionDto.class);
                 if (this.currentUser instanceof Seller seller) {
@@ -151,13 +147,15 @@ public class ClientHandler implements Runnable {
                         Item targetItem = seller.getItems().stream()
                                 .filter(i -> i.getId().equals(dto.itemId))
                                 .findFirst().orElse(null);
-                        if (targetItem == null) return Message.error(MessageType.CREATE_AUCTION_RESPONSE, "Không tìm thấy SP.");
-
+                        if (targetItem == null) return Message.error(MessageType.CREATE_AUCTION_RESPONSE, "Lỗi.");
                         Auction auction = seller.createAuction(targetItem, java.time.LocalDateTime.now(),
                                 java.time.LocalDateTime.now().plusMinutes(dto.durationMinutes));
                         AuctionManager.getInstance().registerAuction(auction);
-                        if (dto.startNow) AuctionManager.getInstance().startAuction(auction);
-
+                        AuctionDAO.insertAuction(auction);
+                        if (dto.startNow) {
+                            AuctionManager.getInstance().startAuction(auction);
+                            AuctionDAO.updateAuctionStatus(auction.getId(), "RUNNING");
+                        }
                         return Message.success(MessageType.CREATE_AUCTION_RESPONSE, "Thành công");
                     } catch (Exception e) {
                         return Message.error(MessageType.CREATE_AUCTION_RESPONSE, e.getMessage());
@@ -173,6 +171,8 @@ public class ClientHandler implements Runnable {
                         for (Auction a : AuctionManager.getInstance().getAllAuctions()) {
                             if (a.getId().equals(dto.auctionId)) {
                                 bidder.placeBid(a, dto.amount);
+                                String txId = UUID.randomUUID().toString();
+                                BidTransactionDAO.insertBidTransaction(txId, a.getId(), bidder.getId(), dto.amount);
                                 AuctionServer.broadcast(new Message(MessageType.BID_UPDATE, toAuctionDto(a)).toJson());
                                 return Message.success(MessageType.BID_RESPONSE, toAuctionDto(a));
                             }
@@ -184,28 +184,14 @@ public class ClientHandler implements Runnable {
                 return Message.error(MessageType.BID_RESPONSE, "Lỗi quyền hạn.");
             }
 
-            case SETUP_AUTOBID: {
-                AutoBidPayload dto = request.getPayload(AutoBidPayload.class);
-                if (this.currentUser instanceof Bidder bidder) {
-                    try {
-                        for (Auction a : AuctionManager.getInstance().getAllAuctions()) {
-                            if (a.getId().equals(dto.auctionId)) {
-                                bidder.setupAutoBid(a, dto.maxBid, dto.increment);
-                                return Message.success(MessageType.SETUP_AUTOBID_RESPONSE, "Thành công");
-                            }
-                        }
-                    } catch (Exception e) {
-                        return Message.error(MessageType.SETUP_AUTOBID_RESPONSE, e.getMessage());
-                    }
-                }
-                return Message.error(MessageType.SETUP_AUTOBID_RESPONSE, "Lỗi quyền hạn.");
-            }
-
             case START_AUCTION: {
                 String id = request.getPayload(String.class);
                 AuctionManager.getInstance().getAllAuctions().stream()
                         .filter(a -> a.getId().equals(id))
-                        .forEach(a -> a.startAuction());
+                        .forEach(a -> {
+                            a.startAuction();
+                            AuctionDAO.updateAuctionStatus(a.getId(), "RUNNING");
+                        });
                 return Message.success(MessageType.START_AUCTION_RESPONSE, "Đã bắt đầu");
             }
 
@@ -213,7 +199,10 @@ public class ClientHandler implements Runnable {
                 String id = request.getPayload(String.class);
                 AuctionManager.getInstance().getAllAuctions().stream()
                         .filter(a -> a.getId().equals(id))
-                        .forEach(a -> a.endAuction());
+                        .forEach(a -> {
+                            a.endAuction();
+                            AuctionDAO.updateAuctionStatus(a.getId(), a.getStatus().name());
+                        });
                 return Message.success(MessageType.END_AUCTION, "Đã kết thúc");
             }
 
@@ -223,6 +212,7 @@ public class ClientHandler implements Runnable {
                     for (Auction a : AuctionManager.getInstance().getAllAuctions()) {
                         if (a.getId().equals(id)) {
                             a.markAsPaid();
+                            AuctionDAO.updateAuctionStatus(a.getId(), "PAID");
                             if (a.getCurrentLeader() != null) UserDAO.updateUserBalance(a.getCurrentLeader());
                             return Message.success(MessageType.MARK_PAID_RESPONSE, "Thành công");
                         }
@@ -230,28 +220,28 @@ public class ClientHandler implements Runnable {
                 } catch (Exception e) {
                     return Message.error(MessageType.MARK_PAID_RESPONSE, e.getMessage());
                 }
-                return Message.error(MessageType.MARK_PAID_RESPONSE, "Lỗi thao tác.");
+                return Message.error(MessageType.MARK_PAID_RESPONSE, "Lỗi.");
             }
 
-            case ADMIN_CANCEL_AUCTION: {
-                AdminCancelPayload dto = request.getPayload(AdminCancelPayload.class);
-                if (this.currentUser instanceof Admin admin) {
-                    AuctionManager.getInstance().getAllAuctions().stream()
-                            .filter(a -> a.getId().equals(dto.auctionId))
-                            .forEach(a -> admin.resolveDispute(a, dto.reason));
-                    return Message.success(MessageType.ADMIN_CANCEL_AUCTION, "Đã hủy bởi Admin");
+            case DEPOSIT: {
+                double amount = request.getPayload(Double.class);
+                if (this.currentUser instanceof Bidder bidder) {
+                    bidder.deposit(amount);
+                    UserDAO.updateUserBalance(bidder);
+                    UserDto respDto = new UserDto();
+                    respDto.username = bidder.getUsername();
+                    respDto.role = "BIDDER";
+                    respDto.balance = bidder.getBalance();
+                    return Message.success(MessageType.DEPOSIT_RESPONSE, respDto);
                 }
-                return Message.error(MessageType.ADMIN_CANCEL_AUCTION, "Quyền Admin yêu cầu.");
+                return Message.error(MessageType.DEPOSIT_RESPONSE, "Lỗi.");
             }
 
-            default:
-                return null;
+            default: return null;
         }
     }
 
-    public void sendMessage(String json) {
-        if (out != null) out.println(json);
-    }
+    public void sendMessage(String json) { if (out != null) out.println(json); }
 
     private AuctionDto toAuctionDto(Auction a) {
         AuctionDto dto = new AuctionDto();
@@ -267,7 +257,6 @@ public class ClientHandler implements Runnable {
         dto.sellerUsername = a.getSeller().getUsername();
         dto.currentLeader = (a.getCurrentLeader() != null) ? a.getCurrentLeader().getUsername() : null;
         dto.bidCount = a.getBidHistory().size();
-
         dto.history = a.getBidHistory().stream().map(tx -> {
             AuctionDto.BidEntryDto entry = new AuctionDto.BidEntryDto();
             entry.bidderName = tx.getBidder().getUsername();
@@ -275,7 +264,6 @@ public class ClientHandler implements Runnable {
             entry.time = java.time.LocalDateTime.now().format(DTF);
             return entry;
         }).collect(Collectors.toList());
-
         return dto;
     }
 
@@ -284,4 +272,5 @@ public class ClientHandler implements Runnable {
     private static class UpdateItemPayload { String itemId; String name; String description; double startingPrice; }
     private static class AdminCancelPayload { String auctionId; String reason; }
     private static class AutoBidPayload { String auctionId; double maxBid; double increment; }
+    private static class PromotePayload { String username; String role; }
 }

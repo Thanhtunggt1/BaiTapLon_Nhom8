@@ -1,6 +1,5 @@
 package com.auction.server;
 
-import com.auction.gui.DataInitializer;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -13,8 +12,9 @@ public class AuctionServer {
     private static final List<ClientHandler> connectedClients = new CopyOnWriteArrayList<>();
 
     public static void main(String[] args) {
-        DataInitializer.init();
         DatabaseConnection.getConnection();
+        DataLoader.loadAll();
+
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("[Server] Đang lắng nghe tại port " + PORT + " ...");
             while (true) {

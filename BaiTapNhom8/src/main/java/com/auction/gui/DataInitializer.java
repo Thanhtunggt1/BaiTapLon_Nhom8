@@ -2,13 +2,10 @@ package com.auction.gui;
 
 import com.auction.model.entity.*;
 
-/**
- * Khởi tạo dữ liệu mẫu khi ứng dụng khởi động.
- */
 public class DataInitializer {
 
   public static void init() {
-    // ── Users ─────────────────────────────────────────────────────────────
+
     Admin admin = new Admin("admin", "admin123", "admin@auction.com");
     UserStore.addUser(admin);
 

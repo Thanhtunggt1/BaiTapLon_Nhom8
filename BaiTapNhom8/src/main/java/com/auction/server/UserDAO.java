@@ -5,7 +5,6 @@ import java.sql.*;
 
 public class UserDAO {
 
-    // 1. Lưu User mới vào Database (Dùng cho Đăng ký)
     public static boolean insertUser(User user, String role) {
         String sql = "INSERT INTO users (id, username, password, email, role, balance) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -30,7 +29,6 @@ public class UserDAO {
         }
     }
 
-    // 2. Tìm User theo Username (Dùng cho Đăng nhập)
     public static User findByUsername(String username) {
         String sql = "SELECT * FROM users WHERE username = ?";
         try (Connection conn = DatabaseConnection.getConnection();

@@ -9,10 +9,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Người bán (Seller).
- * Có thể tạo, sửa, xóa sản phẩm và tạo phiên đấu giá.
- */
 public class Seller extends User {
 
     private final List<Item> items;
@@ -24,18 +20,6 @@ public class Seller extends User {
         this.auctions = new ArrayList<>();
     }
 
-    // ── Item management ───────────────────────────────────────────────────────
-
-    /**
-     * Tạo sản phẩm mới thông qua ItemFactory.
-     *
-     * @param name         tên sản phẩm
-     * @param description  mô tả
-     * @param startingPrice giá khởi điểm
-     * @param type         loại sản phẩm
-     * @param extraParams  các thuộc tính đặc thù theo loại (warrantyMonths, brand, v.v.)
-     * @return Item vừa tạo
-     */
     public Item createItem(String name, String description,
                            double startingPrice, ItemType type,
                            Map<String, Object> extraParams) {
@@ -46,22 +30,11 @@ public class Seller extends User {
         return item;
     }
 
-    /**
-     * Cập nhật thông tin sản phẩm.
-     * Không cho phép cập nhật nếu sản phẩm đang trong phiên OPEN hoặc RUNNING
-     *
-     * @param item        sản phẩm cần sửa (phải thuộc Seller này)
-     * @param newName     tên mới (null = giữ nguyên)
-     * @param newDesc     mô tả mới (null = giữ nguyên)
-     * @param newPrice    giá mới (<=0 = giữ nguyên)
-     * @return true nếu cập nhật thành công
-     */
     public boolean updateItem(Item item, String newName, String newDesc, double newPrice) {
         if (!items.contains(item)) {
             throw new IllegalArgumentException("Sản phẩm không thuộc Seller này.");
         }
 
-        // KIỂM TRA CHỐT CHẶN: Cấm sửa nếu đang đấu giá hoặc đã bán xong
         boolean isLocked = auctions.stream()
                 .anyMatch(a -> a.getItem().equals(item)
                         && (a.getStatus() == com.auction.model.enums.AuctionStatus.RUNNING
@@ -79,12 +52,6 @@ public class Seller extends User {
         return true;
     }
 
-    /**
-     * Xóa sản phẩm khỏi danh sách (không thể xóa nếu đang trong phiên RUNNING).
-     *
-     * @param item sản phẩm cần xóa
-     * @return true nếu xóa thành công
-     */
     public boolean deleteItem(Item item) {
         if (!items.contains(item)) {
             System.out.println("[Seller] Sản phẩm không thuộc Seller này.");
@@ -103,16 +70,6 @@ public class Seller extends User {
         return true;
     }
 
-    // ── Auction management ────────────────────────────────────────────────────
-
-    /**
-     * Tạo phiên đấu giá mới cho sản phẩm.
-     *
-     * @param item      sản phẩm muốn đấu giá (phải thuộc Seller này)
-     * @param startTime thời gian bắt đầu
-     * @param endTime   thời gian kết thúc
-     * @return Auction vừa tạo
-     */
     public Auction createAuction(Item item, LocalDateTime startTime, LocalDateTime endTime) {
         if (!items.contains(item)) {
             throw new IllegalArgumentException("Sản phẩm không thuộc Seller này.");
@@ -137,46 +94,7 @@ public class Seller extends User {
         return auction;
     }
 
-    /**
-     * Hủy một phiên đấu giá do chính Seller này tạo ra.
-     *
-     * @param auction phiên đấu giá cần hủy
-     * @param reason  lý do hủy (VD: Hàng bị hỏng đột xuất)
-     */
-    public void cancelAuction(Auction auction, String reason) {
-        if (auction == null) throw new IllegalArgumentException("Auction không được null.");
-
-        // Rào cản quan trọng: Kiểm tra xem phiên này có đúng là của Seller này tạo ra không
-        if (!auctions.contains(auction)) {
-            throw new IllegalArgumentException("Từ chối quyền! Phiên đấu giá này không thuộc về Seller: " + getUsername());
-        }
-
-        // Gọi hàm cancelAuction() đã được định nghĩa sẵn trong class Auction
-        auction.cancelAuction();
-
-        System.out.printf("[Seller:%s] Đã chủ động hủy phiên [%s]. Lý do: %s%n",
-                getUsername(), auction.getId(), reason);
-    }
-
-    /**
-     * Kết thúc sớm phiên đấu giá và bán cho người đang trả giá cao nhất.
-     */
-    public void endAuctionEarly(Auction auction) {
-        if (!auctions.contains(auction)) {
-            throw new IllegalArgumentException("Từ chối quyền! Phiên đấu giá này không thuộc về Seller: " + getUsername());
-        }
-
-        // Gọi hàm endAuction của Auction để chuyển sang FINISHED và chốt người thắng
-        auction.endAuction();
-        System.out.printf("[Seller:%s] Đã chốt kết thúc sớm phiên [%s] để bán cho người đang dẫn đầu.%n",
-                getUsername(), auction.getId());
-    }
-
-    // ── Getters ───────────────────────────────────────────────────────────────
-
     public List<Item> getItems() { return Collections.unmodifiableList(items); }
-
-    public List<Auction> getAuctions() { return Collections.unmodifiableList(auctions); }
 
     @Override
     public void printInfo() {

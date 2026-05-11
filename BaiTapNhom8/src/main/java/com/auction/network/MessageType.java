@@ -8,7 +8,6 @@ public enum MessageType {
     BID_UPDATE,
     CREATE_ITEM, CREATE_ITEM_RESPONSE,
 
-    // --- MỚI THÊM: Tín hiệu cập nhật sản phẩm ---
     UPDATE_ITEM, UPDATE_ITEM_RESPONSE,
 
     CREATE_AUCTION, CREATE_AUCTION_RESPONSE,

@@ -69,8 +69,6 @@ public class NetworkClient {
     }
     public Message deposit(double amount) { return sendAndReceive(new Message(MessageType.DEPOSIT, amount)); }
     public Message createItem(CreateItemDto dto) { return sendAndReceive(new Message(MessageType.CREATE_ITEM, dto)); }
-
-    // --- MỚI THÊM: Gửi lệnh cập nhật sản phẩm lên Server ---
     public Message updateItem(String itemId, String name, String description, double startingPrice) {
         return sendAndReceive(new Message(MessageType.UPDATE_ITEM, new UpdateItemPayload(itemId, name, description, startingPrice)));
     }
@@ -84,7 +82,7 @@ public class NetworkClient {
     public Message startAuction(String auctionId) { return sendAndReceive(new Message(MessageType.START_AUCTION, auctionId)); }
 
     public void setOnBidUpdate(Consumer<AuctionDto> callback) { this.onBidUpdate = callback; }
-    public UserDto getCurrentUser()  { return currentUser; }
+
     public void setCurrentUser(UserDto u) { currentUser = u; }
 
     private synchronized Message sendAndReceive(Message request) {

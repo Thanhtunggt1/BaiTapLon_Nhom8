@@ -18,13 +18,10 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
         primaryStage = stage;
 
-        // --- KẾT NỐI ĐẾN SERVER TRƯỚC KHI HIỆN UI ---
         try {
-            // Thử kết nối đến AuctionServer (mặc định localhost:9999)
             NetworkClient.getInstance().connect();
             System.out.println("[Main] Kết nối server thành công.");
         } catch (IOException e) {
-            // Nếu Server chưa bật, thông báo lỗi và thoát ứng dụng ngay
             Alert alert = new Alert(Alert.AlertType.ERROR,
                     "Không thể kết nối đến máy chủ đấu giá tại localhost:9999.\n" +
                             "Vui lòng đảm bảo AuctionServer đã được khởi động!",
@@ -37,13 +34,9 @@ public class Main extends Application {
             System.exit(1);
         }
 
-        // Nếu kết nối thành công, bắt đầu ở màn hình đăng nhập
         showLogin();
     }
 
-    /**
-     * Hiển thị màn hình Đăng nhập / Đăng ký
-     */
     public static void showLogin() throws Exception {
         FXMLLoader loader = new FXMLLoader(
                 Main.class.getResource("/com/auction/gui/login.fxml"));
@@ -55,13 +48,9 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    /**
-     * Hiển thị màn hình chính sau khi đăng nhập thành công
-     */
     public static void showMain() throws Exception {
         FXMLLoader loader = new FXMLLoader(
                 Main.class.getResource("/com/auction/gui/main.fxml"));
-        // Kích thước chuẩn cho màn hình chính (Dashboard)
         Scene scene = new Scene(loader.load(), 1150, 720);
 
         primaryStage.setTitle("Hệ Thống Đấu Giá Trực Tuyến - Dashboard");

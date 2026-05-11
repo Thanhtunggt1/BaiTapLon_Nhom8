@@ -27,14 +27,4 @@ public class DatabaseConnection {
         return connection;
     }
 
-    public static void closeConnection() {
-        try {
-            if (connection != null && !connection.isClosed()) {
-                connection.close();
-                System.out.println("[Database] Đã ngắt kết nối.");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }

@@ -2,17 +2,14 @@ package com.auction.server;
 
 import com.auction.manager.AuctionManager;
 import com.auction.model.entity.*;
-import com.auction.model.enums.ItemType;
 import com.auction.network.Message;
 import com.auction.network.MessageType;
 import com.auction.network.dto.*;
 
 import java.io.*;
 import java.net.Socket;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ClientHandler implements Runnable {
@@ -56,7 +53,6 @@ public class ClientHandler implements Runnable {
         switch (request.getType()) {
             case LOGIN: {
                 LoginPayload loginDto = request.getPayload(LoginPayload.class);
-                // Gọi tới UserDAO để check Database
                 User user = UserDAO.findByUsername(loginDto.username);
 
                 if (user != null && user.getPassword().equals(loginDto.password)) {
@@ -123,7 +119,6 @@ public class ClientHandler implements Runnable {
         return dto;
     }
 
-    // --- CÁC LỚP ĐỆM ĐỂ NHẬN DỮ LIỆU ---
     private static class LoginPayload { String username; String password; }
     private static class RegisterPayload { String username; String password; String email; String role; }
 }

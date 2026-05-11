@@ -6,8 +6,8 @@ package com.auction.model.entity;
  */
 public class Electronics extends Item {
 
-    private String brand;
-    private int warrantyMonths;
+    private final String brand;
+    private final int warrantyMonths;
 
     public Electronics(String name, String description, double startingPrice, String brand, int warrantyMonths) {
         super(name, description, startingPrice);
@@ -21,31 +21,14 @@ public class Electronics extends Item {
         this.warrantyMonths = warrantyMonths;
     }
 
-    // ── override printInfo ─────────────────────────────────────
-
     @Override
     public void printInfo() {
         super.printInfo();
         System.out.printf("  └─ Thương hiệu: %s | Bảo hành: %d tháng%n", brand, warrantyMonths);
     }
 
-    // ── Getters / Setters ────────────────────────────────────────────────────
-
     public String getBrand() { return brand; }
-
-    public void setBrand(String brand) {
-        if (brand == null || brand.isBlank()) {
-            throw new IllegalArgumentException("Thương hiệu không được để trống.");
-        }
-        this.brand = brand;
-    }
 
     public int getWarrantyMonths() { return warrantyMonths; }
 
-    public void setWarrantyMonths(int warrantyMonths) {
-        if (warrantyMonths < 0) {
-            throw new IllegalArgumentException("Số tháng bảo hành không được âm.");
-        }
-        this.warrantyMonths = warrantyMonths;
-    }
 }

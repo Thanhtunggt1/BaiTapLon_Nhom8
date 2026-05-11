@@ -16,10 +16,8 @@ public class AuctionDto {
     public String endTime;
     public int bidCount;
 
-    // --- MỚI THÊM: Danh sách lịch sử để vẽ Biểu đồ và Bảng ---
     public List<BidEntryDto> history;
 
-    // Lớp nội bộ để lưu từng dòng lịch sử đấu giá
     public static class BidEntryDto {
         public String bidderName;
         public double amount;

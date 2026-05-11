@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c6a107e-68c0-4fa4-9118-006d3961becd" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/server/AuctionServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/server/AuctionServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/server/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/server/ClientHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/server/UserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/server/UserDAO.java" afterDir="false" />
-    </list>
+    <list default="true" id="0c6a107e-68c0-4fa4-9118-006d3961becd" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -229,7 +224,7 @@
       <workItem from="1778233699976" duration="782000" />
       <workItem from="1778255950122" duration="556000" />
       <workItem from="1778467317477" duration="2463000" />
-      <workItem from="1778490505473" duration="1370000" />
+      <workItem from="1778490505473" duration="1788000" />
     </task>
     <servers />
   </component>

@@ -1,7 +1,6 @@
 package com.auction.network;
 
 import com.auction.network.dto.*;
-import com.google.gson.Gson;
 import javafx.application.Platform;
 
 import java.io.*;
@@ -14,7 +13,6 @@ public class NetworkClient {
 
     private static final String HOST = "localhost";
     private static final int    PORT = 9999;
-    private static final Gson   GSON = new Gson();
 
     private static volatile NetworkClient instance;
 
@@ -82,7 +80,6 @@ public class NetworkClient {
 
     public void setOnBidUpdate(Consumer<AuctionDto> callback) { this.onBidUpdate = callback; }
     public void setCurrentUser(UserDto u) { currentUser = u; }
-    public UserDto getCurrentUserDto() { return currentUser; }
 
     private synchronized Message sendAndReceive(Message request) {
         try {

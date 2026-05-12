@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c6a107e-68c0-4fa4-9118-006d3961becd" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/network/NetworkClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/network/NetworkClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/network/dto/BidDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/network/dto/BidDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/auction/gui/admin.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/auction/gui/admin.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/auction/gui/main.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/auction/gui/main.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/auction/gui/seller.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/auction/gui/seller.fxml" afterDir="false" />
-    </list>
+    <list default="true" id="0c6a107e-68c0-4fa4-9118-006d3961becd" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

@@ -264,6 +264,62 @@ public class ClientHandler implements Runnable {
                 return Message.error(MessageType.DEPOSIT_RESPONSE, "Lỗi.");
             }
 
+            case SETUP_AUTOBID: {
+                AutoBidPayload dto = request.getPayload(AutoBidPayload.class);
+                if (this.currentUser instanceof Bidder bidder) {
+                    try {
+                        for (Auction a : AuctionManager.getInstance().getAllAuctions()) {
+                            if (a.getId().equals(dto.auctionId)) {
+                                bidder.setupAutoBid(a, dto.maxBid, dto.increment);
+                                AutoBidConfigDAO.insertAutoBidConfig(UUID.randomUUID().toString(), a.getId(), bidder.getId(), dto.maxBid, dto.increment);
+                                return Message.success(MessageType.SETUP_AUTOBID_RESPONSE, "Thành công");
+                            }
+                        }
+                    } catch (Exception e) {
+                        return Message.error(MessageType.SETUP_AUTOBID_RESPONSE, e.getMessage());
+                    }
+                }
+                return Message.error(MessageType.SETUP_AUTOBID_RESPONSE, "Lỗi quyền hạn.");
+            }
+
+            case UPDATE_ITEM: {
+                UpdateItemPayload dto = request.getPayload(UpdateItemPayload.class);
+                if (this.currentUser instanceof Seller seller) {
+                    try {
+                        for (Item item : seller.getItems()) {
+                            if (item.getId().equals(dto.itemId)) {
+                                item.setName(dto.name);
+                                item.setDescription(dto.description);
+                                item.setStartingPrice(dto.startingPrice);
+                                ItemDAO.updateItem(item);
+                                return Message.success(MessageType.UPDATE_ITEM_RESPONSE, "Cập nhật thành công");
+                            }
+                        }
+                    } catch (Exception e) {
+                        return Message.error(MessageType.UPDATE_ITEM_RESPONSE, e.getMessage());
+                    }
+                }
+                return Message.error(MessageType.UPDATE_ITEM_RESPONSE, "Lỗi quyền hạn.");
+            }
+
+            case ADMIN_CANCEL_AUCTION: {
+                AdminCancelPayload dto = request.getPayload(AdminCancelPayload.class);
+                if (this.currentUser instanceof Admin) {
+                    try {
+                        for (Auction a : AuctionManager.getInstance().getAllAuctions()) {
+                            if (a.getId().equals(dto.auctionId)) {
+                                a.cancelAuction();
+                                AuctionDAO.updateAuctionStatus(a.getId(), "CANCELED");
+                                return Message.success(MessageType.CANCEL_AUCTION, "Đã hủy bởi Admin: " + dto.reason);
+                            }
+                        }
+                    } catch (Exception e) {
+                        return Message.error(MessageType.CANCEL_AUCTION, e.getMessage());
+                    }
+                }
+                return Message.error(MessageType.CANCEL_AUCTION, "Lỗi quyền hạn.");
+            }
+
             default: return null;
         }
     }
@@ -298,4 +354,7 @@ public class ClientHandler implements Runnable {
     private static class RegisterPayload { String username; String password; String email; String role; }
 
     private static class PromotePayload { String username; String role; }
+    private static class AutoBidPayload { String auctionId; double maxBid; double increment; }
+    private static class UpdateItemPayload { String itemId; String name; String description; double startingPrice; }
+    private static class AdminCancelPayload { String auctionId; String reason; }
 }

@@ -31,4 +31,19 @@ public class ItemDAO {
             return false;
         }
     }
+
+    public static boolean updateItem(Item item) {
+        String sql = "UPDATE items SET name = ?, description = ?, starting_price = ? WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, item.getName());
+            stmt.setString(2, item.getDescription());
+            stmt.setDouble(3, item.getStartingPrice());
+            stmt.setString(4, item.getId());
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("[ItemDAO] Lỗi cập nhật: " + e.getMessage());
+            return false;
+        }
+    }
 }

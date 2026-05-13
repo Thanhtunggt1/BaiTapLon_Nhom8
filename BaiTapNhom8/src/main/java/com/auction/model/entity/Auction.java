@@ -256,37 +256,44 @@ public class Auction extends Entity implements Subject {
 
 
     private void triggerAutoBids(Bidder lastBidder) {
-        List<AutoBidConfig> sorted = new ArrayList<>(autoBidQueue);
-        Collections.sort(sorted);
+        boolean triggered;
+        do {
+            triggered = false;
+            List<AutoBidConfig> sorted = new ArrayList<>(autoBidQueue);
+            Collections.sort(sorted);
 
-        for (AutoBidConfig config : sorted) {
-            if (config.getBidder().equals(lastBidder)) continue;   // bỏ qua người vừa bid
+            for (AutoBidConfig config : sorted) {
+                // Đừng tự bid đè lên chính mình (người dẫn đầu)
+                if (config.getBidder().equals(currentLeader)) continue;
 
-            double nextBid = config.computeNextBid(currentHighestPrice);
-            if (nextBid < 0) {
-                System.out.printf("[AutoBid] %s đã đạt maxBid (%.2f), không thể tiếp tục.%n",
-                        config.getBidder().getUsername(), config.getMaxBid());
-                continue;
-            }
-            if (nextBid > config.getBidder().getBalance()) {
-                System.out.printf("[AutoBid] %s không đủ số dư cho auto-bid %.2f.%n",
-                        config.getBidder().getUsername(), nextBid);
-                continue;
-            }
+                double nextBid = config.computeNextBid(currentHighestPrice);
+                if (nextBid < 0) {
+                    System.out.printf("[AutoBid] %s đã đạt maxBid (%.2f), không thể tiếp tục.%n",
+                            config.getBidder().getUsername(), config.getMaxBid());
+                    continue;
+                }
+                if (nextBid > config.getBidder().getBalance()) {
+                    System.out.printf("[AutoBid] %s không đủ số dư cho auto-bid %.2f.%n",
+                            config.getBidder().getUsername(), nextBid);
+                    continue;
+                }
 
-            BidTransaction autoBid = new BidTransaction(config.getBidder(), this, nextBid);
-            if (autoBid.isValid()) {
-                currentHighestPrice = nextBid;
-                currentLeader = config.getBidder();
-                bidHistory.add(autoBid);
-                System.out.printf("[AutoBid] %s tự động đặt giá %.2f%n",
-                        config.getBidder().getUsername(), nextBid);
-                notifyObservers();
-                // Chỉ kích hoạt auto-bid đầu tiên hợp lệ; vòng lặp tiếp theo
-                // sẽ được kích hoạt khi có bid mới từ đối thủ
-                break;
+                BidTransaction autoBid = new BidTransaction(config.getBidder(), this, nextBid);
+                if (autoBid.isValid()) {
+                    currentHighestPrice = nextBid;
+                    currentLeader = config.getBidder();
+                    bidHistory.add(autoBid);
+                    System.out.printf("[AutoBid] %s tự động đặt giá %.2f%n",
+                            config.getBidder().getUsername(), nextBid);
+                    
+                    checkAndExtend();
+                    notifyObservers();
+                    
+                    triggered = true;
+                    break; // Ngắt để quét lại từ đầu
+                }
             }
-        }
+        } while (triggered);
     }
     /*
      * Lý do có phương thức triggerAutoBids()

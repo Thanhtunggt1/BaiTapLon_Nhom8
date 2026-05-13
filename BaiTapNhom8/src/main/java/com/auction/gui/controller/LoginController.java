@@ -8,6 +8,9 @@ import com.auction.network.dto.UserDto;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import java.lang.reflect.Field;
+import java.util.List;
+
 public class LoginController {
     @FXML private TextField loginUsername;
     @FXML private PasswordField loginPassword;
@@ -44,14 +47,42 @@ public class LoginController {
 
         UserDto userDto = response.getPayload(UserDto.class);
 
-        // Lưu thông tin người dùng vào NetworkClient và SessionManager để các màn hình sau sử dụng
+        // Lưu thông tin người dùng vào NetworkClient và SessionManager
         NetworkClient.getInstance().setCurrentUser(userDto);
         SessionManager.setCurrentUserDto(userDto);
 
-        // Khởi tạo đối tượng Entity tương ứng để lưu vào SessionManager (Dùng cho logic nghiệp vụ tại Client)
         com.auction.model.entity.User localUser;
         if ("SELLER".equals(userDto.role)) {
             localUser = new com.auction.model.entity.Seller(userDto.username, "dummyPass", "dummy@mail.com");
+
+            // Đồng bộ kho sản phẩm từ Server về Client
+            try {
+                // Sử dụng Reflection để truy cập danh sách items trong class Seller
+                Field itemsField = com.auction.model.entity.Seller.class.getDeclaredField("items");
+                itemsField.setAccessible(true);
+                @SuppressWarnings("unchecked")
+                List<com.auction.model.entity.Item> localItems = (List<com.auction.model.entity.Item>) itemsField.get(localUser);
+
+                if (userDto.items != null) {
+                    for (com.auction.network.dto.ItemDto dto : userDto.items) {
+                        // Tái tạo đối tượng Item thông qua Factory
+                        com.auction.model.entity.Item item = com.auction.pattern.factory.ItemFactory.getInstance().createItem(
+                                com.auction.model.enums.ItemType.valueOf(dto.itemType),
+                                dto.name, dto.description, dto.startingPrice, dto.params
+                        );
+
+                        // Gán lại ID chính xác từ Database thay vì ID ngẫu nhiên mới
+                        Field idField = com.auction.model.entity.Entity.class.getDeclaredField("id");
+                        idField.setAccessible(true);
+                        idField.set(item, dto.id);
+
+                        localItems.add(item);
+                    }
+                }
+            } catch (Exception e) {
+                System.err.println("Lỗi đồng bộ kho sản phẩm: " + e.getMessage());
+            }
+
         } else if ("ADMIN".equals(userDto.role)) {
             localUser = new com.auction.model.entity.Admin(userDto.username, "dummyPass", "dummy@mail.com");
         } else {

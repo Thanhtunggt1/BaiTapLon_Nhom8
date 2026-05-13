@@ -62,11 +62,38 @@ public class ClientHandler implements Runnable {
                     this.currentUser = user;
                     UserDto respDto = new UserDto();
                     respDto.username = user.getUsername();
-                    if (user instanceof Admin) respDto.role = "ADMIN";
-                    else if (user instanceof Seller) respDto.role = "SELLER";
-                    else respDto.role = "BIDDER";
 
-                    if (user instanceof Bidder) respDto.balance = ((Bidder) user).getBalance();
+                    if (user instanceof Admin) {
+                        respDto.role = "ADMIN";
+                    } else if (user instanceof Seller) {
+                        respDto.role = "SELLER";
+                        Seller seller = (Seller) user;
+                        respDto.items = seller.getItems().stream().map(i -> {
+                            com.auction.network.dto.ItemDto dto = new com.auction.network.dto.ItemDto();
+                            dto.id = i.getId();
+                            dto.name = i.getName();
+                            dto.description = i.getDescription();
+                            dto.startingPrice = i.getStartingPrice();
+                            dto.itemType = i.getClass().getSimpleName().toUpperCase();
+
+                            java.util.Map<String, Object> params = new java.util.HashMap<>();
+                            if ("ELECTRONICS".equals(dto.itemType)) {
+                                params.put("brand", "N/A");
+                                params.put("warrantyMonths", 0);
+                            } else if ("ART".equals(dto.itemType)) {
+                                params.put("artistName", "N/A");
+                                params.put("creationYear", 0);
+                            } else if ("VEHICLE".equals(dto.itemType)) {
+                                params.put("mileage", 0.0);
+                                params.put("licensePlate", "N/A");
+                            }
+                            dto.params = params;
+                            return dto;
+                        }).collect(Collectors.toList());
+                    } else {
+                        respDto.role = "BIDDER";
+                        respDto.balance = ((Bidder) user).getBalance();
+                    }
                     return Message.success(MessageType.LOGIN_RESPONSE, respDto);
                 }
                 return Message.error(MessageType.LOGIN_RESPONSE, "Sai tài khoản hoặc mật khẩu.");
@@ -269,8 +296,6 @@ public class ClientHandler implements Runnable {
 
     private static class LoginPayload { String username; String password; }
     private static class RegisterPayload { String username; String password; String email; String role; }
-    private static class UpdateItemPayload { String itemId; String name; String description; double startingPrice; }
-    private static class AdminCancelPayload { String auctionId; String reason; }
-    private static class AutoBidPayload { String auctionId; double maxBid; double increment; }
+
     private static class PromotePayload { String username; String role; }
 }

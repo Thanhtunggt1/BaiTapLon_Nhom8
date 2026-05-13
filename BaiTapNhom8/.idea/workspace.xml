@@ -4,7 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c6a107e-68c0-4fa4-9118-006d3961becd" name="Changes" comment="" />
+    <list default="true" id="0c6a107e-68c0-4fa4-9118-006d3961becd" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/auction/network/dto/ItemDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/data_sources_history.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/data_sources_history.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/gui/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/gui/controller/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/network/NetworkClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/network/NetworkClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/network/dto/UserDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/network/dto/UserDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/server/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/server/ClientHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/admin.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/admin.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/main.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/main.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/seller.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/seller.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/network/NetworkClient$AdminCancelPayload.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/network/NetworkClient$AdminCancelPayload.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/network/NetworkClient$AutoBidPayload.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/network/NetworkClient$AutoBidPayload.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/network/NetworkClient$LoginPayload.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/network/NetworkClient$LoginPayload.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/network/NetworkClient$PromotePayload.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/network/NetworkClient$PromotePayload.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/network/NetworkClient$RegisterPayload.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/network/NetworkClient$RegisterPayload.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/network/NetworkClient$UpdateItemPayload.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/network/NetworkClient$UpdateItemPayload.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/network/NetworkClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/network/NetworkClient.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/network/dto/BidDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/network/dto/BidDto.class" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -227,6 +246,7 @@
       <workItem from="1778490505473" duration="5473000" />
       <workItem from="1778497235452" duration="299000" />
       <workItem from="1778591019086" duration="430000" />
+      <workItem from="1778631274677" duration="2334000" />
     </task>
     <servers />
   </component>

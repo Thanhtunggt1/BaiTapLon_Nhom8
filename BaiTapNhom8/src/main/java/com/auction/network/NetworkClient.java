@@ -11,8 +11,8 @@ import java.util.function.Consumer;
 
 public class NetworkClient {
 
-    private static final String HOST = "26.100.222.100"; //IP V4
-    private static final int    PORT = 9999;
+    private static String HOST = "26.100.222.100";
+    private static int    PORT = 9999;
 
     private static volatile NetworkClient instance;
 

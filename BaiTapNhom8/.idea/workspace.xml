@@ -16,7 +16,6 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/server/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/server/ClientHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/server/DataLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/server/DataLoader.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/server/ItemDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/server/ItemDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/server/UserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/server/UserDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/com/auction/gui/auction_detail.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/auction/gui/auction_detail.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -256,7 +255,7 @@
       <workItem from="1778631274677" duration="3067000" />
       <workItem from="1778653330391" duration="395000" />
       <workItem from="1778784543067" duration="196000" />
-      <workItem from="1778785683914" duration="1775000" />
+      <workItem from="1778785683914" duration="3061000" />
     </task>
     <servers />
   </component>

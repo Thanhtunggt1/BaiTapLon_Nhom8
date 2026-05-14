@@ -1,5 +1,6 @@
 package com.auction.network.dto;
 
+import java.util.List;
 import java.util.Map;
 
 public class CreateItemDto {
@@ -8,5 +9,5 @@ public class CreateItemDto {
     public double startingPrice;
     public String itemType;
     public Map<String, Object> params;
-    public String imageBase64;
+    public List<String> imagesBase64; // Đổi thành List
 }

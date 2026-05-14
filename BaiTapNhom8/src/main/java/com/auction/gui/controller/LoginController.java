@@ -67,7 +67,7 @@ public class LoginController {
                                 dto.name, dto.description, dto.startingPrice, dto.params
                         );
 
-                        item.setImageBase64(dto.imageBase64); // Cập nhật ảnh về Local RAM
+                        item.setImagesBase64(dto.imagesBase64); // Gắn List ảnh vào local
 
                         Field idField = com.auction.model.entity.Entity.class.getDeclaredField("id");
                         idField.setAccessible(true);

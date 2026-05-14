@@ -18,6 +18,7 @@ import javafx.geometry.Pos;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
+import javafx.scene.layout.StackPane;
 
 import java.io.ByteArrayInputStream;
 import java.time.LocalDateTime;
@@ -29,7 +30,7 @@ public class AuctionDetailController {
 
     private static final java.util.List<AuctionDetailController> activeInstances = new java.util.ArrayList<>();
 
-    @FXML private ImageView itemImageView; // Khai báo ImageView
+    @FXML private Button btnViewImage;
     @FXML private Label itemNameLabel;
     @FXML private Label itemDescLabel;
     @FXML private Label itemDetailLabel;
@@ -122,17 +123,12 @@ public class AuctionDetailController {
         currentPriceLabel.setText(String.format("%,.0f ₫", auctionDto.currentPrice));
         leaderLabel.setText(auctionDto.currentLeader != null ? auctionDto.currentLeader : "—");
 
-        // Xử lý hiển thị ảnh
-        if (auctionDto.imageBase64 != null && !auctionDto.imageBase64.isEmpty()) {
-            try {
-                byte[] decodedBytes = Base64.getDecoder().decode(auctionDto.imageBase64);
-                Image img = new Image(new ByteArrayInputStream(decodedBytes));
-                itemImageView.setImage(img);
-            } catch (Exception e) {
-                itemImageView.setImage(null);
-            }
+        if (auctionDto.imagesBase64 != null && !auctionDto.imagesBase64.isEmpty()) {
+            btnViewImage.setDisable(false);
+            btnViewImage.setText("Xem bộ ảnh (" + auctionDto.imagesBase64.size() + " tấm)");
         } else {
-            itemImageView.setImage(null);
+            btnViewImage.setDisable(true);
+            btnViewImage.setText("Không có ảnh");
         }
 
         if (auctionDto.history != null) {
@@ -149,6 +145,45 @@ public class AuctionDetailController {
             depositButton.setVisible(false);
             placeBidButton.setDisable(true);
         }
+    }
+
+    @FXML
+    private void handleViewImage() {
+        if (auctionDto.imagesBase64 == null || auctionDto.imagesBase64.isEmpty()) return;
+
+        Pagination pagination = new Pagination(auctionDto.imagesBase64.size(), 0);
+        pagination.setPageFactory(pageIndex -> {
+            try {
+                byte[] bytes = Base64.getDecoder().decode(auctionDto.imagesBase64.get(pageIndex));
+                Image img = new Image(new ByteArrayInputStream(bytes));
+                ImageView iv = new ImageView(img);
+                iv.setPreserveRatio(true);
+
+                // Giảm nhẹ chiều cao để nhường chỗ cho thanh chuyển trang
+                iv.setFitWidth(600);
+                iv.setFitHeight(450);
+
+                // Gói ảnh vào một hộp ảo có kích thước cố định
+                StackPane imageContainer = new StackPane(iv);
+                imageContainer.setAlignment(Pos.CENTER);
+                imageContainer.setPrefHeight(480);
+
+                return imageContainer;
+            } catch (Exception e) {
+                return new Label("Lỗi hiển thị ảnh này.");
+            }
+        });
+
+        Dialog<Void> dialog = new Dialog<>();
+        dialog.setTitle("Album ảnh sản phẩm: " + auctionDto.itemName);
+        dialog.getDialogPane().setContent(pagination);
+
+        // Tăng chiều cao tối thiểu của cửa sổ lên 600 để dải số trang rơi thẳng xuống dưới
+        dialog.getDialogPane().setMinWidth(650);
+        dialog.getDialogPane().setMinHeight(600);
+
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
+        dialog.showAndWait();
     }
 
     private void updateChart() {
@@ -247,6 +282,13 @@ public class AuctionDetailController {
                     if (MainController.getInstance() != null) {
                         MainController.getInstance().refreshBalanceView();
                     }
+                    Alert a = new Alert(Alert.AlertType.INFORMATION, "Nạp thành công!");
+                    a.setHeaderText(null);
+                    a.showAndWait();
+                } else {
+                    Alert a = new Alert(Alert.AlertType.ERROR, response.getErrorMessage());
+                    a.setHeaderText(null);
+                    a.showAndWait();
                 }
             } catch (Exception ignored) {}
         });

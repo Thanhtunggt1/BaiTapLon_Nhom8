@@ -20,6 +20,7 @@ import javafx.scene.layout.HBox;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -165,26 +166,27 @@ public class SellerController {
         Label lArtist= new Label("Nghệ sĩ:"); Label lYear = new Label("Năm sáng tác:");
         Label lMile = new Label("Số km:"); Label lPlate = new Label("Biển số:");
 
-        // Phần upload ảnh
-        Button btnUpload = new Button("Chọn ảnh");
-        Label lblImageName = new Label("Chưa có ảnh");
-        final String[] base64Image = {null};
+        // Nút chọn nhiều ảnh
+        Button btnUpload = new Button("Chọn các ảnh (Giữ Ctrl)");
+        Label lblImageCount = new Label("Đã chọn: 0 ảnh");
+        final List<String> base64List = new ArrayList<>();
 
         btnUpload.setOnAction(e -> {
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
-            File selectedFile = fileChooser.showOpenDialog(null);
-            if (selectedFile != null) {
-                try {
-                    byte[] fileContent = Files.readAllBytes(selectedFile.toPath());
-                    base64Image[0] = Base64.getEncoder().encodeToString(fileContent);
-                    lblImageName.setText(selectedFile.getName());
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+            List<File> selectedFiles = fileChooser.showOpenMultipleDialog(null);
+            if (selectedFiles != null) {
+                base64List.clear();
+                for (File file : selectedFiles) {
+                    try {
+                        byte[] bytes = Files.readAllBytes(file.toPath());
+                        base64List.add(Base64.getEncoder().encodeToString(bytes));
+                    } catch (Exception ex) { ex.printStackTrace(); }
                 }
+                lblImageCount.setText("Đã chọn: " + base64List.size() + " ảnh");
             }
         });
-        HBox imageBox = new HBox(10, lblImageName, btnUpload);
+        HBox imageBox = new HBox(10, lblImageCount, btnUpload);
         imageBox.setAlignment(javafx.geometry.Pos.CENTER_RIGHT);
 
         int row = 0;
@@ -222,7 +224,7 @@ public class SellerController {
                 com.auction.network.dto.CreateItemDto dto = new com.auction.network.dto.CreateItemDto();
                 dto.name = name.getText().trim(); dto.description = desc.getText().trim();
                 dto.startingPrice = p; dto.itemType = typeBox.getValue().toString(); dto.params = params;
-                dto.imageBase64 = base64Image[0]; // Truyền chuỗi Base64 đi
+                dto.imagesBase64 = base64List; // Truyền List ảnh
 
                 com.auction.network.Message res = com.auction.network.NetworkClient.getInstance().createItem(dto);
                 if (res.isSuccess()) {
@@ -230,7 +232,7 @@ public class SellerController {
                     String serverId = (String) map.get("id");
 
                     Item localItem = getSeller().createItem(dto.name, dto.description, p, typeBox.getValue(), params);
-                    localItem.setImageBase64(dto.imageBase64); // Set cho local RAM
+                    localItem.setImagesBase64(new ArrayList<>(base64List));
                     java.lang.reflect.Field idField = Entity.class.getDeclaredField("id");
                     idField.setAccessible(true);
                     idField.set(localItem, serverId);

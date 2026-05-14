@@ -2,22 +2,21 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.chart.*?>
-<?import javafx.scene.image.ImageView?>
 <SplitPane dividerPositions="0.65" prefHeight="680.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.auction.gui.controller.AuctionDetailController">
 
     <VBox spacing="15.0" style="-fx-padding: 20;">
         <VBox style="-fx-background-color: #f8f9fa; -fx-padding: 15; -fx-border-color: #dee2e6; -fx-border-radius: 5;">
 
             <HBox spacing="15.0">
-                <ImageView fx:id="itemImageView" fitWidth="150.0" fitHeight="150.0" preserveRatio="true"/>
-                <VBox spacing="5.0">
+                <VBox spacing="8.0" HBox.hgrow="ALWAYS">
                     <Label fx:id="itemNameLabel" text="Tên Sản Phẩm" style="-fx-font-size: 22px; -fx-font-weight: bold;"/>
                     <Label fx:id="itemDescLabel" text="Mô tả..." wrapText="true" style="-fx-font-size: 14px; -fx-padding: 5 0;"/>
                     <Label fx:id="itemDetailLabel" text="Chi tiết..." style="-fx-text-fill: #7f8c8d;"/>
+                    <Button fx:id="btnViewImage" text="Xem ảnh minh họa" onAction="#handleViewImage" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-cursor: hand; -fx-padding: 5 15; -fx-font-weight: bold;"/>
                 </VBox>
             </HBox>
 
-            <HBox spacing="20.0" style="-fx-padding: 10 0 0 0;">
+            <HBox spacing="20.0" style="-fx-padding: 15 0 0 0;">
                 <Label fx:id="sellerLabel" text="Người bán: " style="-fx-font-weight: bold;"/>
                 <Label fx:id="startPriceLabel" text="Giá khởi điểm: " style="-fx-font-weight: bold;"/>
                 <Label fx:id="totalBidsLabel" text="Tổng bid: 0" style="-fx-font-weight: bold;"/>

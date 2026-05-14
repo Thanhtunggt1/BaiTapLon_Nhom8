@@ -7,10 +7,13 @@ import com.auction.model.enums.ItemType;
 import com.auction.pattern.factory.ItemFactory;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DataLoader {
@@ -50,7 +53,6 @@ public class DataLoader {
                     String desc = rs.getString("description");
                     double startPrice = rs.getDouble("starting_price");
                     String typeStr = rs.getString("item_type");
-                    String imageBase64 = rs.getString("image_data"); // Tải ảnh
 
                     Map<String, Object> params = new HashMap<>();
                     params.put("brand", rs.getString("brand") != null ? rs.getString("brand") : "");
@@ -62,7 +64,10 @@ public class DataLoader {
 
                     ItemType type = ItemType.valueOf(typeStr);
                     Item item = ItemFactory.getInstance().createItem(type, name, desc, startPrice, params);
-                    item.setImageBase64(imageBase64); // Gắn ảnh vào đối tượng
+
+                    // Tải nhiều ảnh
+                    item.setImagesBase64(loadImagesForItem(conn, id));
+
                     setEntityId(item, id);
                     itemMap.put(id, item);
 
@@ -124,6 +129,21 @@ public class DataLoader {
             System.err.println("[DataLoader] Lỗi: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    private static List<String> loadImagesForItem(Connection conn, String itemId) {
+        List<String> images = new ArrayList<>();
+        String sql = "SELECT image_data FROM item_images WHERE item_id = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, itemId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                images.add(rs.getString("image_data"));
+            }
+        } catch (Exception e) {
+            System.err.println("Lỗi load ảnh cho item: " + itemId);
+        }
+        return images;
     }
 
     private static void setEntityId(Entity entity, String id) throws Exception {

@@ -12,19 +12,24 @@ import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.geometry.Pos;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 
+import java.io.ByteArrayInputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.Base64;
 
 public class AuctionDetailController {
 
     private static final java.util.List<AuctionDetailController> activeInstances = new java.util.ArrayList<>();
 
+    @FXML private ImageView itemImageView; // Khai báo ImageView
     @FXML private Label itemNameLabel;
     @FXML private Label itemDescLabel;
     @FXML private Label itemDetailLabel;
@@ -58,7 +63,6 @@ public class AuctionDetailController {
     public void initialize() {
         activeInstances.add(this);
 
-        // Khôi phục căn lề mặc định như cũ
         itemNameLabel.setAlignment(Pos.CENTER_LEFT);
         itemDescLabel.setAlignment(Pos.CENTER_LEFT);
         itemDetailLabel.setAlignment(Pos.CENTER_LEFT);
@@ -117,6 +121,19 @@ public class AuctionDetailController {
         statusLabel.setText(auctionDto.status);
         currentPriceLabel.setText(String.format("%,.0f ₫", auctionDto.currentPrice));
         leaderLabel.setText(auctionDto.currentLeader != null ? auctionDto.currentLeader : "—");
+
+        // Xử lý hiển thị ảnh
+        if (auctionDto.imageBase64 != null && !auctionDto.imageBase64.isEmpty()) {
+            try {
+                byte[] decodedBytes = Base64.getDecoder().decode(auctionDto.imageBase64);
+                Image img = new Image(new ByteArrayInputStream(decodedBytes));
+                itemImageView.setImage(img);
+            } catch (Exception e) {
+                itemImageView.setImage(null);
+            }
+        } else {
+            itemImageView.setImage(null);
+        }
 
         if (auctionDto.history != null) {
             bidHistoryTable.setItems(FXCollections.observableArrayList(auctionDto.history));

@@ -2,13 +2,21 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.chart.*?>
+<?import javafx.scene.image.ImageView?>
 <SplitPane dividerPositions="0.65" prefHeight="680.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.auction.gui.controller.AuctionDetailController">
-    
+
     <VBox spacing="15.0" style="-fx-padding: 20;">
         <VBox style="-fx-background-color: #f8f9fa; -fx-padding: 15; -fx-border-color: #dee2e6; -fx-border-radius: 5;">
-            <Label fx:id="itemNameLabel" text="Tên Sản Phẩm" style="-fx-font-size: 22px; -fx-font-weight: bold;"/>
-            <Label fx:id="itemDescLabel" text="Mô tả..." wrapText="true" style="-fx-font-size: 14px; -fx-padding: 5 0;"/>
-            <Label fx:id="itemDetailLabel" text="Chi tiết..." style="-fx-text-fill: #7f8c8d;"/>
+
+            <HBox spacing="15.0">
+                <ImageView fx:id="itemImageView" fitWidth="150.0" fitHeight="150.0" preserveRatio="true"/>
+                <VBox spacing="5.0">
+                    <Label fx:id="itemNameLabel" text="Tên Sản Phẩm" style="-fx-font-size: 22px; -fx-font-weight: bold;"/>
+                    <Label fx:id="itemDescLabel" text="Mô tả..." wrapText="true" style="-fx-font-size: 14px; -fx-padding: 5 0;"/>
+                    <Label fx:id="itemDetailLabel" text="Chi tiết..." style="-fx-text-fill: #7f8c8d;"/>
+                </VBox>
+            </HBox>
+
             <HBox spacing="20.0" style="-fx-padding: 10 0 0 0;">
                 <Label fx:id="sellerLabel" text="Người bán: " style="-fx-font-weight: bold;"/>
                 <Label fx:id="startPriceLabel" text="Giá khởi điểm: " style="-fx-font-weight: bold;"/>
@@ -33,7 +41,7 @@
     </VBox>
 
     <VBox spacing="20.0" style="-fx-padding: 20; -fx-background-color: #ecf0f1;">
-        
+
         <VBox alignment="CENTER" spacing="10.0" style="-fx-background-color: white; -fx-padding: 20; -fx-border-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
             <Label text="THỜI GIAN CÒN LẠI" style="-fx-font-size: 14px; -fx-text-fill: #7f8c8d;"/>
             <Label fx:id="timeRemainingLabel" text="00:00:00" style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>

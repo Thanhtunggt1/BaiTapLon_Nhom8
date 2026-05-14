@@ -5,6 +5,7 @@ public abstract class Item extends Entity {
     private String name;
     private String description;
     private double startingPrice;
+    private String imageBase64;
 
     protected Item(String name, String description, double startingPrice) {
         super();
@@ -15,10 +16,9 @@ public abstract class Item extends Entity {
             throw new IllegalArgumentException("Giá khởi điểm không được âm.");
         }
         this.name = name;
-
-
         this.description = description != null ? description : "";
         this.startingPrice = startingPrice;
+        this.imageBase64 = null; // Khởi tạo giá trị mặc định là null
     }
 
     public void printInfo() {
@@ -26,6 +26,7 @@ public abstract class Item extends Entity {
                 getClass().getSimpleName(), getId(), name, startingPrice, description);
     }
 
+    // --- CÁC GETTER & SETTER CŨ ---
 
     public String getName() { return name; }
 
@@ -49,5 +50,15 @@ public abstract class Item extends Entity {
             throw new IllegalArgumentException("Giá khởi điểm không được âm.");
         }
         this.startingPrice = startingPrice;
+    }
+
+    // --- GETTER & SETTER CHO ẢNH (MỚI THÊM) ---
+
+    public String getImageBase64() {
+        return imageBase64;
+    }
+
+    public void setImageBase64(String imageBase64) {
+        this.imageBase64 = imageBase64;
     }
 }

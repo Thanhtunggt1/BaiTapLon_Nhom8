@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class ItemDAO {
     public static boolean insertItem(Item item, String sellerId, String itemType, Map<String, Object> params) {
-        String sql = "INSERT INTO items (id, seller_id, name, description, starting_price, item_type, brand, warranty_months, artist_name, creation_year, mileage, license_plate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO items (id, seller_id, name, description, starting_price, item_type, brand, warranty_months, artist_name, creation_year, mileage, license_plate, image_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, item.getId());
@@ -24,6 +24,7 @@ public class ItemDAO {
             stmt.setObject(10, params.get("creationYear"));
             stmt.setObject(11, params.get("mileage"));
             stmt.setObject(12, params.get("licensePlate"));
+            stmt.setString(13, item.getImageBase64()); // Lưu ảnh
 
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -33,13 +34,14 @@ public class ItemDAO {
     }
 
     public static boolean updateItem(Item item) {
-        String sql = "UPDATE items SET name = ?, description = ?, starting_price = ? WHERE id = ?";
+        String sql = "UPDATE items SET name = ?, description = ?, starting_price = ?, image_data = ? WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, item.getName());
             stmt.setString(2, item.getDescription());
             stmt.setDouble(3, item.getStartingPrice());
-            stmt.setString(4, item.getId());
+            stmt.setString(4, item.getImageBase64()); // Cập nhật ảnh
+            stmt.setString(5, item.getId());
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("[ItemDAO] Lỗi cập nhật: " + e.getMessage());

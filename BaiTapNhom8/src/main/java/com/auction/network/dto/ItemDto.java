@@ -9,4 +9,5 @@ public class ItemDto {
     public double startingPrice;
     public String itemType;
     public Map<String, Object> params;
+    public String imageBase64;
 }

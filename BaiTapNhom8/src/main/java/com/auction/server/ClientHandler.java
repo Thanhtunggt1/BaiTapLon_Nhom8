@@ -75,6 +75,7 @@ public class ClientHandler implements Runnable {
                             dto.description = i.getDescription();
                             dto.startingPrice = i.getStartingPrice();
                             dto.itemType = i.getClass().getSimpleName().toUpperCase();
+                            dto.imageBase64 = i.getImageBase64(); // Gửi ảnh về client
 
                             java.util.Map<String, Object> params = new java.util.HashMap<>();
                             if ("ELECTRONICS".equals(dto.itemType)) {
@@ -156,6 +157,7 @@ public class ClientHandler implements Runnable {
                     try {
                         Item item = seller.createItem(dto.name, dto.description, dto.startingPrice,
                                 com.auction.model.enums.ItemType.valueOf(dto.itemType), dto.params);
+                        item.setImageBase64(dto.imageBase64); // Cập nhật ảnh ở RAM
                         ItemDAO.insertItem(item, seller.getId(), dto.itemType, dto.params);
                         Map<String, String> payload = new HashMap<>();
                         payload.put("id", item.getId());
@@ -253,15 +255,25 @@ public class ClientHandler implements Runnable {
             case DEPOSIT: {
                 double amount = request.getPayload(Double.class);
                 if (this.currentUser instanceof Bidder bidder) {
+                    double DAILY_LIMIT = 50000000.0; // 50 triệu VNĐ
+                    double todayTotal = UserDAO.getTodayDepositTotal(bidder.getId());
+
+                    if (todayTotal + amount > DAILY_LIMIT) {
+                        return Message.error(MessageType.DEPOSIT_RESPONSE,
+                                "Vượt quá giới hạn nạp tiền! Bạn chỉ có thể nạp thêm tối đa " + String.format("%,.0f", (DAILY_LIMIT - todayTotal)) + " ₫ hôm nay.");
+                    }
+
                     bidder.deposit(amount);
                     UserDAO.updateUserBalance(bidder);
+                    UserDAO.insertDepositHistory(bidder.getId(), amount);
+
                     UserDto respDto = new UserDto();
                     respDto.username = bidder.getUsername();
                     respDto.role = "BIDDER";
                     respDto.balance = bidder.getBalance();
                     return Message.success(MessageType.DEPOSIT_RESPONSE, respDto);
                 }
-                return Message.error(MessageType.DEPOSIT_RESPONSE, "Lỗi.");
+                return Message.error(MessageType.DEPOSIT_RESPONSE, "Lỗi quyền hạn.");
             }
 
             case SETUP_AUTOBID: {
@@ -291,7 +303,7 @@ public class ClientHandler implements Runnable {
                                 item.setName(dto.name);
                                 item.setDescription(dto.description);
                                 item.setStartingPrice(dto.startingPrice);
-                                ItemDAO.updateItem(item);
+                                ItemDAO.updateItem(item); // Không gửi ảnh qua lệnh update này nên giữ nguyên
                                 return Message.success(MessageType.UPDATE_ITEM_RESPONSE, "Cập nhật thành công");
                             }
                         }
@@ -340,6 +352,7 @@ public class ClientHandler implements Runnable {
         dto.sellerUsername = a.getSeller().getUsername();
         dto.currentLeader = (a.getCurrentLeader() != null) ? a.getCurrentLeader().getUsername() : null;
         dto.bidCount = a.getBidHistory().size();
+        dto.imageBase64 = a.getItem().getImageBase64(); 
         dto.history = a.getBidHistory().stream().map(tx -> {
             AuctionDto.BidEntryDto entry = new AuctionDto.BidEntryDto();
             entry.bidderName = tx.getBidder().getUsername();

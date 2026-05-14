@@ -15,6 +15,7 @@ public class AuctionDto {
     public String startTime;
     public String endTime;
     public int bidCount;
+    public String imageBase64;
 
     public List<BidEntryDto> history;
 

@@ -4,20 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c6a107e-68c0-4fa4-9118-006d3961becd" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/gui/controller/AuctionDetailController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/gui/controller/AuctionDetailController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/gui/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/gui/controller/LoginController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/gui/controller/SellerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/gui/controller/SellerController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/model/entity/Item.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/model/entity/Item.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/network/dto/AuctionDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/network/dto/AuctionDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/network/dto/CreateItemDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/network/dto/CreateItemDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/network/dto/ItemDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/network/dto/ItemDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/server/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/server/ClientHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/server/DataLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/server/DataLoader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/server/ItemDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/server/ItemDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/auction/gui/auction_detail.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/auction/gui/auction_detail.fxml" afterDir="false" />
-    </list>
+    <list default="true" id="0c6a107e-68c0-4fa4-9118-006d3961becd" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -255,7 +242,7 @@
       <workItem from="1778631274677" duration="3067000" />
       <workItem from="1778653330391" duration="395000" />
       <workItem from="1778784543067" duration="196000" />
-      <workItem from="1778785683914" duration="3061000" />
+      <workItem from="1778785683914" duration="3242000" />
     </task>
     <servers />
   </component>

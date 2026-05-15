@@ -4,7 +4,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7b65e5c6-2848-4dd8-b981-dca5fb28ae21" name="Changes" comment="" />
+    <list default="true" id="7b65e5c6-2848-4dd8-b981-dca5fb28ae21" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/src/test/java/com/auction/model/entity/AdminExtraTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/src/test/java/com/auction/model/entity/AuctionLifecycleExtraTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/src/test/java/com/auction/model/entity/AutoBidConfigExtraTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/src/test/java/com/auction/model/entity/BidTransactionExtraTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/src/test/java/com/auction/model/entity/BidderExtraTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/src/test/java/com/auction/model/entity/EntityExtraTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/src/test/java/com/auction/model/entity/ItemExtraTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/src/test/java/com/auction/model/entity/ItemFactoryExtraTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/src/test/java/com/auction/model/entity/SellerExtraTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/src/test/java/com/auction/model/entity/UserExtraTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/AdminExtraTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/AuctionLifecycleExtraTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/AutoBidConfigExtraTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/BidTransactionExtraTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/BidderExtraTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/EntityExtraTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/ItemExtraTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/ItemFactoryExtraTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/SellerExtraTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/UserExtraTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/BidderTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/BidderTest.class" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -20,11 +42,14 @@
       </MavenGeneralSettings>
     </option>
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 1,
-  "fromUser": false
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1,
+  &quot;fromUser&quot;: false
+}</component>
   <component name="ProjectId" id="3Cku28O1POAaQWQGJsDNBAl9zif" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -33,10 +58,11 @@
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "Cherry-picking in main",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/thanh/OneDrive/Documents/BaiTapNhom8",

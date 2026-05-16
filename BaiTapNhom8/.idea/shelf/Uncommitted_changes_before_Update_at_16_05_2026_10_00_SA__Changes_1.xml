@@ -1,0 +1,9 @@
+<changelist name="Uncommitted_changes_before_Update_at_16_05_2026_10_00_SA_[Changes]1" date="1778900427029" recycled="true" deleted="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_16_05_2026_10_00_SA_[Changes]1/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Update at 16/05/2026 10:00 SA [Changes]" />
+  <binary>
+    <option name="BEFORE_PATH" value="target/classes/com/auction/network/NetworkClient.class" />
+    <option name="AFTER_PATH" value="target/classes/com/auction/network/NetworkClient.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_16_05_2026_10_00_SA_[Changes]1/NetworkClient.class" />
+  </binary>
+</changelist>

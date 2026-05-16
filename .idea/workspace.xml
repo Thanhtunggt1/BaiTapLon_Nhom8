@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0c6a107e-68c0-4fa4-9118-006d3961becd" name="Changes" comment="">
+<<<<<<< Updated upstream:.idea/workspace.xml
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/gui/controller/AdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/gui/controller/AdminController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/gui/controller/AuctionListController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/gui/controller/AuctionListController.java" afterDir="false" />
@@ -18,12 +19,47 @@
       <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/SellerController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/SellerController$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/SellerController$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/SellerController$3.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/SellerController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/SellerController.class" afterDir="false" />
+=======
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/auction/exception/CustomExceptionTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/auction/manager/AuctionManagerExtendedTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/auction/model/entity/AuctionPaymentTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/auction/model/entity/BidderAutoBidSetupTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/auction/model/entity/BidderBalanceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/auction/model/entity/BidderPlaceBidTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/auction/model/entity/ItemTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/auction/model/entity/UserTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/data_sources_history.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/data_sources_history.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/AuctionDetailController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/AuctionDetailController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/LoginController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/LoginController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/SellerController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/SellerController$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/SellerController$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/SellerController$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/SellerController$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/SellerController$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/SellerController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/SellerController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/model/entity/Auction.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/model/entity/Auction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/network/NetworkClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/network/NetworkClient.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/server/ClientHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/server/ClientHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/server/DataLoader.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/server/DataLoader.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/server/ItemDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/server/ItemDAO.class" afterDir="false" />
+>>>>>>> Stashed changes:BaiTapNhom8/.idea/workspace.xml
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+<<<<<<< Updated upstream:.idea/workspace.xml
+=======
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_C:/Users/ADMIN/Documents/GitHub/BaiTapLon_Nhom8/BaiTapNhom8" value="3CiI3y6QaN7UmESZn46BSk64E5u" />
+    </persistenceIdMap>
+  </component>
+  <component name="EmbeddingIndexingInfo">
+    <option name="cachedIndexableFilesCount" value="82" />
+  </component>
+>>>>>>> Stashed changes:BaiTapNhom8/.idea/workspace.xml
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -41,6 +77,18 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "nnmquang10092007"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Thanhtunggt1/BaiTapLon_Nhom8.git",
+    "accountId": "8294472a-1e79-45c3-b6a6-b286187b8b31"
+  }
+}]]></component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -60,6 +108,7 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+<<<<<<< Updated upstream:.idea/workspace.xml
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;Application.AuctionServer.executor&quot;: &quot;Run&quot;,
@@ -88,8 +137,53 @@
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+=======
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.AuctionServer.executor": "Run",
+    "Application.Launcher.executor": "Run",
+    "Application.Main.executor": "Run",
+    "JUnit.AdminTest.executor": "Run",
+    "JUnit.AuctionTest.executor": "Run",
+    "JUnit.AutoBidConfigTest.executor": "Run",
+    "JUnit.BidTransactionTest.executor": "Run",
+    "JUnit.BidderTest.executor": "Run",
+    "JUnit.EntityTest.executor": "Run",
+    "JUnit.ItemFactoryTest.executor": "Run",
+    "JUnit.SellerTest.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "tung",
+    "ignore.virus.scanning.warn.message": "true",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/thanh/OneDrive/Documents/BaiTapNhom8/BaiTapNhom8",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
+    ]
+>>>>>>> Stashed changes:BaiTapNhom8/.idea/workspace.xml
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
@@ -206,6 +300,22 @@
       <workItem from="1778077332976" duration="482000" />
       <workItem from="1778136557061" duration="1900000" />
       <workItem from="1778141155611" duration="1132000" />
+<<<<<<< Updated upstream:.idea/workspace.xml
+=======
+      <workItem from="1778224235496" duration="4517000" />
+      <workItem from="1778230721549" duration="2194000" />
+      <workItem from="1778233699976" duration="782000" />
+      <workItem from="1778255950122" duration="556000" />
+      <workItem from="1778467317477" duration="2463000" />
+      <workItem from="1778490505473" duration="5473000" />
+      <workItem from="1778497235452" duration="299000" />
+      <workItem from="1778591019086" duration="430000" />
+      <workItem from="1778631274677" duration="3067000" />
+      <workItem from="1778653330391" duration="395000" />
+      <workItem from="1778784543067" duration="196000" />
+      <workItem from="1778785683914" duration="3242000" />
+      <workItem from="1778903344917" duration="823000" />
+>>>>>>> Stashed changes:BaiTapNhom8/.idea/workspace.xml
     </task>
     <servers />
   </component>
@@ -222,5 +332,14 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
   </component>
 </project>

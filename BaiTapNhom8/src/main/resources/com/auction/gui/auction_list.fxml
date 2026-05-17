@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.chart.*?>
+
 <VBox spacing="10.0" style="-fx-padding: 15;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.auction.gui.controller.AuctionListController">
 
@@ -11,7 +11,6 @@
 
         <Region HBox.hgrow="ALWAYS" />
 
-        <Label fx:id="totalEarningsLabel" style="-fx-font-weight: bold; -fx-text-fill: #27ae60; -fx-font-size: 15px;" />
         <Button text="Làm mới" onAction="#handleRefresh" />
     </HBox>
 
@@ -24,7 +23,10 @@
             <TableColumn fx:id="colLeader" text="Dẫn đầu" prefWidth="120.0"/>
             <TableColumn fx:id="colStatus" text="Trạng thái" prefWidth="100.0"/>
             <TableColumn fx:id="colEndTime" text="Thời gian kết thúc" prefWidth="150.0"/>
-            <TableColumn fx:id="colAction" text="Thao tác" prefWidth="80.0"/>
+            <TableColumn fx:id="colAction" text="Chi tiết" prefWidth="80.0"/>
+
+            <!-- CỘT THANH TOÁN MỚI THÊM VÀO ĐÂY -->
+            <TableColumn fx:id="colPay" text="Thanh toán" prefWidth="100.0"/>
         </columns>
     </TableView>
 </VBox>

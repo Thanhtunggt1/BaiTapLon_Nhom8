@@ -9,9 +9,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Có thể tạo, sửa, xóa sản phẩm và tạo phiên đấu giá.
- */
 public class Seller extends User {
 
     private final List<Item> items;
@@ -23,27 +20,9 @@ public class Seller extends User {
         this.auctions = new ArrayList<>();
     }
 
-    // Item management
-
-    /**
-     * Tạo sản phẩm mới thông qua ItemFactory.
-     * name         tên sản phẩm
-     * escription  mô tả
-     * startingPrice giá khởi điểm
-     * type         loại sản phẩm
-     * extraParams  các thuộc tính đặc thù theo loại (warrantyMonths, brand)
-     */
-
-
-    /*
-    * Map<String, Object> extraParams trong Java có nghĩa là một tập hợp (map) chứa các cặp key–value, trong đó:
-    * Key: là một chuỗi (String) dùng để đặt tên cho tham số bổ sung.
-    * Value: là một đối tượng (Object) có thể mang bất kỳ kiểu dữ liệu nào (số, chuỗi, boolean, thậm chí là một đối tượng phức tạp)
-    * Có thể điền dữ liệu vào Map<String, Object> bằng cách tạo một HashMap (hoặc bất kỳ implementation nào của Map)
-    * Rồi dùng phương thức put(key, value) để thêm cặp key–value
-    * */
-
-    public Item createItem(String name, String description, double startingPrice, ItemType type, Map<String, Object> extraParams) {
+    public Item createItem(String name, String description,
+                           double startingPrice, ItemType type,
+                           Map<String, Object> extraParams) {
         Item item = ItemFactory.getInstance().createItem(type, name, description, startingPrice, extraParams);
         items.add(item);
         System.out.printf("[Seller:%s] Đã tạo sản phẩm '%s' (id=%s)%n",
@@ -51,21 +30,11 @@ public class Seller extends User {
         return item;
     }
 
-    /**
-     * Cập nhật thông tin sản phẩm
-     * Không cho phép cập nhật nếu sản phẩm đang trong phiên OPEN hoặc RUNNING
-     *
-     * item        sản phẩm cần sửa (phải thuộc Seller này)
-     * newName     tên mới (null = giữ nguyên)
-     * newDesc     mô tả mới (null = giữ nguyên)
-     * newPrice    giá mới (<=0 = giữ nguyên)
-     */
     public boolean updateItem(Item item, String newName, String newDesc, double newPrice) {
         if (!items.contains(item)) {
             throw new IllegalArgumentException("Sản phẩm không thuộc Seller này.");
         }
 
-        // Cấm sửa nếu đang đấu giá hoặc đã bán xong
         boolean isLocked = auctions.stream()
                 .anyMatch(a -> a.getItem().equals(item)
                         && (a.getStatus() == com.auction.model.enums.AuctionStatus.RUNNING
@@ -83,11 +52,6 @@ public class Seller extends User {
         return true;
     }
 
-    /**
-     * Xóa sản phẩm khỏi danh sách (không thể xóa nếu đang trong phiên RUNNING).
-     * @param item sản phẩm cần xóa
-     * @return true nếu xóa thành công
-     */
     public boolean deleteItem(Item item) {
         if (!items.contains(item)) {
             System.out.println("[Seller] Sản phẩm không thuộc Seller này.");
@@ -106,15 +70,6 @@ public class Seller extends User {
         return true;
     }
 
-    // Auction management
-
-    /**
-     * Tạo phiên đấu giá mới cho sản phẩm.
-     * item      sản phẩm muốn đấu giá (phải thuộc Seller này)
-     * startTime thời gian bắt đầu
-     * @param endTime   thời gian kết thúc
-     * @return Auction vừa tạo
-     */
     public Auction createAuction(Item item, LocalDateTime startTime, LocalDateTime endTime) {
         if (!items.contains(item)) {
             throw new IllegalArgumentException("Sản phẩm không thuộc Seller này.");
@@ -139,16 +94,7 @@ public class Seller extends User {
         return auction;
     }
 
-    // Getters
-
-    /*
-     * Collections.unmodifiableList(items)
-     * Dùng để tạo ra một danh sách không thể chỉnh sửa (read-only view) từ danh sách gốc items
-     * */
-
     public List<Item> getItems() { return Collections.unmodifiableList(items); }
-
-    public List<Auction> getAuctions() { return Collections.unmodifiableList(auctions); }
 
     @Override
     public void printInfo() {

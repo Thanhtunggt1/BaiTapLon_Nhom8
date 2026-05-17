@@ -2,7 +2,6 @@ package com.auction.model.entity;
 
 import java.time.LocalDateTime;
 
-
 public class BidTransaction extends Entity {
 
     private final Bidder bidder;
@@ -22,13 +21,6 @@ public class BidTransaction extends Entity {
         this.timestamp = LocalDateTime.now();
     }
 
-    //Business methods
-
-    /**
-     * Kiểm tra tính hợp lệ của giao dịch:
-     * Phiên đang ở trạng thái RUNNING
-     * Số tiền cao hơn giá hiện tại của phiên
-     */
     public boolean isValid() {
         if (auction.getStatus() != com.auction.model.enums.AuctionStatus.RUNNING) {
             return false;
@@ -36,15 +28,11 @@ public class BidTransaction extends Entity {
         return amount > auction.getCurrentHighestPrice();
     }
 
-    // Getters
-
     public Bidder getBidder() { return bidder; }
 
     public Auction getAuction() { return auction; }
 
     public double getAmount() { return amount; }
-
-    public LocalDateTime getTimestamp() { return timestamp; }
 
     @Override
     public String toString() {

@@ -6,8 +6,8 @@ import com.auction.exception.InvalidBidException;
 import com.auction.model.enums.AuctionStatus;
 import com.auction.pattern.observer.Observer;
 
-public class Bidder extends User implements Observer {
 
+public class Bidder extends User implements Observer {
     private double balance;
 
     public Bidder(String username, String password, String email, double initialBalance) {
@@ -18,14 +18,8 @@ public class Bidder extends User implements Observer {
         this.balance = initialBalance;
     }
 
-    //Business methods
-
-    /**
-     * Đặt giá thủ công cho một phiên đấu giá
-     * auction phiên đấu giá muốn tham gia
-     * amount  số tiền muốn đặt
-     */
     public boolean placeBid(Auction auction, double amount)
+
             throws AuctionClosedException, InvalidBidException, InsufficientBalanceException {
 
         if (auction == null) throw new IllegalArgumentException("Auction không được null.");
@@ -40,7 +34,7 @@ public class Bidder extends User implements Observer {
                             + auction.getCurrentHighestPrice() + ").");
         }
         if (amount > balance) {
-            throw new InsufficientBalanceException("Số dư khả dụng (" + balance + ") không đủ!");
+            throw new InsufficientBalanceException("Số dư (" + balance + ") không đủ!");
         }
 
         BidTransaction tx = new BidTransaction(this, auction, amount);
@@ -48,21 +42,28 @@ public class Bidder extends User implements Observer {
     }
 
 
-    /**
-     * Cài đặt auto-bid cho một phiên đấu giá.
-     * Hệ thống sẽ tự động trả giá thay người dùng khi có bid từ đối thủ.
-     * auction   phiên đấu giá
-     * maxBid    giá tối đa sẵn sàng trả
-     * increment bước giá mỗi lần auto-bid
-     */
     public void setupAutoBid(Auction auction, double maxBid, double increment) {
         if (auction == null) throw new IllegalArgumentException("Auction không được null.");
+
         if (maxBid <= auction.getCurrentHighestPrice()) {
             throw new IllegalArgumentException(
                     "maxBid phải lớn hơn giá hiện tại (" + auction.getCurrentHighestPrice() + ").");
         }
+
         if (increment <= 0) {
             throw new IllegalArgumentException("Bước giá phải dương.");
+        }
+
+        if (maxBid > this.balance) {
+            throw new IllegalArgumentException("Giá tối đa (MaxBid) không được vượt quá số dư hiện tại. Vui lòng nạp thêm tiền!");
+        }
+
+        if (increment > this.balance) {
+            throw new IllegalArgumentException("Bước giá không được lớn hơn số dư hiện tại!");
+        }
+
+        if (increment > maxBid) {
+            throw new IllegalArgumentException("Bước giá vô lý! Không được lớn hơn Giá tối đa (MaxBid).");
         }
 
         AutoBidConfig config = new AutoBidConfig(this, auction, maxBid, increment);
@@ -71,9 +72,6 @@ public class Bidder extends User implements Observer {
                 getUsername(), auction.getId(), maxBid, increment);
     }
 
-    /**
-     * Callback từ Observer — được gọi khi phiên đấu giá có thay đổi.
-     */
     @Override
     public void update(Auction auction) {
         System.out.printf("[Observer] %s nhận cập nhật: Phiên [%s] — Giá cao nhất: %.2f | Người dẫn đầu: %s%n",
@@ -83,21 +81,14 @@ public class Bidder extends User implements Observer {
                 auction.getCurrentLeader() != null ? auction.getCurrentLeader().getUsername() : "Chưa có");
     }
 
-    // Getters / Setters
-
     public double getBalance() { return balance; }
 
-    /**
-     * Nạp thêm tiền vào tài khoản
-     */
     public void deposit(double amount) {
         if (amount <= 0) throw new IllegalArgumentException("Số tiền nạp phải dương.");
         this.balance += amount;
     }
 
-    /**
-     * Trừ tiền khi thanh toán thắng đấu giá.
-     */
+
     public void deduct(double amount) {
         if (amount > balance) throw new InsufficientBalanceException("Số dư không đủ.");
         this.balance -= amount;

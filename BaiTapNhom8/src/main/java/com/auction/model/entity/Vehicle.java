@@ -1,13 +1,9 @@
 package com.auction.model.entity;
 
-/**
- * Phương tiện — kế thừa Item
- * Có thêm thuộc tính: số km đã đi và biển số xe
- */
 public class Vehicle extends Item {
 
-    private double mileage;
-    private String licensePlate;
+    private final double mileage;
+    private final String licensePlate;
 
     public Vehicle(String name, String description, double startingPrice,
                    double mileage, String licensePlate) {
@@ -18,6 +14,8 @@ public class Vehicle extends Item {
         if (licensePlate == null || licensePlate.isBlank()) {
             throw new IllegalArgumentException("Biển số xe không được để trống.");
         }
+
+
         this.mileage = mileage;
         this.licensePlate = licensePlate;
     }
@@ -29,21 +27,4 @@ public class Vehicle extends Item {
         System.out.printf("  └─ Biển số: %s | Km đã đi: %.1f km%n", licensePlate, mileage);
     }
 
-    //Getters / Setters
-
-    public double getMileage() { return mileage; }
-
-    public void setMileage(double mileage) {
-        if (mileage < 0) throw new IllegalArgumentException("Số km không được âm.");
-        this.mileage = mileage;
-    }
-
-    public String getLicensePlate() { return licensePlate; }
-
-    public void setLicensePlate(String licensePlate) {
-        if (licensePlate == null || licensePlate.isBlank()) {
-            throw new IllegalArgumentException("Biển số xe không được để trống.");
-        }
-        this.licensePlate = licensePlate;
-    }
 }

@@ -8,18 +8,12 @@ import com.auction.model.enums.ItemType;
 
 import java.util.Map;
 
-
 public class ItemFactory {
-
-    // Singleton
 
     private static volatile ItemFactory instance;
 
     private ItemFactory() {}
 
-    /**
-     * Trả về instance duy nhất của ItemFactory
-     */
     public static ItemFactory getInstance() {
         if (instance == null) {
             synchronized (ItemFactory.class) {
@@ -31,17 +25,6 @@ public class ItemFactory {
         return instance;
     }
 
-    // Factory Method
-
-    /**
-     * Tạo Item theo loại.
-     *
-     * type          loại sản phẩm
-     * name          tên sản phẩm
-     * description   mô tả
-     * startingPrice giá khởi điểm
-     * params        thuộc tính đặc thù (xem bảng bên dưới)
-     */
     public Item createItem(ItemType type, String name, String description,
                            double startingPrice, Map<String, Object> params) {
         if (type == null) throw new IllegalArgumentException("ItemType không được null.");
@@ -53,8 +36,6 @@ public class ItemFactory {
             case VEHICLE -> createVehicle(name, description, startingPrice, params);
         };
     }
-
-    // Private helpers
 
     private Electronics createElectronics(String name, String description,
                                           double startingPrice, Map<String, Object> params) {
@@ -77,15 +58,21 @@ public class ItemFactory {
         return new Vehicle(name, description, startingPrice, mileage, licensePlate);
     }
 
-    /**
-     * Lấy tham số bắt buộc từ map và ép kiểu an toàn
-     */
     @SuppressWarnings("unchecked")
     private <T> T getRequired(Map<String, Object> params, String key, Class<T> type) {
         Object value = params.get(key);
         if (value == null) {
             throw new IllegalArgumentException("Thiếu tham số bắt buộc: '" + key + "'");
         }
+
+        if (value instanceof Number num) {
+            if (type == Integer.class) {
+                return (T) Integer.valueOf(num.intValue());
+            } else if (type == Double.class) {
+                return (T) Double.valueOf(num.doubleValue());
+            }
+        }
+
         if (!type.isInstance(value)) {
             throw new IllegalArgumentException(
                     "Tham số '" + key + "' phải là " + type.getSimpleName()

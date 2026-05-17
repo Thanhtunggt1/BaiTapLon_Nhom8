@@ -1,15 +1,12 @@
 package com.auction.model.entity;
 
-/**
- * Lớp trừu tượng đại diện cho người dùng trong hệ thống
- * Các vai trò cụ thể (Bidder, Seller, Admin) kế thừa lớp này
- */
 public abstract class User extends Entity {
 
     private String username;
     private String password;
-    private String email;
+    private final String email;
     private boolean loggedIn;
+
 
     protected User(String username, String password, String email) {
         super();
@@ -19,6 +16,7 @@ public abstract class User extends Entity {
         if (password == null || password.length() < 6) {
             throw new IllegalArgumentException("Password phải có ít nhất 6 ký tự.");
         }
+
         if (email == null || !email.contains("@")) {
             throw new IllegalArgumentException("Email không hợp lệ.");
         }
@@ -28,27 +26,6 @@ public abstract class User extends Entity {
         this.loggedIn = false;
     }
 
-
-    /**
-     * Đăng nhập với username và password
-     *
-     * username tên đăng nhập
-     * password mật khẩu
-     * @return true nếu thành công
-     */
-    public boolean login(String username, String password) {
-        if (this.username.equals(username) && this.password.equals(password)) {
-            this.loggedIn = true;
-            System.out.println("[Auth] " + username + " đã đăng nhập.");
-            return true;
-        }
-        System.out.println("[Auth] Sai username hoặc password.");
-        return false;
-    }
-
-    /**
-     * Đăng xuất khỏi hệ thống
-     */
     public void logout() {
         if (loggedIn) {
             loggedIn = false;
@@ -56,15 +33,10 @@ public abstract class User extends Entity {
         }
     }
 
-    /**
-     * In thông tin người dùng — subclass có thể override để thêm chi tiết.
-     */
     public void printInfo() {
         System.out.printf("[%s] id=%s | username=%s | email=%s | loggedIn=%b%n",
                 getClass().getSimpleName(), getId(), username, email, loggedIn);
     }
-
-    // Getters / Setters
 
     public String getUsername() { return username; }
 
@@ -86,12 +58,4 @@ public abstract class User extends Entity {
 
     public String getEmail() { return email; }
 
-    public void setEmail(String email) {
-        if (email == null || !email.contains("@")) {
-            throw new IllegalArgumentException("Email không hợp lệ.");
-        }
-        this.email = email;
-    }
-
-    public boolean isLoggedIn() { return loggedIn; }
 }

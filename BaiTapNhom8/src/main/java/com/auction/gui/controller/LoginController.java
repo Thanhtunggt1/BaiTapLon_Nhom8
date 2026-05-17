@@ -2,21 +2,20 @@ package com.auction.gui.controller;
 
 import com.auction.Main;
 import com.auction.gui.SessionManager;
-import com.auction.gui.UserStore;
-import com.auction.model.entity.Bidder;
-import com.auction.model.entity.Seller;
-import com.auction.model.entity.User;
+import com.auction.network.NetworkClient;
+import com.auction.network.Message;
+import com.auction.network.dto.UserDto;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
-public class LoginController {
+import java.lang.reflect.Field;
+import java.util.List;
 
-    // Login fields
+public class LoginController {
     @FXML private TextField loginUsername;
     @FXML private PasswordField loginPassword;
     @FXML private Label loginError;
 
-    // Register fields
     @FXML private TextField regUsername;
     @FXML private PasswordField regPassword;
     @FXML private TextField regEmail;
@@ -39,18 +38,60 @@ public class LoginController {
             return;
         }
 
-        User user = UserStore.findByUsername(username);
-        if (user == null || !user.login(username, password)) {
-            setError(loginError, "Sai tên đăng nhập hoặc mật khẩu.");
+        Message response = NetworkClient.getInstance().login(username, password);
+
+        if (!response.isSuccess()) {
+            setError(loginError, response.getErrorMessage());
             return;
         }
 
-        SessionManager.setCurrentUser(user);
+        UserDto userDto = response.getPayload(UserDto.class);
+
+        NetworkClient.getInstance().setCurrentUser(userDto);
+        SessionManager.setCurrentUserDto(userDto);
+
+        com.auction.model.entity.User localUser;
+        if ("SELLER".equals(userDto.role)) {
+            localUser = new com.auction.model.entity.Seller(userDto.username, "dummyPass", "dummy@mail.com");
+
+            try {
+                Field itemsField = com.auction.model.entity.Seller.class.getDeclaredField("items");
+                itemsField.setAccessible(true);
+                @SuppressWarnings("unchecked")
+                List<com.auction.model.entity.Item> localItems = (List<com.auction.model.entity.Item>) itemsField.get(localUser);
+
+                if (userDto.items != null) {
+                    for (com.auction.network.dto.ItemDto dto : userDto.items) {
+                        com.auction.model.entity.Item item = com.auction.pattern.factory.ItemFactory.getInstance().createItem(
+                                com.auction.model.enums.ItemType.valueOf(dto.itemType),
+                                dto.name, dto.description, dto.startingPrice, dto.params
+                        );
+
+                        item.setImagesBase64(dto.imagesBase64); // Gắn List ảnh vào local
+
+                        Field idField = com.auction.model.entity.Entity.class.getDeclaredField("id");
+                        idField.setAccessible(true);
+                        idField.set(item, dto.id);
+
+                        localItems.add(item);
+                    }
+                }
+            } catch (Exception e) {
+                System.err.println("Lỗi đồng bộ kho sản phẩm: " + e.getMessage());
+            }
+
+        } else if ("ADMIN".equals(userDto.role)) {
+            localUser = new com.auction.model.entity.Admin(userDto.username, "dummyPass", "dummy@mail.com");
+        } else {
+            localUser = new com.auction.model.entity.Bidder(userDto.username, "dummyPass", "dummy@mail.com", userDto.balance);
+        }
+
+        SessionManager.setCurrentUser(localUser);
+
         try {
             Main.showMain();
         } catch (Exception e) {
             setError(loginError, "Lỗi khi mở màn hình chính: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
@@ -59,31 +100,20 @@ public class LoginController {
         String username = regUsername.getText().trim();
         String password = regPassword.getText();
         String email    = regEmail.getText().trim();
-        String role     = regRole.getValue();
+        String role     = regRole.getValue().toUpperCase();
 
         if (username.isEmpty() || password.isEmpty() || email.isEmpty()) {
             setError(regError, "Vui lòng nhập đầy đủ thông tin.");
             return;
         }
-        if (UserStore.usernameExists(username)) {
-            setError(regError, "Tên đăng nhập đã tồn tại.");
-            return;
-        }
 
-        try {
-            User newUser;
-            if ("Bidder".equals(role)) {
-                // Tự động gán số dư = 0 cho Bidder mới
-                newUser = new Bidder(username, password, email, 0);
-            } else {
-                newUser = new Seller(username, password, email);
-            }
-            UserStore.addUser(newUser);
+        Message response = NetworkClient.getInstance().register(username, password, email, role);
+        if (response.isSuccess()) {
             regError.setStyle("-fx-text-fill: #27ae60;");
-            regError.setText("Đăng ký thành công! Hãy chuyển sang tab Đăng nhập.");
+            regError.setText("Đăng ký thành công! Hãy chuyển sang Đăng nhập.");
             regUsername.clear(); regPassword.clear(); regEmail.clear();
-        } catch (IllegalArgumentException e) {
-            setError(regError, e.getMessage());
+        } else {
+            setError(regError, response.getErrorMessage());
         }
     }
 

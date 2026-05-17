@@ -6,8 +6,8 @@ public class AutoBidConfig extends Entity implements Comparable<AutoBidConfig> {
 
     private final Bidder bidder;
     private final Auction auction;
-    private double maxBid;
-    private double increment;
+    private final double maxBid;
+    private final double increment;
     private final LocalDateTime registeredTime;
 
     public AutoBidConfig(Bidder bidder, Auction auction, double maxBid, double increment) {
@@ -24,47 +24,22 @@ public class AutoBidConfig extends Entity implements Comparable<AutoBidConfig> {
         this.registeredTime = LocalDateTime.now();
     }
 
-    // Business methods
-
-    /**
-     * Tính giá auto-bid tiếp theo dựa trên giá hiện tại của phiên.
-     * currentPrice giá hiện tại cao nhất
-     * giá auto-bid đề xuất, hoặc -1 nếu vượt quá maxBid
-     */
     public double computeNextBid(double currentPrice) {
         double nextBid = currentPrice + increment;
         return nextBid <= maxBid ? nextBid : -1;
     }
 
-    /**
-     * So sánh theo thời gian đăng ký: đăng ký sớm hơn có độ ưu tiên cao hơn.
-     */
+
     @Override
     public int compareTo(AutoBidConfig other) {
         return this.registeredTime.compareTo(other.registeredTime);
     }
-
-    //Getters / Setters
 
     public Bidder getBidder() { return bidder; }
 
     public Auction getAuction() { return auction; }
 
     public double getMaxBid() { return maxBid; }
-
-    public void setMaxBid(double maxBid) {
-        if (maxBid <= 0) throw new IllegalArgumentException("maxBid phải dương.");
-        this.maxBid = maxBid;
-    }
-
-    public double getIncrement() { return increment; }
-
-    public void setIncrement(double increment) {
-        if (increment <= 0) throw new IllegalArgumentException("increment phải dương.");
-        this.increment = increment;
-    }
-
-    public LocalDateTime getRegisteredTime() { return registeredTime; }
 
     @Override
     public String toString() {

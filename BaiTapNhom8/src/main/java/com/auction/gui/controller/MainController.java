@@ -6,6 +6,8 @@ import com.auction.network.NetworkClient;
 import com.auction.network.Message;
 import com.auction.network.dto.AuctionDto;
 import com.auction.network.dto.UserDto;
+import com.auction.manager.AuctionManager;
+import com.auction.model.entity.DepositRequest;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -116,6 +118,8 @@ public class MainController {
 
         dialog.showAndWait().ifPresent(input -> {
             try {
+                NumberFormat nf = NumberFormat.getInstance(new Locale("vi", "VN"));
+
                 double amount = Double.parseDouble(input.replace(",", "").replace(".", "").trim());
                 if (amount <= 0) {
                     Alert a = new Alert(Alert.AlertType.ERROR, "Số tiền nạp phải lớn hơn 0.");
@@ -123,28 +127,20 @@ public class MainController {
                     return;
                 }
 
-                Message response = NetworkClient.getInstance().deposit(amount);
+                com.auction.model.entity.User localUser = SessionManager.getCurrentUser();
 
-                if (response.isSuccess()) {
-                    UserDto updatedUser = response.getPayload(UserDto.class);
-                    SessionManager.setCurrentUserDto(updatedUser);
+                if (localUser instanceof com.auction.model.entity.Bidder bidder) {
+                    DepositRequest request = bidder.requestDeposit(amount);
+                    AuctionManager.getInstance().addDepositRequest(request);
 
-                    com.auction.model.entity.User localUser = SessionManager.getCurrentUser();
-                    if (localUser instanceof com.auction.model.entity.Bidder bidder) {
-                        bidder.deposit(amount);
-                    }
-
-                    refreshBalanceView();
-                    try {
-                        AuctionDetailController.updateAllBalances();
-                    } catch (Exception ignored) {}
-
-                    NumberFormat nf = NumberFormat.getInstance(new Locale("vi", "VN"));
-                    Alert a = new Alert(Alert.AlertType.INFORMATION, "Nạp thành công " + nf.format(amount) + " ₫!");
+                    Alert a = new Alert(Alert.AlertType.INFORMATION,
+                            "Đã gửi yêu cầu nạp " + nf.format(amount) + " ₫. Vui lòng chờ Admin xác nhận.");
                     a.setHeaderText(null);
                     a.showAndWait();
+
+                    refreshBalanceView();
                 } else {
-                    Alert a = new Alert(Alert.AlertType.ERROR, response.getErrorMessage());
+                    Alert a = new Alert(Alert.AlertType.ERROR, "Chỉ Bidder mới được gửi yêu cầu nạp tiền.");
                     a.showAndWait();
                 }
 

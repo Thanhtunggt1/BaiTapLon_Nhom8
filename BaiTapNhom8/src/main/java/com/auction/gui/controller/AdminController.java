@@ -3,6 +3,9 @@ package com.auction.gui.controller;
 import com.auction.network.NetworkClient;
 import com.auction.network.Message;
 import com.auction.network.dto.AuctionDto;
+import com.auction.manager.AuctionManager;
+import com.auction.model.entity.Admin;
+import com.auction.model.entity.DepositRequest;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -26,6 +29,11 @@ public class AdminController {
     @FXML private TableColumn<AuctionDto, String> colAdminPrice;
     @FXML private TableColumn<AuctionDto, String> colAdminLeader;
     @FXML private TableColumn<AuctionDto, String> colAdminStatus;
+    @FXML private TableView<DepositRequest> depositRequestsTable;
+    @FXML private TableColumn<DepositRequest, String> colDepositId;
+    @FXML private TableColumn<DepositRequest, String> colDepositBidder;
+    @FXML private TableColumn<DepositRequest, String> colDepositAmount;
+    @FXML private TableColumn<DepositRequest, String> colDepositStatus;
 
     private final NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
 
@@ -37,6 +45,10 @@ public class AdminController {
         colAdminPrice.setCellValueFactory(d -> new SimpleStringProperty(nf.format(d.getValue().currentPrice)));
         colAdminLeader.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().currentLeader == null ? "---" : d.getValue().currentLeader));
         colAdminStatus.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().status));
+        colDepositId.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getId()));
+        colDepositBidder.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getBidder().getUsername()));
+        colDepositAmount.setCellValueFactory(d -> new SimpleStringProperty(nf.format(d.getValue().getAmount())));
+        colDepositStatus.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getStatus().name()));
         loadData();
     }
 
@@ -77,6 +89,29 @@ public class AdminController {
         NetworkClient.getInstance().markPaid(sel.id);
         loadData();
     }
+    @FXML
+    private void handleApproveDeposit() {
+        DepositRequest request = depositRequestsTable.getSelectionModel().getSelectedItem();
+        if (request == null) return;
+
+        Admin admin = new Admin("admin", "123456", "admin@gmail.com");
+        admin.approveDeposit(request);
+
+        loadData();
+        alert("Thành công", "Đã duyệt yêu cầu nạp tiền.");
+    }
+
+    @FXML
+    private void handleRejectDeposit() {
+        DepositRequest request = depositRequestsTable.getSelectionModel().getSelectedItem();
+        if (request == null) return;
+
+        Admin admin = new Admin("admin", "123456", "admin@gmail.com");
+        admin.rejectDeposit(request);
+
+        loadData();
+        alert("Thành công", "Đã từ chối yêu cầu nạp tiền.");
+    }
 
     private void loadData() {
         new Thread(() -> {
@@ -85,6 +120,9 @@ public class AdminController {
                 List<AuctionDto> list = res.getPayload(new com.google.gson.reflect.TypeToken<List<AuctionDto>>(){}.getType());
                 Platform.runLater(() -> {
                     allAuctionsTable.setItems(FXCollections.observableArrayList(list));
+                    depositRequestsTable.setItems(
+                            FXCollections.observableArrayList(AuctionManager.getInstance().getDepositRequests())
+                    );
                     totalAuctionsLabel.setText(String.valueOf(list.size()));
                     runningLabel.setText(String.valueOf(list.stream().filter(a -> "RUNNING".equals(a.status)).count()));
                 });

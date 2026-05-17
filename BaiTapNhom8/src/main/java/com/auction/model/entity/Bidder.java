@@ -88,6 +88,14 @@ public class Bidder extends User implements Observer {
         this.balance += amount;
     }
 
+    public DepositRequest requestDeposit(double amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Số tiền yêu cầu nạp phải dương.");
+        }
+
+        return new DepositRequest(this, amount);
+    }
+
 
     public void deduct(double amount) {
         if (amount > balance) throw new InsufficientBalanceException("Số dư không đủ.");

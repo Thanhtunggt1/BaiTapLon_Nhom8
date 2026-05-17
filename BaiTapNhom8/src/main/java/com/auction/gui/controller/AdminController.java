@@ -53,6 +53,7 @@ public class AdminController {
         colAdminPrice.setCellValueFactory(d -> new SimpleStringProperty(nf.format(d.getValue().currentPrice)));
         colAdminLeader.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().currentLeader == null ? "---" : d.getValue().currentLeader));
         colAdminStatus.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().status));
+ HEAD
  
 
         colAdminStatus.setCellFactory(col -> new TableCell<>() {
@@ -71,10 +72,15 @@ public class AdminController {
                 setStyle(rightAlign + " " + style);
             }
         });
+
+ 6fc3332 (ham xac nhan tien)
         colDepositId.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getId()));
         colDepositBidder.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getBidder().getUsername()));
         colDepositAmount.setCellValueFactory(d -> new SimpleStringProperty(nf.format(d.getValue().getAmount())));
         colDepositStatus.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getStatus().name()));
+ HEAD
+ 6fc3332 (ham xac nhan tien)
+
  6fc3332 (ham xac nhan tien)
         loadData();
     }

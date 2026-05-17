@@ -47,7 +47,6 @@ public class LoginController {
 
         UserDto userDto = response.getPayload(UserDto.class);
 
-        // Lưu thông tin người dùng vào NetworkClient và SessionManager
         NetworkClient.getInstance().setCurrentUser(userDto);
         SessionManager.setCurrentUserDto(userDto);
 
@@ -55,9 +54,7 @@ public class LoginController {
         if ("SELLER".equals(userDto.role)) {
             localUser = new com.auction.model.entity.Seller(userDto.username, "dummyPass", "dummy@mail.com");
 
-            // Đồng bộ kho sản phẩm từ Server về Client
             try {
-                // Sử dụng Reflection để truy cập danh sách items trong class Seller
                 Field itemsField = com.auction.model.entity.Seller.class.getDeclaredField("items");
                 itemsField.setAccessible(true);
                 @SuppressWarnings("unchecked")
@@ -65,13 +62,13 @@ public class LoginController {
 
                 if (userDto.items != null) {
                     for (com.auction.network.dto.ItemDto dto : userDto.items) {
-                        // Tái tạo đối tượng Item thông qua Factory
                         com.auction.model.entity.Item item = com.auction.pattern.factory.ItemFactory.getInstance().createItem(
                                 com.auction.model.enums.ItemType.valueOf(dto.itemType),
                                 dto.name, dto.description, dto.startingPrice, dto.params
                         );
 
-                        // Gán lại ID chính xác từ Database thay vì ID ngẫu nhiên mới
+                        item.setImagesBase64(dto.imagesBase64); // Gắn List ảnh vào local
+
                         Field idField = com.auction.model.entity.Entity.class.getDeclaredField("id");
                         idField.setAccessible(true);
                         idField.set(item, dto.id);

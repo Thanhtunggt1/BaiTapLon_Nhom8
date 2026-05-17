@@ -11,10 +11,16 @@ import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
+import javafx.stage.FileChooser;
+import java.io.File;
+import java.nio.file.Files;
+import java.util.Base64;
+import javafx.scene.layout.HBox;
 
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -160,6 +166,29 @@ public class SellerController {
         Label lArtist= new Label("Nghệ sĩ:"); Label lYear = new Label("Năm sáng tác:");
         Label lMile = new Label("Số km:"); Label lPlate = new Label("Biển số:");
 
+        // Nút chọn nhiều ảnh
+        Button btnUpload = new Button("Chọn các ảnh (Giữ Ctrl)");
+        Label lblImageCount = new Label("Đã chọn: 0 ảnh");
+        final List<String> base64List = new ArrayList<>();
+
+        btnUpload.setOnAction(e -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
+            List<File> selectedFiles = fileChooser.showOpenMultipleDialog(null);
+            if (selectedFiles != null) {
+                base64List.clear();
+                for (File file : selectedFiles) {
+                    try {
+                        byte[] bytes = Files.readAllBytes(file.toPath());
+                        base64List.add(Base64.getEncoder().encodeToString(bytes));
+                    } catch (Exception ex) { ex.printStackTrace(); }
+                }
+                lblImageCount.setText("Đã chọn: " + base64List.size() + " ảnh");
+            }
+        });
+        HBox imageBox = new HBox(10, lblImageCount, btnUpload);
+        imageBox.setAlignment(javafx.geometry.Pos.CENTER_RIGHT);
+
         int row = 0;
         g.add(new Label("Loại sản phẩm:"), 0, row); g.add(typeBox, 1, row++);
         g.add(new Label("Tên:"), 0, row); g.add(name, 1, row++);
@@ -167,7 +196,8 @@ public class SellerController {
         g.add(new Label("Giá khởi điểm:"), 0, row); g.add(price, 1, row++);
         g.add(lBrand, 0, row); g.add(brand, 1, row++); g.add(lWarr, 0, row); g.add(warranty, 1, row++);
         g.add(lArtist, 0, row); g.add(artist, 1, row++); g.add(lYear, 0, row); g.add(year, 1, row++);
-        g.add(lMile, 0, row); g.add(mileage, 1, row++); g.add(lPlate, 0, row); g.add(plate, 1, row);
+        g.add(lMile, 0, row); g.add(mileage, 1, row++); g.add(lPlate, 0, row); g.add(plate, 1, row++);
+        g.add(new Label("Ảnh minh họa:"), 0, row); g.add(imageBox, 1, row);
 
         Runnable toggle = () -> {
             ItemType t = typeBox.getValue();
@@ -194,6 +224,7 @@ public class SellerController {
                 com.auction.network.dto.CreateItemDto dto = new com.auction.network.dto.CreateItemDto();
                 dto.name = name.getText().trim(); dto.description = desc.getText().trim();
                 dto.startingPrice = p; dto.itemType = typeBox.getValue().toString(); dto.params = params;
+                dto.imagesBase64 = base64List; // Truyền List ảnh
 
                 com.auction.network.Message res = com.auction.network.NetworkClient.getInstance().createItem(dto);
                 if (res.isSuccess()) {
@@ -201,6 +232,7 @@ public class SellerController {
                     String serverId = (String) map.get("id");
 
                     Item localItem = getSeller().createItem(dto.name, dto.description, p, typeBox.getValue(), params);
+                    localItem.setImagesBase64(new ArrayList<>(base64List));
                     java.lang.reflect.Field idField = Entity.class.getDeclaredField("id");
                     idField.setAccessible(true);
                     idField.set(localItem, serverId);
@@ -399,7 +431,6 @@ public class SellerController {
                     else alert("Lỗi Server", res.getErrorMessage());
                 }
             } else {
-                // --- SỬA Ở ĐÂY: Hiện đầy đủ chữ cho thông báo Bắt buộc bán ---
                 if (confirm("Bắt buộc bán", "Thời gian còn dưới 60 phút và đã có người đặt giá.\nBạn có muốn KẾT THÚC PHIÊN NGAY BÂY GIỜ để chốt bán không?")) {
                     com.auction.network.Message res = com.auction.network.NetworkClient.getInstance().endAuction(sel.id);
                     if (res.isSuccess()) {
@@ -415,7 +446,6 @@ public class SellerController {
         Alert a = new Alert(Alert.AlertType.CONFIRMATION, msg, ButtonType.YES, ButtonType.NO);
         a.setTitle(title);
         a.setHeaderText(null);
-        // ÉP GIÃN NỞ ĐỂ HIỆN ĐỦ NỘI DUNG
         a.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         java.util.Optional<ButtonType> res = a.showAndWait();
         return res.isPresent() && res.get() == ButtonType.YES;
@@ -433,7 +463,6 @@ public class SellerController {
         Alert a = new Alert(Alert.AlertType.INFORMATION, msg, ButtonType.OK);
         a.setTitle(title);
         a.setHeaderText(null);
-        // ÉP GIÃN NỞ ĐỂ HIỆN ĐỦ NỘI DUNG
         a.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         a.showAndWait();
     }

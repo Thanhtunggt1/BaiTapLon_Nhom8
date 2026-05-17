@@ -7,10 +7,13 @@ import com.auction.model.enums.ItemType;
 import com.auction.pattern.factory.ItemFactory;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DataLoader {
@@ -19,7 +22,6 @@ public class DataLoader {
         try (Connection conn = DatabaseConnection.getConnection()) {
             System.out.println("[DataLoader] Bắt đầu đồng bộ dữ liệu từ MySQL lên RAM...");
 
-            // 1. TẢI TẤT CẢ USERS
             String sqlUsers = "SELECT * FROM users";
             try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sqlUsers)) {
                 while (rs.next()) {
@@ -41,7 +43,6 @@ public class DataLoader {
                 }
             }
 
-            // 2. TẢI TẤT CẢ ITEMS VÀ GẮN VÀO SELLER
             Map<String, Item> itemMap = new HashMap<>();
             String sqlItems = "SELECT * FROM items";
             try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sqlItems)) {
@@ -63,6 +64,10 @@ public class DataLoader {
 
                     ItemType type = ItemType.valueOf(typeStr);
                     Item item = ItemFactory.getInstance().createItem(type, name, desc, startPrice, params);
+
+                    // Tải nhiều ảnh
+                    item.setImagesBase64(loadImagesForItem(conn, id));
+
                     setEntityId(item, id);
                     itemMap.put(id, item);
 
@@ -73,7 +78,6 @@ public class DataLoader {
                 }
             }
 
-            // 3. TẢI TẤT CẢ AUCTIONS (PHIÊN ĐẤU GIÁ)
             Map<String, Auction> auctionMap = new HashMap<>();
             String sqlAuctions = "SELECT * FROM auctions";
             try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sqlAuctions)) {
@@ -92,7 +96,6 @@ public class DataLoader {
                     if (item != null && sellerUser instanceof Seller seller) {
                         Auction auction = new Auction(item, seller, start.toLocalDateTime(), end.toLocalDateTime());
                         setEntityId(auction, id);
-
                         setAuctionStatus(auction, AuctionStatus.valueOf(statusStr), currentPrice);
 
                         getSellerAuctions(seller).add(auction);
@@ -102,7 +105,6 @@ public class DataLoader {
                 }
             }
 
-            // 4. TẢI LỊCH SỬ ĐẶT GIÁ (ĐỂ KHÔI PHỤC NGƯỜI DẪN ĐẦU)
             String sqlBids = "SELECT * FROM bid_transactions ORDER BY id ASC";
             try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sqlBids)) {
                 while (rs.next()) {
@@ -117,14 +119,11 @@ public class DataLoader {
                     if (auction != null && bidderUser instanceof Bidder bidder) {
                         BidTransaction tx = new BidTransaction(bidder, auction, amount);
                         setEntityId(tx, id);
-
-                        // Cập nhật lại lịch sử đặt giá và người dẫn đầu thủ công để khôi phục
                         getAuctionBidHistory(auction).add(tx);
                         setAuctionLeaderAndPrice(auction, amount, bidder);
                     }
                 }
             }
-
             System.out.println("[DataLoader] Đã tải xong dữ liệu từ MySQL vào RAM!");
         } catch (Exception e) {
             System.err.println("[DataLoader] Lỗi: " + e.getMessage());
@@ -132,27 +131,37 @@ public class DataLoader {
         }
     }
 
-    // --- Các hàm Dùng Reflection để bypass tính Đóng Gói (Encapsulation) khi khôi phục dữ liệu ---
+    private static List<String> loadImagesForItem(Connection conn, String itemId) {
+        List<String> images = new ArrayList<>();
+        String sql = "SELECT image_data FROM item_images WHERE item_id = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, itemId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                images.add(rs.getString("image_data"));
+            }
+        } catch (Exception e) {
+            System.err.println("Lỗi load ảnh cho item: " + itemId);
+        }
+        return images;
+    }
+
     private static void setEntityId(Entity entity, String id) throws Exception {
         java.lang.reflect.Field f = Entity.class.getDeclaredField("id");
         f.setAccessible(true); f.set(entity, id);
     }
-
     private static java.util.List<Item> getSellerItems(Seller seller) throws Exception {
         java.lang.reflect.Field f = Seller.class.getDeclaredField("items");
         f.setAccessible(true); return (java.util.List<Item>) f.get(seller);
     }
-
     private static java.util.List<Auction> getSellerAuctions(Seller seller) throws Exception {
         java.lang.reflect.Field f = Seller.class.getDeclaredField("auctions");
         f.setAccessible(true); return (java.util.List<Auction>) f.get(seller);
     }
-
     private static java.util.List<BidTransaction> getAuctionBidHistory(Auction auction) throws Exception {
         java.lang.reflect.Field f = Auction.class.getDeclaredField("bidHistory");
         f.setAccessible(true); return (java.util.List<BidTransaction>) f.get(auction);
     }
-
     private static void setAuctionStatus(Auction auction, AuctionStatus status, double highestPrice) throws Exception {
         java.lang.reflect.Field fStatus = Auction.class.getDeclaredField("status");
         fStatus.setAccessible(true); fStatus.set(auction, status);
@@ -160,7 +169,6 @@ public class DataLoader {
         java.lang.reflect.Field fPrice = Auction.class.getDeclaredField("currentHighestPrice");
         fPrice.setAccessible(true); fPrice.setDouble(auction, highestPrice);
     }
-
     private static void setAuctionLeaderAndPrice(Auction auction, double highestPrice, Bidder leader) throws Exception {
         java.lang.reflect.Field fPrice = Auction.class.getDeclaredField("currentHighestPrice");
         fPrice.setAccessible(true); fPrice.setDouble(auction, highestPrice);

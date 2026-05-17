@@ -62,4 +62,33 @@ public class UserDAO {
     public static User findByUsername(String username) {
         return userCache.get(username);
     }
+
+    // --- 2 HÀM MỚI CHO GIỚI HẠN NẠP TIỀN ---
+
+    public static double getTodayDepositTotal(String bidderId) {
+        String sql = "SELECT SUM(amount) AS total FROM deposit_history WHERE bidder_id = ? AND DATE(created_at) = CURDATE()";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, bidderId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getDouble("total");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0.0;
+    }
+
+    public static void insertDepositHistory(String bidderId, double amount) {
+        String sql = "INSERT INTO deposit_history (bidder_id, amount) VALUES (?, ?)";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, bidderId);
+            stmt.setDouble(2, amount);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

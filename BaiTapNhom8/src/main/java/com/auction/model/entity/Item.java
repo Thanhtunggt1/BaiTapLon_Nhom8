@@ -1,10 +1,14 @@
 package com.auction.model.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Item extends Entity {
 
     private String name;
     private String description;
     private double startingPrice;
+    private List<String> imagesBase64; // Lưu nhiều ảnh
 
     protected Item(String name, String description, double startingPrice) {
         super();
@@ -15,17 +19,15 @@ public abstract class Item extends Entity {
             throw new IllegalArgumentException("Giá khởi điểm không được âm.");
         }
         this.name = name;
-
-
         this.description = description != null ? description : "";
         this.startingPrice = startingPrice;
+        this.imagesBase64 = new ArrayList<>();
     }
 
     public void printInfo() {
         System.out.printf("[%s] id=%s | Tên: %s | Giá khởi điểm: %.2f%n  Mô tả: %s%n",
                 getClass().getSimpleName(), getId(), name, startingPrice, description);
     }
-
 
     public String getName() { return name; }
 
@@ -49,5 +51,13 @@ public abstract class Item extends Entity {
             throw new IllegalArgumentException("Giá khởi điểm không được âm.");
         }
         this.startingPrice = startingPrice;
+    }
+
+    public List<String> getImagesBase64() {
+        return imagesBase64;
+    }
+
+    public void setImagesBase64(List<String> imagesBase64) {
+        this.imagesBase64 = imagesBase64 != null ? imagesBase64 : new ArrayList<>();
     }
 }

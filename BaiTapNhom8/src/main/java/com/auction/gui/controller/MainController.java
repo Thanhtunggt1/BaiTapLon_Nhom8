@@ -6,6 +6,8 @@ import com.auction.network.NetworkClient;
 import com.auction.network.Message;
 import com.auction.network.dto.AuctionDto;
 import com.auction.network.dto.UserDto;
+import com.auction.manager.AuctionManager;
+import com.auction.model.entity.DepositRequest;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -155,9 +157,15 @@ public class MainController {
 
         dialog.showAndWait().ifPresent(result -> {
             try {
+
                 double amount = Double.parseDouble(result.getKey().replace(",", "").replace(".", "").trim());
                 String password = result.getValue();
 
+
+                NumberFormat nf = NumberFormat.getInstance(new Locale("vi", "VN"));
+
+                double amount = Double.parseDouble(input.replace(",", "").replace(".", "").trim());
+ 6fc3332 (ham xac nhan tien)
                 if (amount <= 0) {
                     Alert a = new Alert(Alert.AlertType.ERROR, "Số tiền nạp phải lớn hơn 0.");
                     a.showAndWait();
@@ -169,11 +177,16 @@ public class MainController {
                     return;
                 }
 
+
                 Message response = NetworkClient.getInstance().deposit(amount, password);
 
-                if (response.isSuccess()) {
-                    UserDto updatedUser = response.getPayload(UserDto.class);
-                    SessionManager.setCurrentUserDto(updatedUser);
+                com.auction.model.entity.User localUser = SessionManager.getCurrentUser();
+ 6fc3332 (ham xac nhan tien)
+
+                if (localUser instanceof com.auction.model.entity.Bidder bidder) {
+                    DepositRequest request = bidder.requestDeposit(amount);
+                    AuctionManager.getInstance().addDepositRequest(request);
+
 
                     com.auction.model.entity.User localUser = SessionManager.getCurrentUser();
                     if (localUser instanceof com.auction.model.entity.Bidder bidder) {
@@ -188,9 +201,16 @@ public class MainController {
 
                     NumberFormat nf = NumberFormat.getInstance(new Locale("vi", "VN"));
                     Alert a = new Alert(Alert.AlertType.INFORMATION, "Nạp thành công " + nf.format(amount) + " ₫!");
+
+                    Alert a = new Alert(Alert.AlertType.INFORMATION,
+                            "Đã gửi yêu cầu nạp " + nf.format(amount) + " ₫. Vui lòng chờ Admin xác nhận.");
+ 6fc3332 (ham xac nhan tien)
                     a.setHeaderText(null);
                     a.showAndWait();
+
+                    refreshBalanceView();
                 } else {
+
                     String errMsg = response.getErrorMessage();
                     if (errMsg.startsWith("LOCK_TIMER:")) {
                         int initialSecs = 180;
@@ -226,6 +246,10 @@ public class MainController {
                         a.setHeaderText(null);
                         a.showAndWait();
                     }
+
+                    Alert a = new Alert(Alert.AlertType.ERROR, "Chỉ Bidder mới được gửi yêu cầu nạp tiền.");
+                    a.showAndWait();
+ 6fc3332 (ham xac nhan tien)
                 }
 
             } catch (NumberFormatException ex) {

@@ -75,7 +75,7 @@ public class ClientHandler implements Runnable {
                             dto.description = i.getDescription();
                             dto.startingPrice = i.getStartingPrice();
                             dto.itemType = i.getClass().getSimpleName().toUpperCase();
-                            dto.imagesBase64 = i.getImagesBase64(); // Gửi list ảnh
+                            dto.imagesBase64 = i.getImagesBase64();
 
                             java.util.Map<String, Object> params = new java.util.HashMap<>();
                             if ("ELECTRONICS".equals(dto.itemType)) {
@@ -157,7 +157,7 @@ public class ClientHandler implements Runnable {
                     try {
                         Item item = seller.createItem(dto.name, dto.description, dto.startingPrice,
                                 com.auction.model.enums.ItemType.valueOf(dto.itemType), dto.params);
-                        item.setImagesBase64(dto.imagesBase64); // Cập nhật List ảnh ở RAM
+                        item.setImagesBase64(dto.imagesBase64);
                         ItemDAO.insertItem(item, seller.getId(), dto.itemType, dto.params);
                         Map<String, String> payload = new HashMap<>();
                         payload.put("id", item.getId());
@@ -233,6 +233,22 @@ public class ClientHandler implements Runnable {
                             AuctionDAO.updateAuctionStatus(a.getId(), a.getStatus().name());
                         });
                 return Message.success(MessageType.END_AUCTION, "Đã kết thúc");
+            }
+
+            case CANCEL_AUCTION: {
+                String id = request.getPayload(String.class);
+                try {
+                    for (Auction a : AuctionManager.getInstance().getAllAuctions()) {
+                        if (a.getId().equals(id)) {
+                            a.cancelAuction();
+                            AuctionDAO.updateAuctionStatus(a.getId(), "CANCELED");
+                            return Message.success(MessageType.CANCEL_AUCTION, "Đã hủy phiên đấu giá thành công");
+                        }
+                    }
+                } catch (Exception e) {
+                    return Message.error(MessageType.CANCEL_AUCTION, e.getMessage());
+                }
+                return Message.error(MessageType.CANCEL_AUCTION, "Không tìm thấy phiên đấu giá này.");
             }
 
             case MARK_PAID: {
@@ -352,7 +368,7 @@ public class ClientHandler implements Runnable {
         dto.sellerUsername = a.getSeller().getUsername();
         dto.currentLeader = (a.getCurrentLeader() != null) ? a.getCurrentLeader().getUsername() : null;
         dto.bidCount = a.getBidHistory().size();
-        dto.imagesBase64 = a.getItem().getImagesBase64(); // Gửi List ảnh
+        dto.imagesBase64 = a.getItem().getImagesBase64();
         dto.history = a.getBidHistory().stream().map(tx -> {
             AuctionDto.BidEntryDto entry = new AuctionDto.BidEntryDto();
             entry.bidderName = tx.getBidder().getUsername();

@@ -12,6 +12,13 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import com.auction.model.entity.DepositHistory;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+
+import java.time.format.DateTimeFormatter;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -30,6 +37,10 @@ public class MainController {
     @FXML private Label userBalanceLabel;
     @FXML private Button headerDepositButton;
     @FXML private TabPane mainTabPane;
+    @FXML private TableView<DepositHistory> depositHistoryTable;
+    @FXML private TableColumn<DepositHistory, String> colDepositTime;
+    @FXML private TableColumn<DepositHistory, String> colDepositAmount;
+    @FXML private TableColumn<DepositHistory, String> colBalanceAfter;
 
     @FXML
     public void initialize() {
@@ -46,6 +57,8 @@ public class MainController {
         userInfoLabel.setText(user.username + "  |  " + role);
 
         refreshBalanceView();
+        setupDepositHistoryTable();
+        loadDepositHistory();
 
         try {
             addTab("Danh Sách Đấu Giá", "/com/auction/gui/auction_list.fxml");
@@ -168,6 +181,7 @@ public class MainController {
                     }
 
                     refreshBalanceView();
+                    loadDepositHistory();
                     try {
                         AuctionDetailController.updateAllBalances();
                     } catch (Exception ignored) {}
@@ -219,6 +233,33 @@ public class MainController {
                 a.showAndWait();
             }
         });
+    }
+
+    private void setupDepositHistoryTable() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        NumberFormat nf = NumberFormat.getInstance(new Locale("vi", "VN"));
+
+        colDepositTime.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getCreatedAt().format(formatter))
+        );
+
+        colDepositAmount.setCellValueFactory(d ->
+                new SimpleStringProperty(nf.format(d.getValue().getAmount()) + " đ")
+        );
+
+        colBalanceAfter.setCellValueFactory(d ->
+                new SimpleStringProperty(nf.format(d.getValue().getBalanceAfterDeposit()) + " đ")
+        );
+    }
+
+    private void loadDepositHistory() {
+        com.auction.model.entity.User localUser = SessionManager.getCurrentUser();
+
+        if (localUser instanceof com.auction.model.entity.Bidder bidder) {
+            depositHistoryTable.setItems(
+                    FXCollections.observableArrayList(bidder.getDepositHistories())
+            );
+        }
     }
 
     private void addTab(String title, String fxmlPath) throws Exception {

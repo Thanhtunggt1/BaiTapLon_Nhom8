@@ -6,6 +6,9 @@ import com.auction.exception.InvalidBidException;
 import com.auction.model.enums.AuctionStatus;
 import com.auction.pattern.observer.Observer;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
@@ -13,6 +16,7 @@ public class Bidder extends User implements Observer {
     private double balance;
     private int unpaidWarnings = 0;
     private boolean isBanned = false;
+    private final List<DepositHistory> depositHistories = new ArrayList<>();
 
     // --- BIẾN QUẢN LÝ KHÓA NẠP TIỀN ---
     private int failedDepositAttempts = 0;
@@ -143,7 +147,12 @@ public class Bidder extends User implements Observer {
             throw new IllegalStateException("Tài khoản đã bị khóa, không thể nạp tiền.");
         }
         if (amount <= 0) throw new IllegalArgumentException("Số tiền nạp phải dương.");
+
         this.balance += amount;
+        depositHistories.add(new DepositHistory(amount, this.balance));
+    }
+    public List<DepositHistory> getDepositHistories() {
+        return Collections.unmodifiableList(depositHistories);
     }
 
     public void deduct(double amount) {

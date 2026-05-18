@@ -5,24 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1db9cef5-daac-4b04-9043-8b738c6d99ef" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/gui/controller/AdminController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/gui/controller/AdminController$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/gui/controller/AdminController$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/gui/controller/AdminController$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/gui/controller/AdminController.class" beforeDir="false" afterPath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/gui/controller/AdminController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/gui/controller/AuctionDetailController.class" beforeDir="false" afterPath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/gui/controller/AuctionDetailController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/src/main/java/com/auction/model/entity/DepositHistory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BaiTapNhom8/src/main/java/com/auction/gui/controller/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BaiTapNhom8/src/main/java/com/auction/gui/controller/MainController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BaiTapNhom8/src/main/java/com/auction/model/entity/Bidder.java" beforeDir="false" afterPath="$PROJECT_DIR$/BaiTapNhom8/src/main/java/com/auction/model/entity/Bidder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BaiTapNhom8/src/main/resources/com/auction/gui/main.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/BaiTapNhom8/src/main/resources/com/auction/gui/main.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/gui/controller/MainController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/gui/controller/MainController$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/gui/controller/MainController.class" beforeDir="false" afterPath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/gui/controller/MainController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/manager/AuctionManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/manager/AuctionManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/model/entity/Auction.class" beforeDir="false" afterPath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/model/entity/Auction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/gui/main.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/gui/main.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/model/entity/Bidder.class" beforeDir="false" afterPath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/model/entity/Bidder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/network/NetworkClient$AdminCancelPayload.class" beforeDir="false" afterPath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/network/NetworkClient$AdminCancelPayload.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/network/NetworkClient$AutoBidPayload.class" beforeDir="false" afterPath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/network/NetworkClient$AutoBidPayload.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/network/NetworkClient$DepositPayload.class" beforeDir="false" afterPath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/network/NetworkClient$DepositPayload.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/network/NetworkClient$LoginPayload.class" beforeDir="false" afterPath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/network/NetworkClient$LoginPayload.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/network/NetworkClient$PromotePayload.class" beforeDir="false" afterPath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/network/NetworkClient$PromotePayload.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/network/NetworkClient$RegisterPayload.class" beforeDir="false" afterPath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/network/NetworkClient$RegisterPayload.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/network/NetworkClient$UpdateItemPayload.class" beforeDir="false" afterPath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/network/NetworkClient$UpdateItemPayload.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/network/NetworkClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/network/NetworkClient.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/server/ClientHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/server/ClientHandler.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -260,22 +260,40 @@ public class ClientHandler implements Runnable {
             }
 
             case DEPOSIT: {
-                double amount = request.getPayload(Double.class);
+                DepositPayload dto = request.getPayload(DepositPayload.class);
                 if (this.currentUser instanceof Bidder bidder) {
                     if (bidder.isBanned()) {
                         return Message.error(MessageType.DEPOSIT_RESPONSE, "Tài khoản của bạn đã bị khóa, không thể nạp tiền.");
                     }
+
+                    if (bidder.isDepositLocked()) {
+                        long secs = bidder.getDepositLockRemainingSeconds();
+                        return Message.error(MessageType.DEPOSIT_RESPONSE, "LOCK_TIMER:" + secs);
+                    }
+
+                    if (!bidder.getPassword().equals(dto.password)) {
+                        bidder.recordFailedDeposit();
+                        if (bidder.isDepositLocked()) {
+                            long secs = bidder.getDepositLockRemainingSeconds();
+                            return Message.error(MessageType.DEPOSIT_RESPONSE, "LOCK_TIMER:" + secs);
+                        } else {
+                            return Message.error(MessageType.DEPOSIT_RESPONSE, "Sai mật khẩu! Bạn còn " + (3 - bidder.getFailedDepositAttempts()) + " lần thử.");
+                        }
+                    }
+
+                    bidder.resetFailedDeposit();
+
                     double DAILY_LIMIT = 50000000.0;
                     double todayTotal = UserDAO.getTodayDepositTotal(bidder.getId());
 
-                    if (todayTotal + amount > DAILY_LIMIT) {
+                    if (todayTotal + dto.amount > DAILY_LIMIT) {
                         return Message.error(MessageType.DEPOSIT_RESPONSE,
                                 "Vượt quá giới hạn nạp tiền! Bạn chỉ có thể nạp thêm tối đa " + String.format("%,.0f", (DAILY_LIMIT - todayTotal)) + " ₫ hôm nay.");
                     }
 
-                    bidder.deposit(amount);
+                    bidder.deposit(dto.amount);
                     UserDAO.updateUserBalance(bidder);
-                    UserDAO.insertDepositHistory(bidder.getId(), amount);
+                    UserDAO.insertDepositHistory(bidder.getId(), dto.amount);
 
                     UserDto respDto = new UserDto();
                     respDto.username = bidder.getUsername();
@@ -391,9 +409,9 @@ public class ClientHandler implements Runnable {
 
     private static class LoginPayload { String username; String password; }
     private static class RegisterPayload { String username; String password; String email; String role; }
-
     private static class PromotePayload { String username; String role; }
     private static class AutoBidPayload { String auctionId; double maxBid; double increment; }
     private static class UpdateItemPayload { String itemId; String name; String description; double startingPrice; }
     private static class AdminCancelPayload { String auctionId; String reason; }
+    private static class DepositPayload { double amount; String password; }
 }

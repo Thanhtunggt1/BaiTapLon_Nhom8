@@ -31,12 +31,38 @@ public class AdminController {
 
     @FXML
     public void initialize() {
+        String rightAlign = "-fx-alignment: CENTER-RIGHT; -fx-padding: 0 10 0 0;";
+        colId.setStyle(rightAlign);
+        colAdminItem.setStyle(rightAlign);
+        colAdminSeller.setStyle(rightAlign);
+        colAdminPrice.setStyle(rightAlign);
+        colAdminLeader.setStyle(rightAlign);
+        colAdminStatus.setStyle(rightAlign);
+
         colId.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().id));
         colAdminItem.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().itemName));
         colAdminSeller.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().sellerUsername));
         colAdminPrice.setCellValueFactory(d -> new SimpleStringProperty(nf.format(d.getValue().currentPrice)));
         colAdminLeader.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().currentLeader == null ? "---" : d.getValue().currentLeader));
         colAdminStatus.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().status));
+
+        colAdminStatus.setCellFactory(col -> new TableCell<>() {
+            @Override protected void updateItem(String s, boolean empty) {
+                super.updateItem(s, empty);
+                if (empty || s == null) { setText(null); setStyle(rightAlign); return; }
+                setText(s);
+                String style = "";
+                switch (s) {
+                    case "OPEN": style = "-fx-text-fill: #f39c12;"; break;
+                    case "RUNNING": style = "-fx-text-fill: #27ae60;"; break;
+                    case "FINISHED": style = "-fx-text-fill: #2980b9;"; break;
+                    case "CANCELED": style = "-fx-text-fill: #e74c3c;"; break;
+                    case "PAID": style = "-fx-text-fill: #8e44ad;"; break;
+                }
+                setStyle(rightAlign + " " + style);
+            }
+        });
+
         loadData();
     }
 

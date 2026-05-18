@@ -59,6 +59,10 @@ public class ClientHandler implements Runnable {
                 User user = UserDAO.findByUsername(loginDto.username);
 
                 if (user != null && user.getPassword().equals(loginDto.password)) {
+                    if (user instanceof Bidder && ((Bidder) user).isBanned()) {
+                        return Message.error(MessageType.LOGIN_RESPONSE, "Tài khoản của bạn đã bị KHÓA do không thanh toán quá 3 lần.");
+                    }
+
                     this.currentUser = user;
                     UserDto respDto = new UserDto();
                     respDto.username = user.getUsername();
@@ -235,27 +239,14 @@ public class ClientHandler implements Runnable {
                 return Message.success(MessageType.END_AUCTION, "Đã kết thúc");
             }
 
-            case CANCEL_AUCTION: {
-                String id = request.getPayload(String.class);
-                try {
-                    for (Auction a : AuctionManager.getInstance().getAllAuctions()) {
-                        if (a.getId().equals(id)) {
-                            a.cancelAuction();
-                            AuctionDAO.updateAuctionStatus(a.getId(), "CANCELED");
-                            return Message.success(MessageType.CANCEL_AUCTION, "Đã hủy phiên đấu giá thành công");
-                        }
-                    }
-                } catch (Exception e) {
-                    return Message.error(MessageType.CANCEL_AUCTION, e.getMessage());
-                }
-                return Message.error(MessageType.CANCEL_AUCTION, "Không tìm thấy phiên đấu giá này.");
-            }
-
             case MARK_PAID: {
                 String id = request.getPayload(String.class);
                 try {
                     for (Auction a : AuctionManager.getInstance().getAllAuctions()) {
                         if (a.getId().equals(id)) {
+                            if (a.getCurrentLeader() != null && a.getCurrentLeader().isBanned()) {
+                                return Message.error(MessageType.MARK_PAID_RESPONSE, "Người chiến thắng đã bị khóa tài khoản, không thể thanh toán.");
+                            }
                             a.markAsPaid();
                             AuctionDAO.updateAuctionStatus(a.getId(), "PAID");
                             if (a.getCurrentLeader() != null) UserDAO.updateUserBalance(a.getCurrentLeader());
@@ -271,6 +262,9 @@ public class ClientHandler implements Runnable {
             case DEPOSIT: {
                 double amount = request.getPayload(Double.class);
                 if (this.currentUser instanceof Bidder bidder) {
+                    if (bidder.isBanned()) {
+                        return Message.error(MessageType.DEPOSIT_RESPONSE, "Tài khoản của bạn đã bị khóa, không thể nạp tiền.");
+                    }
                     double DAILY_LIMIT = 50000000.0;
                     double todayTotal = UserDAO.getTodayDepositTotal(bidder.getId());
 
@@ -346,6 +340,22 @@ public class ClientHandler implements Runnable {
                     }
                 }
                 return Message.error(MessageType.CANCEL_AUCTION, "Lỗi quyền hạn.");
+            }
+
+            case CANCEL_AUCTION: {
+                String id = request.getPayload(String.class);
+                try {
+                    for (Auction a : AuctionManager.getInstance().getAllAuctions()) {
+                        if (a.getId().equals(id)) {
+                            a.cancelAuction();
+                            AuctionDAO.updateAuctionStatus(a.getId(), "CANCELED");
+                            return Message.success(MessageType.CANCEL_AUCTION, "Đã hủy phiên đấu giá thành công");
+                        }
+                    }
+                } catch (Exception e) {
+                    return Message.error(MessageType.CANCEL_AUCTION, e.getMessage());
+                }
+                return Message.error(MessageType.CANCEL_AUCTION, "Không tìm thấy phiên đấu giá này.");
             }
 
             default: return null;

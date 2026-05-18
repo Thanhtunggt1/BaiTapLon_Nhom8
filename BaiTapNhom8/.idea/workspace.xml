@@ -5,7 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0c6a107e-68c0-4fa4-9118-006d3961becd" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/gui/controller/AdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/gui/controller/AdminController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/model/entity/Auction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/model/entity/Auction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/model/entity/Bidder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/model/entity/Bidder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/server/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/server/ClientHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/AdminController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/AdminController$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/AdminController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/AdminController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/model/entity/Bidder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/model/entity/Bidder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/server/ClientHandler$AdminCancelPayload.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/server/ClientHandler$AdminCancelPayload.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/server/ClientHandler$AutoBidPayload.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/server/ClientHandler$AutoBidPayload.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/server/ClientHandler$LoginPayload.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/server/ClientHandler$LoginPayload.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/server/ClientHandler$PromotePayload.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/server/ClientHandler$PromotePayload.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/server/ClientHandler$RegisterPayload.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/server/ClientHandler$RegisterPayload.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/server/ClientHandler$UpdateItemPayload.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/server/ClientHandler$UpdateItemPayload.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/server/ClientHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/server/ClientHandler.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

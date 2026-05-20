@@ -25,6 +25,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Base64;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 public class AuctionDetailController {
 
@@ -158,12 +160,9 @@ public class AuctionDetailController {
                 Image img = new Image(new ByteArrayInputStream(bytes));
                 ImageView iv = new ImageView(img);
                 iv.setPreserveRatio(true);
-
-                // Giảm nhẹ chiều cao để nhường chỗ cho thanh chuyển trang
                 iv.setFitWidth(600);
                 iv.setFitHeight(450);
 
-                // Gói ảnh vào một hộp ảo có kích thước cố định
                 StackPane imageContainer = new StackPane(iv);
                 imageContainer.setAlignment(Pos.CENTER);
                 imageContainer.setPrefHeight(480);
@@ -177,8 +176,6 @@ public class AuctionDetailController {
         Dialog<Void> dialog = new Dialog<>();
         dialog.setTitle("Album ảnh sản phẩm: " + auctionDto.itemName);
         dialog.getDialogPane().setContent(pagination);
-
-        // Tăng chiều cao tối thiểu của cửa sổ lên 600 để dải số trang rơi thẳng xuống dưới
         dialog.getDialogPane().setMinWidth(650);
         dialog.getDialogPane().setMinHeight(600);
 
@@ -260,15 +257,50 @@ public class AuctionDetailController {
 
     @FXML
     private void handleDeposit() {
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Nạp Tiền");
-        dialog.setHeaderText("Nạp thêm tiền vào tài khoản");
-        dialog.setContentText("Nhập số tiền (VNĐ):");
+        Dialog<javafx.util.Pair<String, String>> dialog = new Dialog<>();
+        dialog.setTitle("Xác thực Nạp Tiền");
+        dialog.setHeaderText("Vui lòng nhập số tiền và mật khẩu của bạn");
 
-        dialog.showAndWait().ifPresent(input -> {
+        ButtonType confirmButtonType = new ButtonType("Xác nhận", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(confirmButtonType, ButtonType.CANCEL);
+
+        javafx.scene.layout.GridPane grid = new javafx.scene.layout.GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new javafx.geometry.Insets(20, 150, 10, 10));
+
+        TextField amountField = new TextField();
+        amountField.setPromptText("Số tiền (VNĐ)...");
+        PasswordField passwordField = new PasswordField();
+        passwordField.setPromptText("Nhập mật khẩu...");
+
+        grid.add(new Label("Số tiền:"), 0, 0);
+        grid.add(amountField, 1, 0);
+        grid.add(new Label("Mật khẩu:"), 0, 1);
+        grid.add(passwordField, 1, 1);
+
+        dialog.getDialogPane().setContent(grid);
+        Platform.runLater(amountField::requestFocus);
+
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == confirmButtonType) {
+                return new javafx.util.Pair<>(amountField.getText(), passwordField.getText());
+            }
+            return null;
+        });
+
+        dialog.showAndWait().ifPresent(result -> {
             try {
-                double amount = Double.parseDouble(input.replace(",", "").replace(".", "").trim());
-                Message response = NetworkClient.getInstance().deposit(amount);
+                double amount = Double.parseDouble(result.getKey().replace(",", "").replace(".", "").trim());
+                String password = result.getValue();
+
+                if (password.trim().isEmpty()) {
+                    Alert a = new Alert(Alert.AlertType.ERROR, "Mật khẩu không được để trống!");
+                    a.showAndWait();
+                    return;
+                }
+
+                Message response = NetworkClient.getInstance().deposit(amount, password);
                 if (response.isSuccess()) {
                     UserDto updatedUser = response.getPayload(UserDto.class);
                     SessionManager.setCurrentUserDto(updatedUser);
@@ -282,15 +314,52 @@ public class AuctionDetailController {
                     if (MainController.getInstance() != null) {
                         MainController.getInstance().refreshBalanceView();
                     }
-                    Alert a = new Alert(Alert.AlertType.INFORMATION, "Nạp thành công!");
+
+                    NumberFormat nf = NumberFormat.getInstance(new Locale("vi", "VN"));
+                    Alert a = new Alert(Alert.AlertType.INFORMATION, "Nạp thành công " + nf.format(amount) + " ₫!");
                     a.setHeaderText(null);
                     a.showAndWait();
                 } else {
-                    Alert a = new Alert(Alert.AlertType.ERROR, response.getErrorMessage());
-                    a.setHeaderText(null);
-                    a.showAndWait();
+                    String errMsg = response.getErrorMessage();
+                    if (errMsg.startsWith("LOCK_TIMER:")) {
+                        int initialSecs = 180;
+                        try {
+                            initialSecs = Integer.parseInt(errMsg.split(":")[1]);
+                        } catch (Exception ignored) {}
+
+                        int[] secsLeft = { initialSecs };
+                        Alert a = new Alert(Alert.AlertType.ERROR);
+                        a.setTitle("Lỗi xác thực");
+                        a.setHeaderText("Tạm khóa chức năng nạp tiền");
+
+                        Runnable updateText = () -> {
+                            if (secsLeft[0] > 0) {
+                                a.setContentText("Bạn đã nhập sai mật khẩu quá 3 lần.\nVui lòng thử lại sau: " + secsLeft[0] + " giây.");
+                                secsLeft[0]--;
+                            } else {
+                                a.setContentText("Thời gian khóa đã hết. Vui lòng đóng bảng này và thử lại.");
+                            }
+                        };
+
+                        updateText.run();
+                        javafx.animation.Timeline timeline = new javafx.animation.Timeline(
+                                new javafx.animation.KeyFrame(javafx.util.Duration.seconds(1), ev -> updateText.run())
+                        );
+                        timeline.setCycleCount(javafx.animation.Timeline.INDEFINITE);
+                        timeline.play();
+
+                        a.setOnHidden(ev -> timeline.stop());
+                        a.showAndWait();
+                    } else {
+                        Alert a = new Alert(Alert.AlertType.ERROR, errMsg);
+                        a.setHeaderText(null);
+                        a.showAndWait();
+                    }
                 }
-            } catch (Exception ignored) {}
+            } catch (NumberFormatException ex) {
+                Alert a = new Alert(Alert.AlertType.ERROR, "Số tiền không hợp lệ. Vui lòng chỉ nhập số.");
+                a.showAndWait();
+            }
         });
     }
 

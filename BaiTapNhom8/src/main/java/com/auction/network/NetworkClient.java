@@ -54,25 +54,28 @@ public class NetworkClient {
                         Platform.runLater(() -> onBidUpdate.accept(dto));
                     }
                 } else {
-                    responseQueue.offer(msg);
+                    responseQueue.put(msg);
                 }
             }
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
+        } catch (Exception e) {
+            System.err.println("[NetworkClient] Ngắt kết nối: " + e.getMessage());
         }
     }
 
-    public Message login(String u, String p) { return sendAndReceive(new Message(MessageType.LOGIN, new LoginPayload(u, p))); }
-    public Message register(String u, String p, String e, String r) { return sendAndReceive(new Message(MessageType.REGISTER, new RegisterPayload(u, p, e, r))); }
+    public Message login(String username, String password) { return sendAndReceive(new Message(MessageType.LOGIN, new LoginPayload(username, password))); }
+    public Message register(String username, String password, String email, String role) { return sendAndReceive(new Message(MessageType.REGISTER, new RegisterPayload(username, password, email, role))); }
     public Message getAuctions() { return sendAndReceive(new Message(MessageType.GET_AUCTIONS)); }
-    public Message placeBid(String auctionId, double amount) { return sendAndReceive(new Message(MessageType.PLACE_BID, new BidDto(auctionId, amount))); }
     public Message createItem(CreateItemDto dto) { return sendAndReceive(new Message(MessageType.CREATE_ITEM, dto)); }
-    public Message updateItem(String id, String name, String desc, double price) { return sendAndReceive(new Message(MessageType.UPDATE_ITEM, new UpdateItemPayload(id, name, desc, price))); }
+    public Message updateItem(String itemId, String name, String description, double startingPrice) { return sendAndReceive(new Message(MessageType.UPDATE_ITEM, new UpdateItemPayload(itemId, name, description, startingPrice))); }
     public Message createAuction(CreateAuctionDto dto) { return sendAndReceive(new Message(MessageType.CREATE_AUCTION, dto)); }
-    public Message endAuction(String auctionId) { return sendAndReceive(new Message(MessageType.END_AUCTION, auctionId)); }
+
+    // CẬP NHẬT GÓI TIN DEPOSIT
+    public Message deposit(double amount, String password) { return sendAndReceive(new Message(MessageType.DEPOSIT, new DepositPayload(amount, password))); }
+
+    public Message placeBid(String auctionId, double amount) { return sendAndReceive(new Message(MessageType.PLACE_BID, new BidDto(auctionId, amount))); }
     public Message cancelAuction(String auctionId) { return sendAndReceive(new Message(MessageType.CANCEL_AUCTION, auctionId)); }
-    public Message deposit(double amount) { return sendAndReceive(new Message(MessageType.DEPOSIT, amount)); }
     public Message adminCancelAuction(String auctionId, String reason) { return sendAndReceive(new Message(MessageType.ADMIN_CANCEL_AUCTION, new AdminCancelPayload(auctionId, reason))); }
+    public Message endAuction(String auctionId) { return sendAndReceive(new Message(MessageType.END_AUCTION, auctionId)); }
     public Message markPaid(String auctionId) { return sendAndReceive(new Message(MessageType.MARK_PAID, auctionId)); }
     public Message setupAutoBid(String auctionId, double maxBid, double increment) { return sendAndReceive(new Message(MessageType.SETUP_AUTOBID, new AutoBidPayload(auctionId, maxBid, increment))); }
     public Message startAuction(String auctionId) { return sendAndReceive(new Message(MessageType.START_AUCTION, auctionId)); }
@@ -96,4 +99,7 @@ public class NetworkClient {
     private record AutoBidPayload(String auctionId, double maxBid, double increment) {}
     private record UpdateItemPayload(String itemId, String name, String description, double startingPrice) {}
     private record PromotePayload(String username, String role) {}
+
+    // ĐỊNH NGHĨA PAYLOAD MỚI
+    private record DepositPayload(double amount, String password) {}
 }

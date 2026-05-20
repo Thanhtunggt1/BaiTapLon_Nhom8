@@ -59,6 +59,10 @@ public class ClientHandler implements Runnable {
                 User user = UserDAO.findByUsername(loginDto.username);
 
                 if (user != null && user.getPassword().equals(loginDto.password)) {
+                    if (user instanceof Bidder && ((Bidder) user).isBanned()) {
+                        return Message.error(MessageType.LOGIN_RESPONSE, "Tài khoản của bạn đã bị KHÓA do không thanh toán quá 3 lần.");
+                    }
+
                     this.currentUser = user;
                     UserDto respDto = new UserDto();
                     respDto.username = user.getUsername();
@@ -75,7 +79,7 @@ public class ClientHandler implements Runnable {
                             dto.description = i.getDescription();
                             dto.startingPrice = i.getStartingPrice();
                             dto.itemType = i.getClass().getSimpleName().toUpperCase();
-                            dto.imagesBase64 = i.getImagesBase64(); // Gửi list ảnh
+                            dto.imagesBase64 = i.getImagesBase64();
 
                             java.util.Map<String, Object> params = new java.util.HashMap<>();
                             if ("ELECTRONICS".equals(dto.itemType)) {
@@ -157,7 +161,7 @@ public class ClientHandler implements Runnable {
                     try {
                         Item item = seller.createItem(dto.name, dto.description, dto.startingPrice,
                                 com.auction.model.enums.ItemType.valueOf(dto.itemType), dto.params);
-                        item.setImagesBase64(dto.imagesBase64); // Cập nhật List ảnh ở RAM
+                        item.setImagesBase64(dto.imagesBase64);
                         ItemDAO.insertItem(item, seller.getId(), dto.itemType, dto.params);
                         Map<String, String> payload = new HashMap<>();
                         payload.put("id", item.getId());
@@ -240,6 +244,9 @@ public class ClientHandler implements Runnable {
                 try {
                     for (Auction a : AuctionManager.getInstance().getAllAuctions()) {
                         if (a.getId().equals(id)) {
+                            if (a.getCurrentLeader() != null && a.getCurrentLeader().isBanned()) {
+                                return Message.error(MessageType.MARK_PAID_RESPONSE, "Người chiến thắng đã bị khóa tài khoản, không thể thanh toán.");
+                            }
                             a.markAsPaid();
                             AuctionDAO.updateAuctionStatus(a.getId(), "PAID");
                             if (a.getCurrentLeader() != null) UserDAO.updateUserBalance(a.getCurrentLeader());
@@ -253,19 +260,40 @@ public class ClientHandler implements Runnable {
             }
 
             case DEPOSIT: {
-                double amount = request.getPayload(Double.class);
+                DepositPayload dto = request.getPayload(DepositPayload.class);
                 if (this.currentUser instanceof Bidder bidder) {
+                    if (bidder.isBanned()) {
+                        return Message.error(MessageType.DEPOSIT_RESPONSE, "Tài khoản của bạn đã bị khóa, không thể nạp tiền.");
+                    }
+
+                    if (bidder.isDepositLocked()) {
+                        long secs = bidder.getDepositLockRemainingSeconds();
+                        return Message.error(MessageType.DEPOSIT_RESPONSE, "LOCK_TIMER:" + secs);
+                    }
+
+                    if (!bidder.getPassword().equals(dto.password)) {
+                        bidder.recordFailedDeposit();
+                        if (bidder.isDepositLocked()) {
+                            long secs = bidder.getDepositLockRemainingSeconds();
+                            return Message.error(MessageType.DEPOSIT_RESPONSE, "LOCK_TIMER:" + secs);
+                        } else {
+                            return Message.error(MessageType.DEPOSIT_RESPONSE, "Sai mật khẩu! Bạn còn " + (3 - bidder.getFailedDepositAttempts()) + " lần thử.");
+                        }
+                    }
+
+                    bidder.resetFailedDeposit();
+
                     double DAILY_LIMIT = 50000000.0;
                     double todayTotal = UserDAO.getTodayDepositTotal(bidder.getId());
 
-                    if (todayTotal + amount > DAILY_LIMIT) {
+                    if (todayTotal + dto.amount > DAILY_LIMIT) {
                         return Message.error(MessageType.DEPOSIT_RESPONSE,
                                 "Vượt quá giới hạn nạp tiền! Bạn chỉ có thể nạp thêm tối đa " + String.format("%,.0f", (DAILY_LIMIT - todayTotal)) + " ₫ hôm nay.");
                     }
 
-                    bidder.deposit(amount);
+                    bidder.deposit(dto.amount);
                     UserDAO.updateUserBalance(bidder);
-                    UserDAO.insertDepositHistory(bidder.getId(), amount);
+                    UserDAO.insertDepositHistory(bidder.getId(), dto.amount);
 
                     UserDto respDto = new UserDto();
                     respDto.username = bidder.getUsername();
@@ -332,6 +360,22 @@ public class ClientHandler implements Runnable {
                 return Message.error(MessageType.CANCEL_AUCTION, "Lỗi quyền hạn.");
             }
 
+            case CANCEL_AUCTION: {
+                String id = request.getPayload(String.class);
+                try {
+                    for (Auction a : AuctionManager.getInstance().getAllAuctions()) {
+                        if (a.getId().equals(id)) {
+                            a.cancelAuction();
+                            AuctionDAO.updateAuctionStatus(a.getId(), "CANCELED");
+                            return Message.success(MessageType.CANCEL_AUCTION, "Đã hủy phiên đấu giá thành công");
+                        }
+                    }
+                } catch (Exception e) {
+                    return Message.error(MessageType.CANCEL_AUCTION, e.getMessage());
+                }
+                return Message.error(MessageType.CANCEL_AUCTION, "Không tìm thấy phiên đấu giá này.");
+            }
+
             default: return null;
         }
     }
@@ -352,7 +396,7 @@ public class ClientHandler implements Runnable {
         dto.sellerUsername = a.getSeller().getUsername();
         dto.currentLeader = (a.getCurrentLeader() != null) ? a.getCurrentLeader().getUsername() : null;
         dto.bidCount = a.getBidHistory().size();
-        dto.imagesBase64 = a.getItem().getImagesBase64(); // Gửi List ảnh
+        dto.imagesBase64 = a.getItem().getImagesBase64();
         dto.history = a.getBidHistory().stream().map(tx -> {
             AuctionDto.BidEntryDto entry = new AuctionDto.BidEntryDto();
             entry.bidderName = tx.getBidder().getUsername();
@@ -365,9 +409,9 @@ public class ClientHandler implements Runnable {
 
     private static class LoginPayload { String username; String password; }
     private static class RegisterPayload { String username; String password; String email; String role; }
-
     private static class PromotePayload { String username; String role; }
     private static class AutoBidPayload { String auctionId; double maxBid; double increment; }
     private static class UpdateItemPayload { String itemId; String name; String description; double startingPrice; }
     private static class AdminCancelPayload { String auctionId; String reason; }
+    private static class DepositPayload { double amount; String password; }
 }

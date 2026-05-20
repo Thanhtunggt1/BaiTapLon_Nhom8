@@ -6,9 +6,17 @@ import com.auction.exception.InvalidBidException;
 import com.auction.model.enums.AuctionStatus;
 import com.auction.pattern.observer.Observer;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 public class Bidder extends User implements Observer {
     private double balance;
+    private int unpaidWarnings = 0;
+    private boolean isBanned = false;
+
+    // --- BIẾN QUẢN LÝ KHÓA NẠP TIỀN ---
+    private int failedDepositAttempts = 0;
+    private LocalDateTime depositLockoutUntil = null;
 
     public Bidder(String username, String password, String email, double initialBalance) {
         super(username, password, email);
@@ -18,9 +26,57 @@ public class Bidder extends User implements Observer {
         this.balance = initialBalance;
     }
 
-    public boolean placeBid(Auction auction, double amount)
+    public int getUnpaidWarnings() { return unpaidWarnings; }
+    public boolean isBanned() { return isBanned; }
 
+    public void addUnpaidWarning() {
+        this.unpaidWarnings++;
+        if (this.unpaidWarnings >= 3) {
+            this.isBanned = true;
+        }
+    }
+
+    // --- CÁC HÀM XỬ LÝ KHÓA NẠP TIỀN ---
+    public int getFailedDepositAttempts() { return failedDepositAttempts; }
+
+    public void recordFailedDeposit() {
+        this.failedDepositAttempts++;
+        if (this.failedDepositAttempts >= 3) {
+            // Phạt khóa 3 phút
+            this.depositLockoutUntil = LocalDateTime.now().plusMinutes(3);
+            this.failedDepositAttempts = 0;
+        }
+    }
+
+    public boolean isDepositLocked() {
+        if (depositLockoutUntil != null) {
+            if (LocalDateTime.now().isBefore(depositLockoutUntil)) {
+                return true;
+            } else {
+                depositLockoutUntil = null; // Đã hết thời gian phạt
+                return false;
+            }
+        }
+        return false;
+    }
+
+    public long getDepositLockRemainingSeconds() {
+        if (depositLockoutUntil == null) return 0;
+        return ChronoUnit.SECONDS.between(LocalDateTime.now(), depositLockoutUntil);
+    }
+
+    public void resetFailedDeposit() {
+        this.failedDepositAttempts = 0;
+        this.depositLockoutUntil = null;
+    }
+    // ------------------------------------
+
+    public boolean placeBid(Auction auction, double amount)
             throws AuctionClosedException, InvalidBidException, InsufficientBalanceException {
+
+        if (isBanned) {
+            throw new IllegalStateException("Tài khoản của bạn đã bị vô hiệu hóa do vi phạm không thanh toán quá 3 lần!");
+        }
 
         if (auction == null) throw new IllegalArgumentException("Auction không được null.");
 
@@ -40,7 +96,6 @@ public class Bidder extends User implements Observer {
         BidTransaction tx = new BidTransaction(this, auction, amount);
         return auction.placeBid(tx);
     }
-
 
     public void setupAutoBid(Auction auction, double maxBid, double increment) {
         if (auction == null) throw new IllegalArgumentException("Auction không được null.");
@@ -84,10 +139,12 @@ public class Bidder extends User implements Observer {
     public double getBalance() { return balance; }
 
     public void deposit(double amount) {
+        if (isBanned) {
+            throw new IllegalStateException("Tài khoản đã bị khóa, không thể nạp tiền.");
+        }
         if (amount <= 0) throw new IllegalArgumentException("Số tiền nạp phải dương.");
         this.balance += amount;
     }
-
 
     public void deduct(double amount) {
         if (amount > balance) throw new InsufficientBalanceException("Số dư không đủ.");
@@ -99,5 +156,4 @@ public class Bidder extends User implements Observer {
         super.printInfo();
         System.out.printf("  └─ Số dư: %.2f%n", balance);
     }
-
 }

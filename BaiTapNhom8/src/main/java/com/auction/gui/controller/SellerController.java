@@ -50,6 +50,11 @@ public class SellerController {
         setupItemTable();
         setupAuctionTable();
         loadData();
+        javafx.animation.Timeline autoRefresh = new javafx.animation.Timeline(
+                new javafx.animation.KeyFrame(javafx.util.Duration.seconds(3), e -> loadData())
+        );
+        autoRefresh.setCycleCount(javafx.animation.Timeline.INDEFINITE);
+        autoRefresh.play();
     }
 
     private Seller getSeller() {
@@ -112,33 +117,52 @@ public class SellerController {
     }
 
     private void loadData() {
-        itemTable.setItems(FXCollections.observableArrayList(getSeller().getItems()));
-        itemTable.refresh();
+        Item selectedItem = itemTable.getSelectionModel().getSelectedItem();
+        AuctionDto selectedAuction = auctionTable.getSelectionModel().getSelectedItem();
 
-        com.auction.network.Message response = com.auction.network.NetworkClient.getInstance().getAuctions();
-        if (response.isSuccess()) {
-            List<AuctionDto> dtos = response.getPayload(new com.google.gson.reflect.TypeToken<List<AuctionDto>>(){}.getType());
-            String currentUser = SessionManager.getCurrentUserDto().username;
+        List<Item> items = getSeller().getItems();
 
-            List<AuctionDto> myAuctions = dtos.stream()
-                    .filter(a -> currentUser.equals(a.sellerUsername))
-                    .collect(Collectors.toList());
+        new Thread(() -> {
+            com.auction.network.Message response = com.auction.network.NetworkClient.getInstance().getAuctions();
 
-            auctionTable.setItems(FXCollections.observableArrayList(myAuctions));
-            auctionTable.refresh();
+            javafx.application.Platform.runLater(() -> {
 
-            double total = myAuctions.stream()
-                    .filter(a -> "PAID".equals(a.status))
-                    .mapToDouble(a -> a.currentPrice)
-                    .sum();
-            if (totalEarningsLabel != null) {
-                totalEarningsLabel.setText("Tổng doanh thu: " + NF.format(total) + " đ");
-            }
+                itemTable.setItems(FXCollections.observableArrayList(items));
+                if (selectedItem != null) {
+                    itemTable.getSelectionModel().select(selectedItem);
+                }
+                itemTable.refresh();
 
-            if (MainController.getInstance() != null) {
-                MainController.getInstance().refreshBalanceView();
-            }
-        }
+                if (response.isSuccess()) {
+                    List<AuctionDto> dtos = response.getPayload(new com.google.gson.reflect.TypeToken<List<AuctionDto>>(){}.getType());
+                    String currentUser = SessionManager.getCurrentUserDto().username;
+
+                    List<AuctionDto> myAuctions = dtos.stream()
+                            .filter(a -> currentUser.equals(a.sellerUsername))
+                            .collect(Collectors.toList());
+
+                    auctionTable.setItems(FXCollections.observableArrayList(myAuctions));
+
+                    if (selectedAuction != null) {
+                        myAuctions.stream().filter(a -> a.id.equals(selectedAuction.id))
+                                .findFirst().ifPresent(a -> auctionTable.getSelectionModel().select(a));
+                    }
+                    auctionTable.refresh();
+
+                    double total = myAuctions.stream()
+                            .filter(a -> "PAID".equals(a.status))
+                            .mapToDouble(a -> a.currentPrice)
+                            .sum();
+                    if (totalEarningsLabel != null) {
+                        totalEarningsLabel.setText("Tổng doanh thu: " + NF.format(total) + " đ");
+                    }
+
+                    if (MainController.getInstance() != null) {
+                        MainController.getInstance().refreshBalanceView();
+                    }
+                }
+            });
+        }).start();
     }
 
     @FXML private void handleRefreshItems() { loadData(); }

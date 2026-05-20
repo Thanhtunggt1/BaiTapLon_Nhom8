@@ -219,24 +219,32 @@ public class ClientHandler implements Runnable {
 
             case START_AUCTION: {
                 String id = request.getPayload(String.class);
-                AuctionManager.getInstance().getAllAuctions().stream()
-                        .filter(a -> a.getId().equals(id))
-                        .forEach(a -> {
-                            a.startAuction();
-                            AuctionDAO.updateAuctionStatus(a.getId(), "RUNNING");
-                        });
-                return Message.success(MessageType.START_AUCTION_RESPONSE, "Đã bắt đầu");
+                try {
+                    AuctionManager.getInstance().getAllAuctions().stream()
+                            .filter(a -> a.getId().equals(id))
+                            .forEach(a -> {
+                                a.startAuction();
+                                AuctionDAO.updateAuctionStatus(a.getId(), "RUNNING");
+                            });
+                    return Message.success(MessageType.START_AUCTION_RESPONSE, "Đã bắt đầu");
+                } catch (Exception e) {
+                    return Message.error(MessageType.START_AUCTION_RESPONSE, e.getMessage());
+                }
             }
 
             case END_AUCTION: {
                 String id = request.getPayload(String.class);
-                AuctionManager.getInstance().getAllAuctions().stream()
-                        .filter(a -> a.getId().equals(id))
-                        .forEach(a -> {
-                            a.endAuction();
-                            AuctionDAO.updateAuctionStatus(a.getId(), a.getStatus().name());
-                        });
-                return Message.success(MessageType.END_AUCTION, "Đã kết thúc");
+                try {
+                    AuctionManager.getInstance().getAllAuctions().stream()
+                            .filter(a -> a.getId().equals(id))
+                            .forEach(a -> {
+                                a.endAuction();
+                                AuctionDAO.updateAuctionStatus(a.getId(), a.getStatus().name());
+                            });
+                    return Message.success(MessageType.END_AUCTION, "Đã kết thúc");
+                } catch (Exception e) {
+                    return Message.error(MessageType.END_AUCTION, e.getMessage());
+                }
             }
 
             case MARK_PAID: {

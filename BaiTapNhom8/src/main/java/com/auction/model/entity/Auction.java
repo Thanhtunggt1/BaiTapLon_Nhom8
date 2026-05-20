@@ -88,26 +88,30 @@ public class Auction extends Entity implements Subject {
         notifyObservers();
     }
 
+    public synchronized void cancelDueToUnpaid() {
+        if (status == AuctionStatus.PAID) {
+            return;
+        }
+        status = AuctionStatus.CANCELED;
+        if (currentLeader != null) {
+            currentLeader.addUnpaidWarning();
+            System.out.printf("[Penalty] Tài khoản %s bị cảnh báo %d/3 lần do không thanh toán phiên [%s]%n",
+                    currentLeader.getUsername(), currentLeader.getUnpaidWarnings(), getId());
+        }
+        System.out.printf("[Auction:%s] Phiên bị HỦY do quá hạn thanh toán 12h. Sản phẩm hoàn trả cho %s.%n",
+                getId(), seller.getUsername());
+        notifyObservers();
+    }
+
     public synchronized void markAsPaid() {
         if (status != AuctionStatus.FINISHED) {
             throw new IllegalStateException("Chỉ phiên FINISHED mới có thể đánh dấu PAID.");
         }
-
         if (currentLeader != null) {
-            try {
-                currentLeader.deduct(currentHighestPrice);
-                System.out.printf("[Payment] Đã trừ %.2f VNĐ từ tài khoản %s%n",
-                        currentHighestPrice, currentLeader.getUsername());
-            } catch (Exception e) {
-                currentLeader.addUnpaidWarning();
-                String msg = String.format("Thanh toán thất bại! Tài khoản không đủ tiền. Đã cảnh báo %d/3 lần.", currentLeader.getUnpaidWarnings());
-                if (currentLeader.isBanned()) {
-                    msg += " TÀI KHOẢN CỦA BẠN ĐÃ BỊ KHÓA VÀ VÔ HIỆU HÓA!";
-                }
-                throw new IllegalStateException(msg);
-            }
+            currentLeader.deduct(currentHighestPrice);
+            System.out.printf("[Payment] Đã trừ %.2f VNĐ từ tài khoản %s%n",
+                    currentHighestPrice, currentLeader.getUsername());
         }
-
         status = AuctionStatus.PAID;
         System.out.printf("[Auction:%s] Đã thanh toán thành công.%n", getId());
         notifyObservers();
@@ -124,18 +128,14 @@ public class Auction extends Entity implements Subject {
                         "Bid không hợp lệ: amount=" + bid.getAmount()
                                 + " <= currentHighest=" + currentHighestPrice);
             }
-
             currentHighestPrice = bid.getAmount();
             currentLeader = bid.getBidder();
             bidHistory.add(bid);
-
             System.out.printf("[Auction:%s] Bid mới: %s đặt %.2f%n",
                     getId(), bid.getBidder().getUsername(), bid.getAmount());
-
             checkAndExtend();
             notifyObservers();
             triggerAutoBids(bid.getBidder());
-
             return true;
         } finally {
             bidLock.unlock();
@@ -162,10 +162,8 @@ public class Auction extends Entity implements Subject {
             triggered = false;
             List<AutoBidConfig> sorted = new ArrayList<>(autoBidQueue);
             Collections.sort(sorted);
-
             for (AutoBidConfig config : sorted) {
                 if (config.getBidder().equals(currentLeader)) continue;
-
                 double nextBid = config.computeNextBid(currentHighestPrice);
                 if (nextBid < 0) {
                     System.out.printf("[AutoBid] %s đã đạt maxBid (%.2f), không thể tiếp tục.%n",
@@ -177,7 +175,6 @@ public class Auction extends Entity implements Subject {
                             config.getBidder().getUsername(), nextBid);
                     continue;
                 }
-
                 BidTransaction autoBid = new BidTransaction(config.getBidder(), this, nextBid);
                 if (autoBid.isValid()) {
                     currentHighestPrice = nextBid;
@@ -185,10 +182,8 @@ public class Auction extends Entity implements Subject {
                     bidHistory.add(autoBid);
                     System.out.printf("[AutoBid] %s tự động đặt giá %.2f%n",
                             config.getBidder().getUsername(), nextBid);
-
                     checkAndExtend();
                     notifyObservers();
-
                     triggered = true;
                     break;
                 }

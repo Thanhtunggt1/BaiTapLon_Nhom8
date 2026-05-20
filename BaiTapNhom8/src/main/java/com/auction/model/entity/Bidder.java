@@ -27,13 +27,17 @@ public class Bidder extends User implements Observer {
     }
 
     public int getUnpaidWarnings() { return unpaidWarnings; }
+    public void setUnpaidWarnings(int unpaidWarnings) { this.unpaidWarnings = unpaidWarnings; }
     public boolean isBanned() { return isBanned; }
+    public void setBanned(boolean banned) { this.isBanned = banned; }
 
     public void addUnpaidWarning() {
         this.unpaidWarnings++;
         if (this.unpaidWarnings >= 3) {
             this.isBanned = true;
         }
+        // Tự động lưu bản án xuống Database
+        com.auction.server.UserDAO.updateBidderPenalty(this);
     }
 
     // --- CÁC HÀM XỬ LÝ KHÓA NẠP TIỀN ---
@@ -98,6 +102,9 @@ public class Bidder extends User implements Observer {
     }
 
     public void setupAutoBid(Auction auction, double maxBid, double increment) {
+        if (isBanned) {
+            throw new IllegalStateException("Tài khoản của bạn đã bị vô hiệu hóa do vi phạm không thanh toán quá 3 lần!");
+        }
         if (auction == null) throw new IllegalArgumentException("Auction không được null.");
 
         if (maxBid <= auction.getCurrentHighestPrice()) {

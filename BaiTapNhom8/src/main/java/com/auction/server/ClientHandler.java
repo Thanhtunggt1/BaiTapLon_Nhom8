@@ -393,6 +393,8 @@ public class ClientHandler implements Runnable {
         dto.status = a.getStatus().toString();
         dto.startTime = a.getStartTime().format(DTF);
         dto.endTime = a.getEndTime().format(DTF);
+        dto.finishedTime = (a.getFinishedTime() != null) ? a.getFinishedTime().format(DTF) : null;
+        dto.sellerUsername = a.getSeller().getUsername();
         dto.sellerUsername = a.getSeller().getUsername();
         dto.currentLeader = (a.getCurrentLeader() != null) ? a.getCurrentLeader().getUsername() : null;
         dto.bidCount = a.getBidHistory().size();

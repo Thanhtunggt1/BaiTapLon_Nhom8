@@ -49,17 +49,16 @@ public class AuctionListController {
     }
 
     private void setupColumns() {
-        // Căn TRÁI và đệm 10px để không dính sát viền
-        String leftAlign = "-fx-alignment: CENTER-LEFT; -fx-padding: 0 0 0 10;";
-        colItem.setStyle(leftAlign);
-        colType.setStyle(leftAlign);
-        colStartPrice.setStyle(leftAlign);
-        colCurrentPrice.setStyle(leftAlign);
-        colLeader.setStyle(leftAlign);
-        colStatus.setStyle(leftAlign);
-        colEndTime.setStyle(leftAlign);
-        colAction.setStyle(leftAlign);
-        colPay.setStyle(leftAlign);
+        String rightAlign = "-fx-alignment: CENTER-RIGHT; -fx-padding: 0 10 0 0;";
+        colItem.setStyle(rightAlign);
+        colType.setStyle(rightAlign);
+        colStartPrice.setStyle(rightAlign);
+        colCurrentPrice.setStyle(rightAlign);
+        colLeader.setStyle(rightAlign);
+        colStatus.setStyle(rightAlign);
+        colEndTime.setStyle(rightAlign);
+        colAction.setStyle(rightAlign);
+        colPay.setStyle(rightAlign);
 
         colItem.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().itemName));
         colType.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().itemType));
@@ -71,7 +70,7 @@ public class AuctionListController {
         colStatus.setCellFactory(col -> new TableCell<>() {
             @Override protected void updateItem(String s, boolean empty) {
                 super.updateItem(s, empty);
-                if (empty || s == null) { setText(null); setStyle(leftAlign); return; }
+                if (empty || s == null) { setText(null); setStyle(rightAlign); return; }
                 setText(s);
                 String style = "";
                 switch (s) {
@@ -81,7 +80,7 @@ public class AuctionListController {
                     case "CANCELED": style = "-fx-text-fill: #e74c3c;"; break;
                     case "PAID": style = "-fx-text-fill: #8e44ad;"; break;
                 }
-                setStyle(leftAlign + " " + style);
+                setStyle(rightAlign + " " + style);
             }
         });
 
@@ -201,10 +200,10 @@ public class AuctionListController {
             Runnable updateText = () -> {
                 String warningMsg = "Chi tiết lỗi: " + response.getErrorMessage();
 
-                if ("FINISHED".equals(dto.status) && dto.endTime != null) {
+                if ("FINISHED".equals(dto.status) && dto.finishedTime != null) {
                     try {
-                        LocalDateTime endTime = LocalDateTime.parse(dto.endTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
-                        LocalDateTime deadline = endTime.plusHours(12);
+                        LocalDateTime finishedTime = LocalDateTime.parse(dto.finishedTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
+                        LocalDateTime deadline = finishedTime.plusHours(12);
                         LocalDateTime now = LocalDateTime.now();
 
                         if (now.isBefore(deadline)) {

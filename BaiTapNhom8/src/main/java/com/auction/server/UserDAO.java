@@ -46,6 +46,20 @@ public class UserDAO {
         }
     }
 
+    public static boolean updateBidderPenalty(Bidder bidder) {
+        String sql = "UPDATE users SET unpaid_warnings = ?, is_banned = ? WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, bidder.getUnpaidWarnings());
+            stmt.setBoolean(2, bidder.isBanned());
+            stmt.setString(3, bidder.getId());
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+    }
+
     public static boolean updateUserRole(String username, String newRole) {
         String sql = "UPDATE users SET role = ? WHERE username = ?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -63,7 +77,7 @@ public class UserDAO {
         return userCache.get(username);
     }
 
-    // --- 2 HÀM MỚI CHO GIỚI HẠN NẠP TIỀN ---
+    // --- CÁC HÀM CHO GIỚI HẠN NẠP TIỀN ---
 
     public static double getTodayDepositTotal(String bidderId) {
         String sql = "SELECT SUM(amount) AS total FROM deposit_history WHERE bidder_id = ? AND DATE(created_at) = CURDATE()";

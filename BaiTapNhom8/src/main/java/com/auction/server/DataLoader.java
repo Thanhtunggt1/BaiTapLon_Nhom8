@@ -31,19 +31,24 @@ public class DataLoader {
                     String em = rs.getString("email");
                     String role = rs.getString("role");
                     double bal = rs.getDouble("balance");
+                    int warnings = rs.getInt("unpaid_warnings");
+                    boolean isBanned = rs.getBoolean("is_banned");
 
                     User u;
                     if ("ADMIN".equals(role)) u = new Admin(un, pw, em);
                     else if ("SELLER".equals(role)) u = new Seller(un, pw, em);
-                    else u = new Bidder(un, pw, em, bal);
-
+                    else {
+                        Bidder b = new Bidder(un, pw, em, bal);
+                        b.setUnpaidWarnings(warnings);
+                        b.setBanned(isBanned);
+                        u = b;
+                    }
                     setEntityId(u, id);
                     UserDAO.userCache.put(un, u);
                     UserDAO.userByIdCache.put(id, u);
                 }
             }
 
-            Map<String, Item> itemMap = new HashMap<>();
             String sqlItems = "SELECT * FROM items";
             try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sqlItems)) {
                 while (rs.next()) {
@@ -51,34 +56,43 @@ public class DataLoader {
                     String sellerId = rs.getString("seller_id");
                     String name = rs.getString("name");
                     String desc = rs.getString("description");
-                    double startPrice = rs.getDouble("starting_price");
+                    double price = rs.getDouble("starting_price");
                     String typeStr = rs.getString("item_type");
 
-                    Map<String, Object> params = new HashMap<>();
-                    params.put("brand", rs.getString("brand") != null ? rs.getString("brand") : "");
-                    params.put("warrantyMonths", rs.getObject("warranty_months") != null ? rs.getInt("warranty_months") : 0);
-                    params.put("artistName", rs.getString("artist_name") != null ? rs.getString("artist_name") : "");
-                    params.put("creationYear", rs.getObject("creation_year") != null ? rs.getInt("creation_year") : 0);
-                    params.put("mileage", rs.getObject("mileage") != null ? rs.getDouble("mileage") : 0.0);
-                    params.put("licensePlate", rs.getString("license_plate") != null ? rs.getString("license_plate") : "");
-
                     ItemType type = ItemType.valueOf(typeStr);
-                    Item item = ItemFactory.getInstance().createItem(type, name, desc, startPrice, params);
+                    Map<String, Object> params = new HashMap<>();
+                    if (type == ItemType.ELECTRONICS) {
+                        params.put("brand", rs.getString("brand"));
+                        params.put("warrantyMonths", rs.getInt("warranty_months"));
+                    } else if (type == ItemType.ART) {
+                        params.put("artistName", rs.getString("artist_name"));
+                        params.put("creationYear", rs.getInt("creation_year"));
+                    } else if (type == ItemType.VEHICLE) {
+                        params.put("mileage", rs.getDouble("mileage"));
+                        params.put("licensePlate", rs.getString("license_plate"));
+                    }
 
-                    // Tải nhiều ảnh
-                    item.setImagesBase64(loadImagesForItem(conn, id));
+                    User seller = UserDAO.userByIdCache.get(sellerId);
+                    if (seller instanceof Seller s) {
+                        Item item = ItemFactory.getInstance().createItem(type, name, desc, price, params);
+                        setEntityId(item, id);
 
-                    setEntityId(item, id);
-                    itemMap.put(id, item);
-
-                    User sellerUser = UserDAO.userByIdCache.get(sellerId);
-                    if (sellerUser instanceof Seller seller) {
-                        getSellerItems(seller).add(item);
+                        String sqlImages = "SELECT image_data FROM item_images WHERE item_id = ?";
+                        try (PreparedStatement stmtImg = conn.prepareStatement(sqlImages)) {
+                            stmtImg.setString(1, id);
+                            try (ResultSet rsImg = stmtImg.executeQuery()) {
+                                List<String> images = new ArrayList<>();
+                                while (rsImg.next()) {
+                                    images.add(rsImg.getString("image_data"));
+                                }
+                                item.setImagesBase64(images);
+                            }
+                        }
+                        getSellerItems(s).add(item);
                     }
                 }
             }
 
-            Map<String, Auction> auctionMap = new HashMap<>();
             String sqlAuctions = "SELECT * FROM auctions";
             try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sqlAuctions)) {
                 while (rs.next()) {
@@ -87,25 +101,27 @@ public class DataLoader {
                     String sellerId = rs.getString("seller_id");
                     Timestamp start = rs.getTimestamp("start_time");
                     Timestamp end = rs.getTimestamp("end_time");
-                    String statusStr = rs.getString("status");
-                    double currentPrice = rs.getDouble("current_highest_price");
+                    String status = rs.getString("status");
+                    double highestPrice = rs.getDouble("current_highest_price");
 
-                    Item item = itemMap.get(itemId);
                     User sellerUser = UserDAO.userByIdCache.get(sellerId);
-
-                    if (item != null && sellerUser instanceof Seller seller) {
-                        Auction auction = new Auction(item, seller, start.toLocalDateTime(), end.toLocalDateTime());
-                        setEntityId(auction, id);
-                        setAuctionStatus(auction, AuctionStatus.valueOf(statusStr), currentPrice);
-
-                        getSellerAuctions(seller).add(auction);
-                        AuctionManager.getInstance().registerAuction(auction);
-                        auctionMap.put(id, auction);
+                    if (sellerUser instanceof Seller seller) {
+                        Item item = null;
+                        for (Item i : seller.getItems()) {
+                            if (i.getId().equals(itemId)) { item = i; break; }
+                        }
+                        if (item != null) {
+                            Auction auction = new Auction(item, seller, start.toLocalDateTime(), end.toLocalDateTime());
+                            setEntityId(auction, id);
+                            setAuctionStatus(auction, AuctionStatus.valueOf(status), highestPrice);
+                            getSellerAuctions(seller).add(auction);
+                            AuctionManager.getInstance().registerAuction(auction);
+                        }
                     }
                 }
             }
 
-            String sqlBids = "SELECT * FROM bid_transactions ORDER BY id ASC";
+            String sqlBids = "SELECT * FROM bid_transactions ORDER BY created_at ASC";
             try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sqlBids)) {
                 while (rs.next()) {
                     String id = rs.getString("id");
@@ -113,37 +129,28 @@ public class DataLoader {
                     String bidderId = rs.getString("bidder_id");
                     double amount = rs.getDouble("amount");
 
-                    Auction auction = auctionMap.get(auctionId);
                     User bidderUser = UserDAO.userByIdCache.get(bidderId);
-
-                    if (auction != null && bidderUser instanceof Bidder bidder) {
-                        BidTransaction tx = new BidTransaction(bidder, auction, amount);
-                        setEntityId(tx, id);
-                        getAuctionBidHistory(auction).add(tx);
-                        setAuctionLeaderAndPrice(auction, amount, bidder);
+                    if (bidderUser instanceof Bidder bidder) {
+                        Auction auction = null;
+                        for (Auction a : AuctionManager.getInstance().getAllAuctions()) {
+                            if (a.getId().equals(auctionId)) { auction = a; break; }
+                        }
+                        if (auction != null) {
+                            BidTransaction tx = new BidTransaction(bidder, auction, amount);
+                            setEntityId(tx, id);
+                            getAuctionBidHistory(auction).add(tx);
+                            setAuctionLeaderAndPrice(auction, amount, bidder);
+                        }
                     }
                 }
             }
-            System.out.println("[DataLoader] Đã tải xong dữ liệu từ MySQL vào RAM!");
+
+            System.out.println("[DataLoader] Tải dữ liệu thành công!");
+
         } catch (Exception e) {
             System.err.println("[DataLoader] Lỗi: " + e.getMessage());
             e.printStackTrace();
         }
-    }
-
-    private static List<String> loadImagesForItem(Connection conn, String itemId) {
-        List<String> images = new ArrayList<>();
-        String sql = "SELECT image_data FROM item_images WHERE item_id = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, itemId);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                images.add(rs.getString("image_data"));
-            }
-        } catch (Exception e) {
-            System.err.println("Lỗi load ảnh cho item: " + itemId);
-        }
-        return images;
     }
 
     private static void setEntityId(Entity entity, String id) throws Exception {

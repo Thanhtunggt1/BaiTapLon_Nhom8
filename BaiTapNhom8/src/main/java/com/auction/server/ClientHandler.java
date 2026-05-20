@@ -41,11 +41,11 @@ public class ClientHandler implements Runnable {
                     Message response = handleRequest(request);
                     if (response != null) sendMessage(response.toJson());
                 } catch (Exception e) {
-                    System.err.println("Lỗi xử lý gói tin: " + e.getMessage());
+                    System.err.println(e.getMessage());
                 }
             }
         } catch (IOException e) {
-            System.err.println("Mất kết nối Client: " + e.getMessage());
+            System.err.println(e.getMessage());
         } finally {
             AuctionServer.removeClient(this);
             try { socket.close(); } catch (IOException ignored) {}
@@ -180,7 +180,7 @@ public class ClientHandler implements Runnable {
                         Item targetItem = seller.getItems().stream()
                                 .filter(i -> i.getId().equals(dto.itemId))
                                 .findFirst().orElse(null);
-                        if (targetItem == null) return Message.error(MessageType.CREATE_AUCTION_RESPONSE, "Lỗi dữ liệu.");
+                        if (targetItem == null) return Message.error(MessageType.CREATE_AUCTION_RESPONSE, "Lỗi.");
                         Auction auction = seller.createAuction(targetItem, java.time.LocalDateTime.now(),
                                 java.time.LocalDateTime.now().plusMinutes(dto.durationMinutes));
                         AuctionManager.getInstance().registerAuction(auction);
@@ -402,6 +402,7 @@ public class ClientHandler implements Runnable {
         dto.startTime = a.getStartTime().format(DTF);
         dto.endTime = a.getEndTime().format(DTF);
         dto.finishedTime = (a.getFinishedTime() != null) ? a.getFinishedTime().format(DTF) : null;
+        dto.sellerUsername = a.getSeller().getUsername();
         dto.sellerUsername = a.getSeller().getUsername();
         dto.currentLeader = (a.getCurrentLeader() != null) ? a.getCurrentLeader().getUsername() : null;
         dto.bidCount = a.getBidHistory().size();

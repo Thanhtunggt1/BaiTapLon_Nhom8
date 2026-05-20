@@ -4,26 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-<<<<<<< HEAD
     <list default="true" id="0c6a107e-68c0-4fa4-9118-006d3961becd" name="Changes" comment="" />
-=======
-    <list default="true" id="0c6a107e-68c0-4fa4-9118-006d3961becd" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/gui/controller/AuctionListController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/gui/controller/AuctionListController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/AuctionListController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/AuctionListController$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/AuctionListController$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/AuctionListController$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/AuctionListController$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/AuctionListController$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/AuctionListController$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/AuctionListController$4.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/AuctionListController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/auction/gui/controller/AuctionListController.class" afterDir="false" />
-    </list>
->>>>>>> parent of 43277d1 (Update workspace.xml)
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="85" />
+    <option name="cachedIndexableFilesCount" value="84" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -37,7 +25,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$/.." value="123" />
+        <entry key="$PROJECT_DIR$/.." value="tung" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -86,7 +74,7 @@
     &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;backup&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/thanh/OneDrive/Documents/BaiTapNhom8/BaiTapNhom8&quot;,
@@ -212,9 +200,9 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.Launcher" />
+        <item itemvalue="JUnit.BidTransactionTest" />
         <item itemvalue="JUnit.SellerTest" />
         <item itemvalue="JUnit.ItemFactoryTest" />
-        <item itemvalue="JUnit.BidTransactionTest" />
         <item itemvalue="JUnit.AdminTest" />
       </list>
     </recent_temporary>

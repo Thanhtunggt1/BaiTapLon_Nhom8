@@ -43,12 +43,21 @@ public class AuctionListController {
         setupColumns();
         loadAuctions();
 
+        // Cập nhật ngay khi có ai đó vừa đặt giá thành công
         NetworkClient.getInstance().setOnBidUpdate(updatedAuction -> {
             Platform.runLater(this::loadAuctions);
         });
+
+        // Tự động làm mới dữ liệu ngầm mỗi 3 giây để cập nhật trạng thái realtime
+        Timeline autoRefresh = new Timeline(
+                new KeyFrame(Duration.seconds(3), e -> loadAuctions())
+        );
+        autoRefresh.setCycleCount(Timeline.INDEFINITE);
+        autoRefresh.play();
     }
 
     private void setupColumns() {
+        // Đồng nhất các cột căn lề sang bên phải
         String rightAlign = "-fx-alignment: CENTER-RIGHT; -fx-padding: 0 10 0 0;";
         colItem.setStyle(rightAlign);
         colType.setStyle(rightAlign);
@@ -150,11 +159,35 @@ public class AuctionListController {
     }
 
     public void loadAuctions() {
-        Message response = NetworkClient.getInstance().getAuctions();
-        if (response.isSuccess()) {
-            allAuctions = response.getPayload(new com.google.gson.reflect.TypeToken<List<AuctionDto>>(){}.getType());
-            handleFilter();
-        }
+        // Lưu lại phiên đấu giá đang được click chọn để không bị mất highlight khi bảng làm mới
+        AuctionDto selectedAuction = auctionTable.getSelectionModel().getSelectedItem();
+
+        // Đẩy việc tải dữ liệu mạng sang Thread phụ để giao diện không bị giật/khựng
+        new Thread(() -> {
+            Message response = NetworkClient.getInstance().getAuctions();
+
+            if (response.isSuccess()) {
+                List<AuctionDto> newData = response.getPayload(new com.google.gson.reflect.TypeToken<List<AuctionDto>>(){}.getType());
+
+                // Đưa dữ liệu trở lại luồng giao diện chính (JavaFX Application Thread)
+                Platform.runLater(() -> {
+                    allAuctions = newData;
+
+                    // Gọi hàm lọc để cập nhật dữ liệu vào bảng (kết hợp với bộ lọc ComboBox hiện tại)
+                    handleFilter();
+
+                    // Phục hồi lại dòng đang chọn ban đầu
+                    if (selectedAuction != null) {
+                        auctionTable.getItems().stream()
+                                .filter(a -> a.id.equals(selectedAuction.id))
+                                .findFirst()
+                                .ifPresent(a -> auctionTable.getSelectionModel().select(a));
+                    }
+
+                    auctionTable.refresh();
+                });
+            }
+        }).start();
     }
 
     private void handlePay(AuctionDto dto) {

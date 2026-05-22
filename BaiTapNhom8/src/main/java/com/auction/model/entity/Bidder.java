@@ -148,22 +148,12 @@ public class Bidder extends User implements Observer {
         }
         if (amount <= 0) throw new IllegalArgumentException("Số tiền nạp phải dương.");
 
-
         this.balance += amount;
         depositHistories.add(new DepositHistory(amount, this.balance));
     }
     public List<DepositHistory> getDepositHistories() {
         return Collections.unmodifiableList(depositHistories);
     }
-
-    public DepositRequest requestDeposit(double amount) {
-        if (amount <= 0) {
-            throw new IllegalArgumentException("Số tiền yêu cầu nạp phải dương.");
-        }
-
-        return new DepositRequest(this, amount);
-    }
-
 
     public void deduct(double amount) {
         if (amount > balance) throw new InsufficientBalanceException("Số dư không đủ.");

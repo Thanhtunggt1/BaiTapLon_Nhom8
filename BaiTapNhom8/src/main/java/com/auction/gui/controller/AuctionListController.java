@@ -105,8 +105,8 @@ public class AuctionListController {
         colAction.setCellFactory(col -> new TableCell<>() {
             private final Button btn = new Button("Xem");
             {
-                // Ép style nhỏ lại và không cho cắt chữ
-                btn.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-cursor: hand; -fx-padding: 4 10; -fx-font-size: 12px; -fx-min-width: -Infinity;");
+                btn.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-cursor: hand; -fx-padding: 4 10; -fx-font-size: 12px;");
+                btn.setMinWidth(javafx.scene.layout.Region.USE_PREF_SIZE);
                 btn.setOnAction(e -> openDetail(getTableView().getItems().get(getIndex())));
             }
             @Override protected void updateItem(Void item, boolean empty) {
@@ -118,8 +118,10 @@ public class AuctionListController {
         colPay.setCellFactory(col -> new TableCell<>() {
             private final Button btn = new Button("Thanh toán");
             {
-                // Ép style nhỏ lại và không cho cắt chữ
-                btn.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white; -fx-cursor: hand; -fx-padding: 4 10; -fx-font-size: 12px; -fx-min-width: -Infinity;");
+                // Bỏ -fx-min-width ra khỏi CSS
+                btn.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white; -fx-cursor: hand; -fx-padding: 4 10; -fx-font-size: 12px;");
+                // Dùng code Java để ép kích thước tối thiểu
+                btn.setMinWidth(javafx.scene.layout.Region.USE_PREF_SIZE);
                 btn.setOnAction(e -> handlePay(getTableView().getItems().get(getIndex())));
             }
             @Override protected void updateItem(Void item, boolean empty) {

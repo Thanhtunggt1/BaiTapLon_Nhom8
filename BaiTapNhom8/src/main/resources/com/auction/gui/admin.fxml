@@ -34,20 +34,6 @@
         </HBox>
     </HBox>
 
-    <HBox spacing="10.0" alignment="CENTER_RIGHT">
-        <Button text="Duyệt nạp tiền" onAction="#handleApproveDeposit" style="-fx-base: #2c3e50; -fx-text-fill: white;"/>
-        <Button text="Từ chối nạp tiền" onAction="#handleRejectDeposit" style="-fx-base: #e74c3c; -fx-text-fill: white;"/>
-    </HBox>
-
-    <TableView fx:id="depositRequestsTable" prefHeight="150.0">
-        <columns>
-            <TableColumn fx:id="colDepositId" text="ID" prefWidth="120.0"/>
-            <TableColumn fx:id="colDepositBidder" text="Bidder" prefWidth="150.0"/>
-            <TableColumn fx:id="colDepositAmount" text="Số tiền" prefWidth="150.0"/>
-            <TableColumn fx:id="colDepositStatus" text="Trạng thái" prefWidth="120.0"/>
-        </columns>
-
-    </TableView>
     <TableView fx:id="allAuctionsTable" VBox.vgrow="ALWAYS">
         <columns>
             <TableColumn fx:id="colId" text="ID" prefWidth="100.0"/>

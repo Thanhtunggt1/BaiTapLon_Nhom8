@@ -1,7 +1,6 @@
 package com.auction.manager;
 
 import com.auction.model.entity.Auction;
-import com.auction.model.entity.DepositRequest;
 import com.auction.model.enums.AuctionStatus;
 
 import java.time.LocalDateTime;
@@ -16,24 +15,15 @@ public class AuctionManager {
     private static volatile AuctionManager instance;
 
     private final List<Auction> activeAuctions;
-    private final List<DepositRequest> depositRequests;
 
     private AuctionManager() {
         this.activeAuctions = new ArrayList<>();
-        this.depositRequests = new ArrayList<>();
-
-        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor(runnable -> {
-            Thread t = new Thread(runnable, "AuctionManager-Scheduler");
+        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor(r -> {
+            Thread t = new Thread(r, "AuctionManager-Scheduler");
             t.setDaemon(true);
             return t;
         });
-
-        scheduler.scheduleAtFixedRate(
-                this::checkAndCloseExpiredAuctions,
-                5,
-                5,
-                TimeUnit.SECONDS
-        );
+        scheduler.scheduleAtFixedRate(this::checkAndCloseExpiredAuctions, 5, 5, TimeUnit.SECONDS);
     }
 
     public static AuctionManager getInstance() {
@@ -47,18 +37,13 @@ public class AuctionManager {
         return instance;
     }
 
-    public synchronized void registerAuction(Auction auction) {
-        if (auction == null) {
-            throw new IllegalArgumentException("Auction không được null.");
-        }
 
+    public synchronized void registerAuction(Auction auction) {
+        if (auction == null) throw new IllegalArgumentException("Auction không được null.");
         if (!activeAuctions.contains(auction)) {
             activeAuctions.add(auction);
-            System.out.printf(
-                    "[AuctionManager] Đã đăng ký phiên [%s] cho sản phẩm '%s'%n",
-                    auction.getId(),
-                    auction.getItem().getName()
-            );
+            System.out.printf("[AuctionManager] Đã đăng ký phiên [%s] cho sản phẩm '%s'%n",
+                    auction.getId(), auction.getItem().getName());
         }
     }
 
@@ -66,61 +51,36 @@ public class AuctionManager {
         if (!activeAuctions.contains(auction)) {
             throw new IllegalArgumentException("Phiên chưa được đăng ký vào AuctionManager.");
         }
-
         auction.startAuction();
     }
 
     public synchronized void checkAndCloseExpiredAuctions() {
         LocalDateTime now = LocalDateTime.now();
-
         for (Auction auction : activeAuctions) {
             if (auction.getStatus() == AuctionStatus.RUNNING && auction.isExpired()) {
-                System.out.printf("[AuctionManager] Phiên [%s] hết hạn -> tự động đóng.%n",
+                System.out.printf("[AuctionManager] Phiên [%s] hết hạn → tự động đóng.%n",
                         auction.getId());
                 auction.endAuction();
             }
-
             if (auction.getStatus() == AuctionStatus.OPEN
                     && !auction.getStartTime().isAfter(now)) {
                 auction.startAuction();
             }
 
-            if (auction.getStatus() == AuctionStatus.FINISHED
-                    && auction.getFinishedTime() != null) {
-
+            if (auction.getStatus() == AuctionStatus.FINISHED && auction.getFinishedTime() != null) {
                 if (now.isAfter(auction.getFinishedTime().plusHours(12))) {
-                    System.out.printf(
-                            "[AuctionManager] Phiên [%s] quá hạn thanh toán 12h -> tự động HỦY.%n",
-                            auction.getId()
-                    );
+                    System.out.printf("[AuctionManager] Phiên [%s] quá hạn thanh toán 12h → tự động HỦY.%n",
+                            auction.getId());
                     auction.cancelAuction();
                 }
             }
         }
     }
 
+
     public synchronized List<Auction> getAllAuctions() {
         return List.copyOf(activeAuctions);
     }
-
-    public synchronized void addDepositRequest(DepositRequest request) {
-        if (request == null) {
-            throw new IllegalArgumentException("DepositRequest không được null.");
-        }
-
-        depositRequests.add(request);
-
-        System.out.printf(
-                "[AuctionManager] Đã thêm yêu cầu nạp %.2f của bidder %s%n",
-                request.getAmount(),
-                request.getBidder().getUsername()
-        );
-    }
-
-    public synchronized List<DepositRequest> getDepositRequests() {
-        return List.copyOf(depositRequests);
-    }
-}
 
     /*
      * Hàm này chỉ là in dữ liệu ra màn hình (Read) thôi mà, có thay đổi hay thêm bớt (Write) cái gì đâu
@@ -154,3 +114,4 @@ public class AuctionManager {
      * count() - Ở cuối băng truyền, đếm xem có phieen đấu giá đã được lọc
      * */
 
+}

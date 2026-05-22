@@ -99,6 +99,7 @@ public class NetworkClient {
     private record AutoBidPayload(String auctionId, double maxBid, double increment) {}
     private record UpdateItemPayload(String itemId, String name, String description, double startingPrice) {}
     private record PromotePayload(String username, String role) {}
+    public Message deleteItem(String itemId) { return sendAndReceive(new Message(MessageType.DELETE_ITEM, itemId)); }
 
     // ĐỊNH NGHĨA PAYLOAD MỚI
     private record DepositPayload(double amount, String password) {}

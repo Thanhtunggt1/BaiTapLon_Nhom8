@@ -66,4 +66,27 @@ public class ItemDAO {
             return false;
         }
     }
+
+    public static boolean deleteItem(String itemId) {
+        String sqlImages = "DELETE FROM item_images WHERE item_id = ?";
+        String sqlItem = "DELETE FROM items WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            conn.setAutoCommit(false);
+            try (PreparedStatement stmtImg = conn.prepareStatement(sqlImages);
+                 PreparedStatement stmtItem = conn.prepareStatement(sqlItem)) {
+                stmtImg.setString(1, itemId);
+                stmtImg.executeUpdate();
+                stmtItem.setString(1, itemId);
+                int affected = stmtItem.executeUpdate();
+                conn.commit();
+                return affected > 0;
+            } catch (SQLException e) {
+                conn.rollback();
+                throw e;
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+    }
 }

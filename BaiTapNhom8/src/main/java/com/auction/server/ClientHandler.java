@@ -352,6 +352,25 @@ public class ClientHandler implements Runnable {
                 return Message.error(MessageType.UPDATE_ITEM_RESPONSE, "Lỗi quyền hạn.");
             }
 
+            case DELETE_ITEM: {
+                String itemId = request.getPayload(String.class);
+                if (this.currentUser instanceof Seller seller) {
+                    if (ItemDAO.deleteItem(itemId)) {
+                        try {
+                            java.lang.reflect.Field f = Seller.class.getDeclaredField("items");
+                            f.setAccessible(true);
+                            java.util.List<Item> serverItems = (java.util.List<Item>) f.get(seller);
+                            serverItems.removeIf(i -> i.getId().equals(itemId));
+                        } catch (Exception e) {
+                            System.err.println(e.getMessage());
+                        }
+                        return Message.success(MessageType.DELETE_ITEM_RESPONSE, "Thành công");
+                    }
+                    return Message.error(MessageType.DELETE_ITEM_RESPONSE, "Lỗi Database");
+                }
+                return Message.error(MessageType.DELETE_ITEM_RESPONSE, "Lỗi quyền hạn");
+            }
+
             case ADMIN_CANCEL_AUCTION: {
                 AdminCancelPayload dto = request.getPayload(AdminCancelPayload.class);
                 if (this.currentUser instanceof Admin) {

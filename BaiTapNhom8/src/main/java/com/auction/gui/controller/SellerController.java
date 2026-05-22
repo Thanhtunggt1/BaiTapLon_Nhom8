@@ -324,20 +324,22 @@ public class SellerController {
     private void handleDeleteItem() {
         Item sel = itemTable.getSelectionModel().getSelectedItem();
         if (sel == null) { alert("Chưa chọn", "Hãy chọn sản phẩm cần xóa."); return; }
-
         boolean isLocked = auctionTable.getItems().stream()
                 .anyMatch(dto -> dto.itemName.equals(sel.getName()) &&
                         ("RUNNING".equals(dto.status) || "FINISHED".equals(dto.status) || "PAID".equals(dto.status)));
-
         if (isLocked) {
             alert("Lỗi thao tác", "Không thể xóa! Sản phẩm này đang được đấu giá hoặc đã bán."); return;
         }
-
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Xóa sản phẩm \"" + sel.getName() + "\"?", ButtonType.YES, ButtonType.NO);
         confirm.showAndWait().ifPresent(b -> {
             if (b == ButtonType.YES) {
-                getSeller().deleteItem(sel);
-                loadData();
+                com.auction.network.Message res = com.auction.network.NetworkClient.getInstance().deleteItem(sel.getId());
+                if (res.isSuccess()) {
+                    getSeller().deleteItem(sel);
+                    loadData();
+                } else {
+                    alert("Lỗi Server", res.getErrorMessage());
+                }
             }
         });
     }

@@ -5,15 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1db9cef5-daac-4b04-9043-8b738c6d99ef" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/src/main/java/com/auction/model/entity/DepositHistory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BaiTapNhom8/src/main/java/com/auction/gui/controller/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BaiTapNhom8/src/main/java/com/auction/gui/controller/MainController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BaiTapNhom8/src/main/java/com/auction/model/entity/Bidder.java" beforeDir="false" afterPath="$PROJECT_DIR$/BaiTapNhom8/src/main/java/com/auction/model/entity/Bidder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BaiTapNhom8/src/main/resources/com/auction/gui/main.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/BaiTapNhom8/src/main/resources/com/auction/gui/main.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/gui/controller/MainController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/gui/controller/MainController$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/gui/controller/MainController.class" beforeDir="false" afterPath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/gui/controller/MainController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/gui/main.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/gui/main.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/model/entity/Bidder.class" beforeDir="false" afterPath="$PROJECT_DIR$/BaiTapNhom8/target/classes/com/auction/model/entity/Bidder.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,17 +41,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.AuctionServer.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Launcher.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;tien3&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.AuctionServer.executor": "Run",
+    "Application.Launcher.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "tien3",
+    "kotlin-language-version-configured": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="JUnit.AdminExtraTest">
     <configuration name="AuctionServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.auction.server.AuctionServer" />

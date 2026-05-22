@@ -4,33 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c6a107e-68c0-4fa4-9118-006d3961becd" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/auction/manager/AuctionManagerIntegrationTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/auction/model/entity/ItemSubclassTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/auction/server/ClientHandlerTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/auction/server/UserDAOTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/auction/manager/AuctionManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/auction/manager/AuctionManagerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/auction/model/entity/AdminTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/auction/model/entity/AdminTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/auction/model/entity/AuctionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/auction/model/entity/AuctionTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/auction/model/entity/AutoBidConfigTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/auction/model/entity/AutoBidConfigTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/auction/model/entity/BidTransactionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/auction/model/entity/BidTransactionTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/auction/model/entity/BidderTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/auction/model/entity/BidderTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/auction/model/entity/SellerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/auction/model/entity/SellerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/auction/pattern/factory/ItemFactoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/auction/pattern/factory/ItemFactoryTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/com/auction/manager/AuctionManagerTest$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/com/auction/manager/AuctionManagerTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/com/auction/model/entity/AdminTest$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/com/auction/model/entity/AdminTest$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/com/auction/model/entity/AdminTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/com/auction/model/entity/AuctionTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/com/auction/model/entity/AutoBidConfigTest$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/com/auction/model/entity/AutoBidConfigTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/com/auction/model/entity/BidderTest$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/com/auction/model/entity/BidderTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/com/auction/model/entity/SellerTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/com/auction/pattern/factory/ItemFactoryTest.class" beforeDir="false" />
-    </list>
+    <list default="true" id="0c6a107e-68c0-4fa4-9118-006d3961becd" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -85,14 +59,20 @@
     "Application.Launcher.executor": "Run",
     "Application.Main.executor": "Run",
     "JUnit.AdminTest.executor": "Run",
+    "JUnit.AuctionManagerIntegrationTest.executor": "Run",
+    "JUnit.AuctionManagerTest.executor": "Run",
+    "JUnit.AuctionObserverTest.executor": "Run",
     "JUnit.AuctionTest.executor": "Run",
     "JUnit.AutoBidConfigTest.executor": "Run",
     "JUnit.BidTransactionTest.executor": "Run",
     "JUnit.BidderTest.executor": "Run",
+    "JUnit.ClientHandlerTest.executor": "Run",
     "JUnit.DomainModelTest.executor": "Run",
     "JUnit.EntityTest.executor": "Run",
     "JUnit.ItemFactoryTest.executor": "Run",
+    "JUnit.ItemSubclassTest.executor": "Run",
     "JUnit.SellerTest.executor": "Run",
+    "JUnit.UserDAOTest.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.MCP Project settings loaded": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",

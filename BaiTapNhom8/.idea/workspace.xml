@@ -5,9 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0c6a107e-68c0-4fa4-9118-006d3961becd" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/network/MessageType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/network/MessageType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/server/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/server/ClientHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/server/ItemDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/server/ItemDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/auction/gui/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auction/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auction/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,7 +105,7 @@
       <recent name="com.auction.model.entity" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.AuctionServer">
+  <component name="RunManager" selected="Application.Launcher">
     <configuration name="AuctionServer" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.auction.server.AuctionServer" />
       <module name="auction-system" />

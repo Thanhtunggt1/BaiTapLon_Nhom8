@@ -42,6 +42,8 @@ public class Main extends Application {
                 Main.class.getResource("/com/auction/gui/login.fxml"));
         Scene scene = new Scene(loader.load(), 420, 480);
 
+        scene.getStylesheets().add(Main.class.getResource("/com/auction/gui/style.css").toExternalForm());
+
         primaryStage.setTitle("Hệ Thống Đấu Giá Trực Tuyến - Đăng nhập");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
@@ -52,6 +54,8 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(
                 Main.class.getResource("/com/auction/gui/main.fxml"));
         Scene scene = new Scene(loader.load(), 1150, 720);
+
+        scene.getStylesheets().add(Main.class.getResource("/com/auction/gui/style.css").toExternalForm());
 
         primaryStage.setTitle("Hệ Thống Đấu Giá Trực Tuyến - Dashboard");
         primaryStage.setScene(scene);

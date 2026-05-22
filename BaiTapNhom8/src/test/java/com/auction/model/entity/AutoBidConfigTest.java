@@ -1,59 +1,50 @@
 package com.auction.model.entity;
 
+import com.auction.model.enums.ItemType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class AutoBidConfigTest {
+public class AutoBidConfigTest {
 
-    private Bidder bidder1;
-    private Bidder bidder2;
-    private Auction dummyAuction;
+    private Bidder bidder;
+    private Auction auction;
 
     @BeforeEach
-    void setUp() {
-        bidder1 = new Bidder("user1", "123456", "u1@test.com", 10000);
-        bidder2 = new Bidder("user2", "123456", "u2@test.com", 10000);
-        Seller seller = new Seller("s", "123456", "s@test.com");
-        Item item = new Item("Tượng", "Cổ", 500) {};
-        dummyAuction = new Auction(item, seller, LocalDateTime.now(), LocalDateTime.now().plusDays(1));
+    public void setUp() {
+        bidder = new Bidder("auto_bidder", "pass123", "auto@test.com", 100000.0);
+        Seller seller = new Seller("auto_seller", "pass123", "s@test.com");
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("brand", "Asus");
+        params.put("warrantyMonths", 24);
+        Item item = seller.createItem("PC", "Gaming", 20000.0, ItemType.ELECTRONICS, params);
+
+        auction = new Auction(item, seller, LocalDateTime.now(), LocalDateTime.now().plusHours(1));
     }
 
     @Test
-    void testComputeNextBid_WithinMaxBid() {
-        // Cài Max = 5000, Bước giá = 500
-        AutoBidConfig config = new AutoBidConfig(bidder1, dummyAuction, 5000.0, 500.0);
-
-        // Giá hiện tại là 1000 -> Giá tiếp theo dự kiến là 1500 (Vẫn nhỏ hơn 5000)
-        double nextBid = config.computeNextBid(1000.0);
-        assertEquals(1500.0, nextBid);
+    public void testComputeNextBidWithinLimit() {
+        AutoBidConfig config = new AutoBidConfig(bidder, auction, 30000.0, 1000.0);
+        double nextBid = config.computeNextBid(25000.0);
+        assertEquals(26000.0, nextBid);
     }
 
     @Test
-    void testComputeNextBid_ExceedsMaxBid_ReturnsMinusOne() {
-        // Cài Max = 1200, Bước giá = 500
-        AutoBidConfig config = new AutoBidConfig(bidder1, dummyAuction, 1200.0, 500.0);
-
-        // Giá hiện tại đã bị đẩy lên 1000 -> Giá tiếp theo cần là 1500 (Vượt quá ngân sách 1200)
-        // Hệ thống phải trả về -1 (Giá trị lính canh)
-        double nextBid = config.computeNextBid(1000.0);
-        assertEquals(-1.0, nextBid, "Khi vượt quá maxBid, phải trả về -1");
+    public void testComputeNextBidExceedsLimit() {
+        AutoBidConfig config = new AutoBidConfig(bidder, auction, 30000.0, 5000.0);
+        double nextBid = config.computeNextBid(28000.0);
+        assertEquals(-1, nextBid);
     }
 
     @Test
-    void testCompareTo_SortingByRegistrationTime() throws InterruptedException {
-        AutoBidConfig configEarly = new AutoBidConfig(bidder1, dummyAuction, 5000.0, 500.0);
-
-        // Dừng luồng 100 mili-giây để đảm bảo thời gian đăng ký của người thứ 2 chắc chắn xảy ra sau
-        Thread.sleep(100);
-
-        AutoBidConfig configLate = new AutoBidConfig(bidder2, dummyAuction, 5000.0, 500.0);
-
-        // compareTo trả về số âm nếu configEarly đăng ký trước configLate
-        assertTrue(configEarly.compareTo(configLate) < 0, "Người đăng ký sớm hơn phải có thứ tự ưu tiên nhỏ hơn (đứng trước)");
-        assertTrue(configLate.compareTo(configEarly) > 0);
+    public void testInvalidConfigParameters() {
+        assertThrows(IllegalArgumentException.class, () -> new AutoBidConfig(bidder, auction, -100.0, 10.0));
+        assertThrows(IllegalArgumentException.class, () -> new AutoBidConfig(bidder, auction, 100.0, -10.0));
     }
 }

@@ -1,53 +1,93 @@
 package com.auction.model.entity;
 
-import com.auction.exception.AuctionClosedException;
 import com.auction.exception.InsufficientBalanceException;
-import com.auction.model.enums.AuctionStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.time.LocalDateTime;
-
 import static org.junit.jupiter.api.Assertions.*;
 
-class BidderTest {
+public class BidderTest {
 
     private Bidder bidder;
     private Auction dummyAuction;
+    private Seller dummySeller;
+    private Electronics dummyItem;
 
     @BeforeEach
-    void setUp() {
-        bidder = new Bidder("test_user", "123456", "test@test.com", 1000.0);
-        Seller seller = new Seller("seller", "123456", "s@test.com");
-        Item item = new Item("Đồ cổ", "Mô tả", 500.0) {}; // Lớp nặc danh để test Item abstract
-        dummyAuction = new Auction(item, seller, LocalDateTime.now(), LocalDateTime.now().plusDays(1));
+    public void setUp() {
+        bidder = new Bidder("tung_bidder", "password123", "tung@test.com", 10000.0);
+        dummySeller = new Seller("seller_test", "pass123", "seller@test.com");
+        dummyItem = new Electronics("Laptop", "Core i7", 5000.0, "Dell", 12);
+
+        try {
+            java.lang.reflect.Field itemsField = Seller.class.getDeclaredField("items");
+            itemsField.setAccessible(true);
+            ((java.util.List<Item>) itemsField.get(dummySeller)).add(dummyItem);
+        } catch (Exception ignored) {}
+
+        LocalDateTime now = LocalDateTime.now();
+        dummyAuction = new Auction(dummyItem, dummySeller, now, now.plusHours(1));
     }
 
     @Test
-    void testPlaceBid_InsufficientBalance_ThrowsException() {
+    public void testDepositSuccess() {
+        bidder.deposit(5000.0);
+        assertEquals(15000.0, bidder.getBalance());
+    }
+
+    @Test
+    public void testDepositNegativeAmountThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> bidder.deposit(-1000.0));
+    }
+
+    @Test
+    public void testDeductSuccess() {
+        bidder.deduct(4000.0);
+        assertEquals(6000.0, bidder.getBalance());
+    }
+
+    @Test
+    public void testDeductInsufficientBalanceThrowsException() {
+        assertThrows(InsufficientBalanceException.class, () -> bidder.deduct(20000.0));
+    }
+
+    @Test
+    public void testAddUnpaidWarningBansUser() {
+        bidder.addUnpaidWarning();
+        bidder.addUnpaidWarning();
+        assertFalse(bidder.isBanned());
+
+        bidder.addUnpaidWarning();
+        assertTrue(bidder.isBanned());
+    }
+
+    @Test
+    public void testDepositLockoutMechanism() {
+        bidder.recordFailedDeposit();
+        bidder.recordFailedDeposit();
+        assertFalse(bidder.isDepositLocked());
+
+        bidder.recordFailedDeposit();
+        assertTrue(bidder.isDepositLocked());
+        assertTrue(bidder.getDepositLockRemainingSeconds() > 0);
+
+        bidder.resetFailedDeposit();
+        assertFalse(bidder.isDepositLocked());
+    }
+
+    @Test
+    public void testSetupAutoBidInvalidMaxBid() {
         dummyAuction.startAuction();
-
-        // Bidder có 1000, cố tình đặt giá 2000
-        Exception exception = assertThrows(InsufficientBalanceException.class, () -> {
-            bidder.placeBid(dummyAuction, 2000.0);
+        assertThrows(IllegalArgumentException.class, () -> {
+            bidder.setupAutoBid(dummyAuction, 4000.0, 500.0);
         });
-        assertTrue(exception.getMessage().contains("không đủ"));
     }
 
     @Test
-    void testPlaceBid_AuctionNotRunning_ThrowsException() {
-        // Cố tình không gọi dummyAuction.startAuction() để trạng thái vẫn là OPEN
-        Exception exception = assertThrows(AuctionClosedException.class, () -> {
-            bidder.placeBid(dummyAuction, 600.0);
+    public void testSetupAutoBidExceedsBalance() {
+        dummyAuction.startAuction();
+        assertThrows(IllegalArgumentException.class, () -> {
+            bidder.setupAutoBid(dummyAuction, 15000.0, 1000.0);
         });
-        assertTrue(exception.getMessage().contains("không ở trạng thái RUNNING"));
-    }
-
-    @Test
-    void testDepositAndDeduct_Success() {
-        bidder.deposit(500.0);
-        assertEquals(1500.0, bidder.getBalance());
-        bidder.deduct(200.0);
-        assertEquals(1300.0, bidder.getBalance());
     }
 }

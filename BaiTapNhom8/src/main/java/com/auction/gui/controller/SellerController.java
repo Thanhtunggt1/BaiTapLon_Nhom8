@@ -44,13 +44,14 @@ public class SellerController {
     @FXML private TableColumn<AuctionDto, String> colAuctionEnd;
 
     private static final NumberFormat NF  = NumberFormat.getInstance(new Locale("vi", "VN"));
+    private javafx.animation.Timeline autoRefresh;
 
     @FXML
     public void initialize() {
         setupItemTable();
         setupAuctionTable();
         loadData();
-        javafx.animation.Timeline autoRefresh = new javafx.animation.Timeline(
+        autoRefresh = new javafx.animation.Timeline(
                 new javafx.animation.KeyFrame(javafx.util.Duration.seconds(3), e -> loadData())
         );
         autoRefresh.setCycleCount(javafx.animation.Timeline.INDEFINITE);
@@ -117,10 +118,18 @@ public class SellerController {
     }
 
     private void loadData() {
+        Seller seller = getSeller();
+        if (seller == null) {
+            if (autoRefresh != null) {
+                autoRefresh.stop();
+            }
+            return;
+        }
+
         Item selectedItem = itemTable.getSelectionModel().getSelectedItem();
         AuctionDto selectedAuction = auctionTable.getSelectionModel().getSelectedItem();
 
-        List<Item> items = getSeller().getItems();
+        List<Item> items = seller.getItems();
 
         new Thread(() -> {
             com.auction.network.Message response = com.auction.network.NetworkClient.getInstance().getAuctions();
@@ -164,6 +173,7 @@ public class SellerController {
             });
         }).start();
     }
+
 
     @FXML private void handleRefreshItems() { loadData(); }
     @FXML private void handleRefreshAuctions() { loadData(); }

@@ -38,4 +38,18 @@ public class AuctionDAO {
             return false;
         }
     }
+
+    public static boolean updateAuctionTimes(Auction auction) {
+        String sql = "UPDATE auctions SET start_time = ?, end_time = ? WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setTimestamp(1, Timestamp.valueOf(auction.getStartTime()));
+            stmt.setTimestamp(2, Timestamp.valueOf(auction.getEndTime()));
+            stmt.setString(3, auction.getId());
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("[AuctionDAO] Lỗi cập nhật thời gian: " + e.getMessage());
+            return false;
+        }
+    }
 }

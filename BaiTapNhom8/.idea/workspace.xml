@@ -5,7 +5,31 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0c6a107e-68c0-4fa4-9118-006d3961becd" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/auction/manager/AuctionManagerIntegrationTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/auction/model/entity/ItemSubclassTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/auction/server/ClientHandlerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/auction/server/UserDAOTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/auction/manager/AuctionManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/auction/manager/AuctionManagerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/auction/model/entity/AdminTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/auction/model/entity/AdminTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/auction/model/entity/AuctionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/auction/model/entity/AuctionTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/auction/model/entity/AutoBidConfigTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/auction/model/entity/AutoBidConfigTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/auction/model/entity/BidTransactionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/auction/model/entity/BidTransactionTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/auction/model/entity/BidderTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/auction/model/entity/BidderTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/auction/model/entity/SellerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/auction/model/entity/SellerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/auction/pattern/factory/ItemFactoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/auction/pattern/factory/ItemFactoryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/com/auction/manager/AuctionManagerTest$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/com/auction/manager/AuctionManagerTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/com/auction/model/entity/AdminTest$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/com/auction/model/entity/AdminTest$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/com/auction/model/entity/AdminTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/com/auction/model/entity/AuctionTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/com/auction/model/entity/AutoBidConfigTest$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/com/auction/model/entity/AutoBidConfigTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/com/auction/model/entity/BidderTest$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/com/auction/model/entity/BidderTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/com/auction/model/entity/SellerTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/com/auction/pattern/factory/ItemFactoryTest.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,6 +89,7 @@
     "JUnit.AutoBidConfigTest.executor": "Run",
     "JUnit.BidTransactionTest.executor": "Run",
     "JUnit.BidderTest.executor": "Run",
+    "JUnit.DomainModelTest.executor": "Run",
     "JUnit.EntityTest.executor": "Run",
     "JUnit.ItemFactoryTest.executor": "Run",
     "JUnit.SellerTest.executor": "Run",
@@ -104,7 +129,7 @@
       <recent name="com.auction.model.entity" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Launcher">
+  <component name="RunManager" selected="JUnit.AuctionManagerIntegrationTest">
     <configuration name="AuctionServer" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.auction.server.AuctionServer" />
       <module name="auction-system" />
@@ -118,44 +143,46 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Launcher" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.auction.Launcher" />
+    <configuration name="AuctionManagerIntegrationTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="auction-system" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.auction.*" />
+          <option name="PATTERN" value="com.auction.manager.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="AdminTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="auction-system" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.auction.model.entity.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.auction.model.entity" />
-      <option name="MAIN_CLASS_NAME" value="com.auction.model.entity.AdminTest" />
+      <option name="PACKAGE_NAME" value="com.auction.manager" />
+      <option name="MAIN_CLASS_NAME" value="com.auction.manager.AuctionManagerIntegrationTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="BidTransactionTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="AuctionObserverTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="auction-system" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.auction.model.entity.*" />
+          <option name="PATTERN" value="com.auction.pattern.observer.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.auction.model.entity" />
-      <option name="MAIN_CLASS_NAME" value="com.auction.model.entity.BidTransactionTest" />
+      <option name="PACKAGE_NAME" value="com.auction.pattern.observer" />
+      <option name="MAIN_CLASS_NAME" value="com.auction.pattern.observer.AuctionObserverTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ClientHandlerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="auction-system" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.auction.server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.auction.server" />
+      <option name="MAIN_CLASS_NAME" value="com.auction.server.ClientHandlerTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -176,16 +203,16 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="SellerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="UserDAOTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="auction-system" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.auction.model.entity.*" />
+          <option name="PATTERN" value="com.auction.server.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.auction.model.entity" />
-      <option name="MAIN_CLASS_NAME" value="com.auction.model.entity.SellerTest" />
+      <option name="PACKAGE_NAME" value="com.auction.server" />
+      <option name="MAIN_CLASS_NAME" value="com.auction.server.UserDAOTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -193,19 +220,19 @@
     </configuration>
     <list>
       <item itemvalue="Application.AuctionServer" />
-      <item itemvalue="Application.Launcher" />
-      <item itemvalue="JUnit.AdminTest" />
+      <item itemvalue="JUnit.AuctionManagerIntegrationTest" />
+      <item itemvalue="JUnit.AuctionObserverTest" />
+      <item itemvalue="JUnit.ClientHandlerTest" />
+      <item itemvalue="JUnit.UserDAOTest" />
       <item itemvalue="JUnit.ItemFactoryTest" />
-      <item itemvalue="JUnit.SellerTest" />
-      <item itemvalue="JUnit.BidTransactionTest" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Launcher" />
-        <item itemvalue="JUnit.SellerTest" />
+        <item itemvalue="JUnit.AuctionManagerIntegrationTest" />
+        <item itemvalue="JUnit.UserDAOTest" />
+        <item itemvalue="JUnit.ClientHandlerTest" />
         <item itemvalue="JUnit.ItemFactoryTest" />
-        <item itemvalue="JUnit.BidTransactionTest" />
-        <item itemvalue="JUnit.AdminTest" />
+        <item itemvalue="JUnit.AuctionObserverTest" />
       </list>
     </recent_temporary>
   </component>

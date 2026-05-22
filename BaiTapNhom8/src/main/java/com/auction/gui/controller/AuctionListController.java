@@ -105,7 +105,8 @@ public class AuctionListController {
         colAction.setCellFactory(col -> new TableCell<>() {
             private final Button btn = new Button("Xem");
             {
-                btn.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-cursor: hand;");
+                // Ép style nhỏ lại và không cho cắt chữ
+                btn.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-cursor: hand; -fx-padding: 4 10; -fx-font-size: 12px; -fx-min-width: -Infinity;");
                 btn.setOnAction(e -> openDetail(getTableView().getItems().get(getIndex())));
             }
             @Override protected void updateItem(Void item, boolean empty) {
@@ -117,7 +118,8 @@ public class AuctionListController {
         colPay.setCellFactory(col -> new TableCell<>() {
             private final Button btn = new Button("Thanh toán");
             {
-                btn.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white; -fx-cursor: hand;");
+                // Ép style nhỏ lại và không cho cắt chữ
+                btn.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white; -fx-cursor: hand; -fx-padding: 4 10; -fx-font-size: 12px; -fx-min-width: -Infinity;");
                 btn.setOnAction(e -> handlePay(getTableView().getItems().get(getIndex())));
             }
             @Override protected void updateItem(Void item, boolean empty) {
@@ -159,24 +161,18 @@ public class AuctionListController {
     }
 
     public void loadAuctions() {
-        // Lưu lại phiên đấu giá đang được click chọn để không bị mất highlight khi bảng làm mới
         AuctionDto selectedAuction = auctionTable.getSelectionModel().getSelectedItem();
 
-        // Đẩy việc tải dữ liệu mạng sang Thread phụ để giao diện không bị giật/khựng
         new Thread(() -> {
             Message response = NetworkClient.getInstance().getAuctions();
 
             if (response.isSuccess()) {
                 List<AuctionDto> newData = response.getPayload(new com.google.gson.reflect.TypeToken<List<AuctionDto>>(){}.getType());
 
-                // Đưa dữ liệu trở lại luồng giao diện chính (JavaFX Application Thread)
                 Platform.runLater(() -> {
                     allAuctions = newData;
-
-                    // Gọi hàm lọc để cập nhật dữ liệu vào bảng (kết hợp với bộ lọc ComboBox hiện tại)
                     handleFilter();
 
-                    // Phục hồi lại dòng đang chọn ban đầu
                     if (selectedAuction != null) {
                         auctionTable.getItems().stream()
                                 .filter(a -> a.id.equals(selectedAuction.id))

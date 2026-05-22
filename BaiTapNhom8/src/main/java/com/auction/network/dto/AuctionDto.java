@@ -15,6 +15,7 @@ public class AuctionDto {
     public String startTime;
     public String endTime;
     public String finishedTime;
+    public String itemId;
     public int bidCount;
     public List<String> imagesBase64; // Đổi thành List
 

@@ -325,11 +325,13 @@ public class SellerController {
         Item sel = itemTable.getSelectionModel().getSelectedItem();
         if (sel == null) { alert("Chưa chọn", "Hãy chọn sản phẩm cần xóa."); return; }
         boolean isLocked = auctionTable.getItems().stream()
-                .anyMatch(dto -> dto.itemName.equals(sel.getName()) &&
+                .anyMatch(dto -> dto.itemId != null && dto.itemId.equals(sel.getId()) &&
                         ("RUNNING".equals(dto.status) || "FINISHED".equals(dto.status) || "PAID".equals(dto.status)));
+
         if (isLocked) {
             alert("Lỗi thao tác", "Không thể xóa! Sản phẩm này đang được đấu giá hoặc đã bán."); return;
         }
+
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Xóa sản phẩm \"" + sel.getName() + "\"?", ButtonType.YES, ButtonType.NO);
         confirm.showAndWait().ifPresent(b -> {
             if (b == ButtonType.YES) {

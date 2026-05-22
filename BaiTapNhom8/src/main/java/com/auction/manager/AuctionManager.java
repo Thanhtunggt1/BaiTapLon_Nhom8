@@ -61,10 +61,6 @@ public class AuctionManager {
                         auction.getId());
                 auction.endAuction();
             }
-            if (auction.getStatus() == AuctionStatus.OPEN
-                    && !auction.getStartTime().isAfter(now)) {
-                auction.startAuction();
-            }
             if (auction.getStatus() == AuctionStatus.FINISHED && auction.getFinishedTime() != null) {
                 if (now.isAfter(auction.getFinishedTime().plusHours(12))) {
                     System.out.printf("[AuctionManager] Phiên [%s] quá hạn thanh toán 12h → tự động HỦY và Phạt.%n",

@@ -225,6 +225,8 @@ public class ClientHandler implements Runnable {
                             .forEach(a -> {
                                 a.startAuction();
                                 AuctionDAO.updateAuctionStatus(a.getId(), "RUNNING");
+                                // Thêm dòng này để cập nhật thời gian mới xuống MySQL
+                                AuctionDAO.updateAuctionTimes(a);
                             });
                     return Message.success(MessageType.START_AUCTION_RESPONSE, "Đã bắt đầu");
                 } catch (Exception e) {

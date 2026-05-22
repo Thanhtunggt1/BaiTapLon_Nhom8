@@ -22,7 +22,7 @@ public class Auction extends Entity implements Subject {
     private final Seller seller;
     private double currentHighestPrice;
     private Bidder currentLeader;
-    private final LocalDateTime startTime;
+    private LocalDateTime startTime;
     private LocalDateTime endTime;
     private LocalDateTime finishedTime;
     private AuctionStatus status;
@@ -56,6 +56,14 @@ public class Auction extends Entity implements Subject {
         if (status != AuctionStatus.OPEN) {
             throw new IllegalStateException("Chỉ có thể bắt đầu phiên ở trạng thái OPEN.");
         }
+
+        LocalDateTime now = LocalDateTime.now();
+        long offsetSeconds = java.time.temporal.ChronoUnit.SECONDS.between(this.startTime, now);
+        if (offsetSeconds > 0) {
+            this.startTime = now;
+            this.endTime = this.endTime.plusSeconds(offsetSeconds);
+        }
+
         status = AuctionStatus.RUNNING;
         System.out.printf("[Auction:%s] Phiên đấu giá '%s' đã BẮT ĐẦU. Giá khởi điểm: %.2f%n",
                 getId(), item.getName(), currentHighestPrice);

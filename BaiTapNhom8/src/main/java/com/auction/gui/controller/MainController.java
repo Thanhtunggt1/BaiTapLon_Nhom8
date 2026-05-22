@@ -157,11 +157,14 @@ public class MainController {
 
         dialog.showAndWait().ifPresent(result -> {
             try {
+ HEAD
 
                 double amount = Double.parseDouble(result.getKey().replace(",", "").replace(".", "").trim());
                 String password = result.getValue();
 
 
+
+ 6fc3332 (ham xac nhan tien)
                 NumberFormat nf = NumberFormat.getInstance(new Locale("vi", "VN"));
 
                 double amount = Double.parseDouble(input.replace(",", "").replace(".", "").trim());
@@ -177,6 +180,7 @@ public class MainController {
                     return;
                 }
 
+ HEAD
 
                 Message response = NetworkClient.getInstance().deposit(amount, password);
 
@@ -205,11 +209,22 @@ public class MainController {
                     Alert a = new Alert(Alert.AlertType.INFORMATION,
                             "Đã gửi yêu cầu nạp " + nf.format(amount) + " ₫. Vui lòng chờ Admin xác nhận.");
  6fc3332 (ham xac nhan tien)
+
+                com.auction.model.entity.User localUser = SessionManager.getCurrentUser();
+
+                if (localUser instanceof com.auction.model.entity.Bidder bidder) {
+                    DepositRequest request = bidder.requestDeposit(amount);
+                    AuctionManager.getInstance().addDepositRequest(request);
+
+                    Alert a = new Alert(Alert.AlertType.INFORMATION,
+                            "Đã gửi yêu cầu nạp " + nf.format(amount) + " ₫. Vui lòng chờ Admin xác nhận.");
+ 6fc3332 (ham xac nhan tien)
                     a.setHeaderText(null);
                     a.showAndWait();
 
                     refreshBalanceView();
                 } else {
+ HEAD
 
                     String errMsg = response.getErrorMessage();
                     if (errMsg.startsWith("LOCK_TIMER:")) {
@@ -247,6 +262,8 @@ public class MainController {
                         a.showAndWait();
                     }
 
+
+ 6fc3332 (ham xac nhan tien)
                     Alert a = new Alert(Alert.AlertType.ERROR, "Chỉ Bidder mới được gửi yêu cầu nạp tiền.");
                     a.showAndWait();
  6fc3332 (ham xac nhan tien)

@@ -98,11 +98,13 @@ public class AuctionTest {
     @Test
     public void testCancelDueToUnpaid() {
         auction.startAuction();
+
         BidTransaction bid = new BidTransaction(bidder1, auction, 3000.0);
         auction.placeBid(bid);
         auction.endAuction();
 
         auction.cancelDueToUnpaid();
+
         assertEquals(AuctionStatus.CANCELED, auction.getStatus());
         assertEquals(1, bidder1.getUnpaidWarnings());
     }

@@ -19,4 +19,5 @@ jobs:
           distribution: 'temurin'
 
       - name: Build and test with Maven
+        working-directory: BaiTapNhom8/auction-system
         run: mvn clean test

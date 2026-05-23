@@ -30,5 +30,5 @@ jobs:
     - name: Build with Maven
       run: mvn -f BaiTapNhom8/pom.xml clean test -Dtest='!AuctionTest,!BidderTest'
 
-    # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
+
 

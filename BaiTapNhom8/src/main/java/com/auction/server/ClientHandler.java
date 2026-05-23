@@ -414,6 +414,7 @@ public class ClientHandler implements Runnable {
     private AuctionDto toAuctionDto(Auction a) {
         AuctionDto dto = new AuctionDto();
         dto.id = a.getId();
+        dto.itemId = a.getItem().getId();
         dto.itemName = a.getItem().getName();
         dto.itemType = a.getItem().getClass().getSimpleName().toUpperCase();
         dto.description = a.getItem().getDescription();

@@ -285,8 +285,9 @@ public class SellerController {
         Item sel = itemTable.getSelectionModel().getSelectedItem();
         if (sel == null) { alert("Chưa chọn", "Hãy chọn sản phẩm cần sửa."); return; }
 
+        // ĐÃ SỬA: Dùng itemId thay vì itemName để tránh lỗi nhầm sản phẩm trùng tên
         boolean isLocked = auctionTable.getItems().stream()
-                .anyMatch(dto -> dto.itemName.equals(sel.getName()) &&
+                .anyMatch(dto -> dto.itemId != null && dto.itemId.equals(sel.getId()) &&
                         ("RUNNING".equals(dto.status) || "FINISHED".equals(dto.status) || "PAID".equals(dto.status)));
 
         if (isLocked) { alert("Lỗi thao tác", "Sản phẩm này đang được đấu giá hoặc đã bán."); return; }
@@ -325,11 +326,13 @@ public class SellerController {
         Item sel = itemTable.getSelectionModel().getSelectedItem();
         if (sel == null) { alert("Chưa chọn", "Hãy chọn sản phẩm cần xóa."); return; }
         boolean isLocked = auctionTable.getItems().stream()
-                .anyMatch(dto -> dto.itemName.equals(sel.getName()) &&
+                .anyMatch(dto -> dto.itemId != null && dto.itemId.equals(sel.getId()) &&
                         ("RUNNING".equals(dto.status) || "FINISHED".equals(dto.status) || "PAID".equals(dto.status)));
+
         if (isLocked) {
             alert("Lỗi thao tác", "Không thể xóa! Sản phẩm này đang được đấu giá hoặc đã bán."); return;
         }
+
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Xóa sản phẩm \"" + sel.getName() + "\"?", ButtonType.YES, ButtonType.NO);
         confirm.showAndWait().ifPresent(b -> {
             if (b == ButtonType.YES) {
@@ -346,9 +349,10 @@ public class SellerController {
 
     @FXML
     private void handleCreateAuction() {
+        // ĐÃ SỬA: Lọc sản phẩm có sẵn bằng dto.itemId thay vì dto.itemName
         List<Item> availableItems = getSeller().getItems().stream()
                 .filter(item -> auctionTable.getItems().stream()
-                        .noneMatch(dto -> dto.itemName.equals(item.getName()) && !"CANCELED".equals(dto.status)))
+                        .noneMatch(dto -> dto.itemId != null && dto.itemId.equals(item.getId()) && !"CANCELED".equals(dto.status)))
                 .collect(Collectors.toList());
 
         if (availableItems.isEmpty()) { alert("Không có sản phẩm", "Tất cả sản phẩm đều đang được đấu giá hoặc đã bán."); return; }

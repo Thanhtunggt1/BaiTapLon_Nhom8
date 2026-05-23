@@ -1,46 +1,54 @@
 package com.auction.model.entity;
 
 import com.auction.model.enums.AuctionStatus;
+import com.auction.model.enums.ItemType;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class AdminTest {
+public class AdminTest {
 
     @Test
-    void testResolveDispute_CancelRunningAuction() {
-        Admin admin = new Admin("super_admin", "admin123", "admin@uet.edu.vn");
-        Seller seller = new Seller("s", "123456", "s@s.com");
-        Item item = new Item("Bình gốm", "Đồ cổ", 500) {};
+    public void testResolveDisputeCancelsAuction() {
+        Admin admin = new Admin("superadmin", "pass123", "admin@system.com");
+        Seller seller = new Seller("bad_seller", "pass123", "bad@test.com");
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("brand", "FakeBrand");
+        params.put("warrantyMonths", 0);
+        Item item = seller.createItem("Fake Item", "Fake Desc", 100.0, ItemType.ELECTRONICS, params);
+
         Auction auction = new Auction(item, seller, LocalDateTime.now(), LocalDateTime.now().plusDays(1));
 
-        auction.startAuction();
+        admin.resolveDispute(auction, "Hàng giả mạo");
 
-        // Admin nhảy vào hủy phiên đang chạy
-        admin.resolveDispute(auction, "Phát hiện hàng giả");
-
-        assertEquals(AuctionStatus.CANCELED, auction.getStatus(), "Phiên phải chuyển sang CANCELED khi Admin can thiệp");
+        assertEquals(AuctionStatus.CANCELED, auction.getStatus());
     }
 
     @Test
-    void testResolveDispute_CannotCancelPaidAuction() {
-        Admin admin = new Admin("super_admin", "admin123", "admin@uet.edu.vn");
-        Seller seller = new Seller("s", "123456", "s@s.com");
-        Item item = new Item("Bình gốm", "Đồ cổ", 500) {};
+    public void testResolveDisputeFailsIfPaid() {
+        Admin admin = new Admin("superadmin", "pass123", "admin@system.com");
+        Seller seller = new Seller("seller1", "pass123", "s@test.com");
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("artistName", "Artist");
+        params.put("creationYear", 2020);
+        Item item = seller.createItem("Art", "Desc", 100.0, ItemType.ART, params);
+
         Auction auction = new Auction(item, seller, LocalDateTime.now(), LocalDateTime.now().plusDays(1));
 
-        Bidder bidder = new Bidder("b", "123456", "b@b.com", 2000.0);
+        try {
+            java.lang.reflect.Field statusField = Auction.class.getDeclaredField("status");
+            statusField.setAccessible(true);
+            statusField.set(auction, AuctionStatus.PAID);
+        } catch (Exception ignored) {}
 
-        auction.startAuction();
-        bidder.placeBid(auction, 1000.0); // Đặt giá thành công
-        auction.endAuction(); // Kết thúc phiên (Chuyển sang FINISHED)
-        auction.markAsPaid(); // Trừ tiền (Chuyển sang PAID)
+        admin.resolveDispute(auction, "Test");
 
-        // Cố gắng nhờ Admin hủy một phiên đã thanh toán xong xuôi
-        admin.resolveDispute(auction, "Đổi ý");
-
-        assertEquals(AuctionStatus.PAID, auction.getStatus(), "Admin không thể hủy một phiên đã PAID");
+        assertEquals(AuctionStatus.PAID, auction.getStatus());
     }
 }

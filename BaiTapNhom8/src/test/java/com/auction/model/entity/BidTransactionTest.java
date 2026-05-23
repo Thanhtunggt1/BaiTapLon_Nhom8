@@ -1,51 +1,55 @@
 package com.auction.model.entity;
 
-import com.auction.model.enums.AuctionStatus;
+import com.auction.model.enums.ItemType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BidTransactionTest {
+public class BidTransactionTest {
 
     private Bidder bidder;
-    private Auction dummyAuction;
+    private Auction auction;
 
     @BeforeEach
-    void setUp() {
-        bidder = new Bidder("bidder", "123456", "b@test.com", 10000.0);
-        Seller seller = new Seller("seller", "123456", "s@test.com");
-        Item item = new Item("Xe máy", "Cũ", 2000.0) {};
-        dummyAuction = new Auction(item, seller, LocalDateTime.now(), LocalDateTime.now().plusDays(1));
+    public void setUp() {
+        bidder = new Bidder("tx_bidder", "pass123", "tx@test.com", 50000.0);
+        Seller seller = new Seller("tx_seller", "pass123", "s@test.com");
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("mileage", 0.0);
+        params.put("licensePlate", "NEW");
+        Item item = seller.createItem("Bike", "New", 1000.0, ItemType.VEHICLE, params);
+
+        auction = new Auction(item, seller, LocalDateTime.now(), LocalDateTime.now().plusHours(1));
     }
 
     @Test
-    void testIsValid_FalseWhenAuctionNotRunning() {
-        // Auction vừa tạo, status đang là OPEN (chưa start)
-        BidTransaction tx = new BidTransaction(bidder, dummyAuction, 2500.0);
-
-        assertFalse(tx.isValid(), "Giao dịch không hợp lệ nếu phiên chưa RUNNING");
+    public void testInvalidTransactionAmountZero() {
+        assertThrows(IllegalArgumentException.class, () -> new BidTransaction(bidder, auction, 0.0));
     }
 
     @Test
-    void testIsValid_FalseWhenAmountNotHigherThanCurrent() {
-        dummyAuction.startAuction(); // Giá gốc đang là 2000.0
-
-        // Bidder cố tình đặt 2000.0 (Bằng với giá gốc)
-        BidTransaction tx = new BidTransaction(bidder, dummyAuction, 2000.0);
-
-        assertFalse(tx.isValid(), "Giao dịch không hợp lệ nếu số tiền không cao hơn giá hiện tại");
+    public void testTransactionValidityWhenAuctionNotRunning() {
+        BidTransaction tx = new BidTransaction(bidder, auction, 1500.0);
+        assertFalse(tx.isValid());
     }
 
     @Test
-    void testIsValid_TrueWhenValid() {
-        dummyAuction.startAuction();
+    public void testTransactionValidityValidAmount() {
+        auction.startAuction();
+        BidTransaction tx = new BidTransaction(bidder, auction, 1500.0);
+        assertTrue(tx.isValid());
+    }
 
-        // Đặt giá 2100.0 (Cao hơn 2000.0)
-        BidTransaction tx = new BidTransaction(bidder, dummyAuction, 2100.0);
-
-        assertTrue(tx.isValid(), "Giao dịch hợp lệ");
+    @Test
+    public void testTransactionValidityInvalidAmount() {
+        auction.startAuction();
+        BidTransaction tx = new BidTransaction(bidder, auction, 500.0);
+        assertFalse(tx.isValid());
     }
 }

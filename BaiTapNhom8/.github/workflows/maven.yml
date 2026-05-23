@@ -19,5 +19,4 @@ jobs:
           distribution: 'temurin'
 
       - name: Build and test with Maven
-        working-directory: BaiTapNhom8
-        run: mvn clean test
+        run: mvn -f BaiTapNhom8/pom.xml clean test

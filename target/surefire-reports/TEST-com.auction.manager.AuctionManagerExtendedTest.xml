@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.auction.manager.AuctionManagerExtendedTest" time="0.078" tests="11" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="21"/>
+    <property name="sun.cpu.isalist" value="amd64"/>
+    <property name="sun.jnu.encoding" value="Cp1252"/>
+    <property name="java.class.path" value="C:\Users\ADMIN\Documents\GitHub\BaiTapLon_Nhom8\target\test-classes;C:\Users\ADMIN\Documents\GitHub\BaiTapLon_Nhom8\target\classes;C:\Users\ADMIN\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.10.2\junit-jupiter-engine-5.10.2.jar;C:\Users\ADMIN\.m2\repository\org\junit\platform\junit-platform-engine\1.10.2\junit-platform-engine-1.10.2.jar;C:\Users\ADMIN\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\ADMIN\.m2\repository\org\junit\platform\junit-platform-commons\1.10.2\junit-platform-commons-1.10.2.jar;C:\Users\ADMIN\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.10.2\junit-jupiter-api-5.10.2.jar;C:\Users\ADMIN\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\ADMIN\.m2\repository\org\openjfx\javafx-controls\21.0.2\javafx-controls-21.0.2.jar;C:\Users\ADMIN\.m2\repository\org\openjfx\javafx-controls\21.0.2\javafx-controls-21.0.2-win.jar;C:\Users\ADMIN\.m2\repository\org\openjfx\javafx-graphics\21.0.2\javafx-graphics-21.0.2.jar;C:\Users\ADMIN\.m2\repository\org\openjfx\javafx-graphics\21.0.2\javafx-graphics-21.0.2-win.jar;C:\Users\ADMIN\.m2\repository\org\openjfx\javafx-base\21.0.2\javafx-base-21.0.2.jar;C:\Users\ADMIN\.m2\repository\org\openjfx\javafx-base\21.0.2\javafx-base-21.0.2-win.jar;C:\Users\ADMIN\.m2\repository\org\openjfx\javafx-fxml\21.0.2\javafx-fxml-21.0.2.jar;C:\Users\ADMIN\.m2\repository\org\openjfx\javafx-fxml\21.0.2\javafx-fxml-21.0.2-win.jar;C:\Users\ADMIN\.m2\repository\com\google\code\gson\gson\2.10.1\gson-2.10.1.jar;"/>
+    <property name="java.vm.vendor" value="BellSoft"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="user.variant" value=""/>
+    <property name="java.vendor.url" value="https://bell-sw.com/"/>
+    <property name="user.timezone" value="Asia/Saigon"/>
+    <property name="user.country.format" value="VN"/>
+    <property name="os.name" value="Windows 11"/>
+    <property name="java.vm.specification.version" value="21"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="US"/>
+    <property name="sun.boot.library.path" value="C:\Program Files\BellSoft\LibericaJDK-21-Full\bin"/>
+    <property name="sun.java.command" value="C:\Users\ADMIN\AppData\Local\Temp\surefire308515067923214654\surefirebooter-20260527093412719_3.jar C:\Users\ADMIN\AppData\Local\Temp\surefire308515067923214654 2026-05-27T09-34-12_328-jvmRun1 surefire-20260527093412719_1tmp surefire_0-20260527093412719_2tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="C:\Users\ADMIN\Documents\GitHub\BaiTapLon_Nhom8\target\test-classes;C:\Users\ADMIN\Documents\GitHub\BaiTapLon_Nhom8\target\classes;C:\Users\ADMIN\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.10.2\junit-jupiter-engine-5.10.2.jar;C:\Users\ADMIN\.m2\repository\org\junit\platform\junit-platform-engine\1.10.2\junit-platform-engine-1.10.2.jar;C:\Users\ADMIN\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\ADMIN\.m2\repository\org\junit\platform\junit-platform-commons\1.10.2\junit-platform-commons-1.10.2.jar;C:\Users\ADMIN\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.10.2\junit-jupiter-api-5.10.2.jar;C:\Users\ADMIN\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\ADMIN\.m2\repository\org\openjfx\javafx-controls\21.0.2\javafx-controls-21.0.2.jar;C:\Users\ADMIN\.m2\repository\org\openjfx\javafx-controls\21.0.2\javafx-controls-21.0.2-win.jar;C:\Users\ADMIN\.m2\repository\org\openjfx\javafx-graphics\21.0.2\javafx-graphics-21.0.2.jar;C:\Users\ADMIN\.m2\repository\org\openjfx\javafx-graphics\21.0.2\javafx-graphics-21.0.2-win.jar;C:\Users\ADMIN\.m2\repository\org\openjfx\javafx-base\21.0.2\javafx-base-21.0.2.jar;C:\Users\ADMIN\.m2\repository\org\openjfx\javafx-base\21.0.2\javafx-base-21.0.2-win.jar;C:\Users\ADMIN\.m2\repository\org\openjfx\javafx-fxml\21.0.2\javafx-fxml-21.0.2.jar;C:\Users\ADMIN\.m2\repository\org\openjfx\javafx-fxml\21.0.2\javafx-fxml-21.0.2-win.jar;C:\Users\ADMIN\.m2\repository\com\google\code\gson\gson\2.10.1\gson-2.10.1.jar;"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="C:\Users\ADMIN"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2026-04-21"/>
+    <property name="java.home" value="C:\Program Files\BellSoft\LibericaJDK-21-Full"/>
+    <property name="file.separator" value="\"/>
+    <property name="basedir" value="C:\Users\ADMIN\Documents\GitHub\BaiTapLon_Nhom8"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="surefire.real.class.path" value="C:\Users\ADMIN\AppData\Local\Temp\surefire308515067923214654\surefirebooter-20260527093412719_3.jar"/>
+    <property name="user.script" value=""/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="21.0.11+11-LTS"/>
+    <property name="user.name" value="ADMIN"/>
+    <property name="stdout.encoding" value="Cp1252"/>
+    <property name="path.separator" value=";"/>
+    <property name="os.version" value="10.0"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="localRepository" value="C:\Users\ADMIN\.m2\repository"/>
+    <property name="java.vendor.url.bug" value="https://bell-sw.com/support"/>
+    <property name="java.io.tmpdir" value="C:\Users\ADMIN\AppData\Local\Temp\"/>
+    <property name="java.version" value="21.0.11"/>
+    <property name="user.dir" value="C:\Users\ADMIN\Documents\GitHub\BaiTapLon_Nhom8"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="user.language.format" value="vi"/>
+    <property name="sun.os.patch.level" value=""/>
+    <property name="native.encoding" value="Cp1252"/>
+    <property name="java.library.path" value="C:\Program Files\BellSoft\LibericaJDK-21-Full\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Users\ADMIN\AppData\Local\JetBrains\IntelliJIdea2026.1\aia\codex\tmp\arg0\codex-arg05VcGoi;C:\Program Files\BellSoft\LibericaJDK-21-Full\bin\;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\java8path;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files\Eclipse Adoptium\jdk-25.0.2.10-hotspot\bin;C:\Program Files\Eclipse Adoptium\jdk-17.0.18.8-hotspot\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Program Files\Java\jdk-17\bin;C:\Program Files\Java\jdk-25.0.2\bin;C:\Program Files\MySQL\MySQL Shell 8.0\bin\;C:\Users\ADMIN\AppData\Local\Programs\Python\Launcher\;C:\Users\ADMIN\AppData\Local\Microsoft\WindowsApps;C:\Users\ADMIN\AppData\Local\Programs\Microsoft VS Code\bin;C:\ProgramData\ADMIN\GitHubDesktop\bin;C:\Users\ADMIN\AppData\Local\GitHubDesktop\bin;."/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="stderr.encoding" value="Cp1252"/>
+    <property name="java.vendor" value="BellSoft"/>
+    <property name="java.vm.version" value="21.0.11+11-LTS"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="65.0"/>
+  </properties>
+  <testcase name="testRegisterNullAuction" classname="com.auction.manager.AuctionManagerExtendedTest" time="0.007"/>
+  <testcase name="testRegisterDuplicateAuction" classname="com.auction.manager.AuctionManagerExtendedTest" time="0.005">
+    <system-out><![CDATA[[AuctionManager] Đã đăng ký phiên [1df25456-56cc-4705-b06e-1ac8171c1f30] cho sản phẩm 'Tranh'
+]]></system-out>
+  </testcase>
+  <testcase name="testCheckAndCloseExpiredAuctions_AutoStartScheduled" classname="com.auction.manager.AuctionManagerExtendedTest" time="0.005">
+    <system-out><![CDATA[[AuctionManager] Đã đăng ký phiên [52b52158-3fcc-41d8-b2a8-19d3dcc855f4] cho sản phẩm 'Tranh'
+[Auction:1df25456-56cc-4705-b06e-1ac8171c1f30] Phiên đấu giá 'Tranh' đã BẮT ĐẦU. Giá khởi điểm: 100,00
+[Auction:52b52158-3fcc-41d8-b2a8-19d3dcc855f4] Phiên đấu giá 'Tranh' đã BẮT ĐẦU. Giá khởi điểm: 100,00
+]]></system-out>
+  </testcase>
+  <testcase name="testRegisterAuction" classname="com.auction.manager.AuctionManagerExtendedTest" time="0.006">
+    <system-out><![CDATA[[AuctionManager] Đã đăng ký phiên [35039496-deec-4728-a25a-4d7019b708e3] cho sản phẩm 'Tranh'
+]]></system-out>
+  </testcase>
+  <testcase name="testGetAllAuctions" classname="com.auction.manager.AuctionManagerExtendedTest" time="0.004">
+    <system-out><![CDATA[[AuctionManager] Đã đăng ký phiên [7a9245f2-b492-4771-9c97-97c47f08d9a7] cho sản phẩm 'Tranh'
+[AuctionManager] Đã đăng ký phiên [65130a36-e457-4f6e-a221-249753abe209] cho sản phẩm 'Tranh'
+]]></system-out>
+  </testcase>
+  <testcase name="testCheckAndCloseExpiredAuctions_CancelFinishedExpired" classname="com.auction.manager.AuctionManagerExtendedTest" time="0.007">
+    <system-out><![CDATA[[AuctionManager] Đã đăng ký phiên [54152897-af48-4e2e-b089-dd2ab8d8342b] cho sản phẩm 'Tranh'
+[Auction:54152897-af48-4e2e-b089-dd2ab8d8342b] Phiên đấu giá 'Tranh' đã BẮT ĐẦU. Giá khởi điểm: 100,00
+[Auction:54152897-af48-4e2e-b089-dd2ab8d8342b] Bid mới: bidder1 đặt 150,00
+[Anti-snipe] Phiên [54152897-af48-4e2e-b089-dd2ab8d8342b] được gia hạn thêm 60 giây → Kết thúc lúc 2026-05-26T09:35:13.739697200
+[Auction:54152897-af48-4e2e-b089-dd2ab8d8342b] KẾT THÚC — Người thắng: bidder1 với giá 150,00
+[Auction:35039496-deec-4728-a25a-4d7019b708e3] Phiên đấu giá 'Tranh' đã BẮT ĐẦU. Giá khởi điểm: 100,00
+[Auction:7a9245f2-b492-4771-9c97-97c47f08d9a7] Phiên đấu giá 'Tranh' đã BẮT ĐẦU. Giá khởi điểm: 100,00
+[Auction:65130a36-e457-4f6e-a221-249753abe209] Phiên đấu giá 'Tranh' đã BẮT ĐẦU. Giá khởi điểm: 100,00
+[AuctionManager] Phiên [54152897-af48-4e2e-b089-dd2ab8d8342b] quá hạn thanh toán 12h → tự động HỦY.
+[Auction:54152897-af48-4e2e-b089-dd2ab8d8342b] Phiên bị HỦY.
+]]></system-out>
+  </testcase>
+  <testcase name="testStartAuction" classname="com.auction.manager.AuctionManagerExtendedTest" time="0.004">
+    <system-out><![CDATA[[AuctionManager] Đã đăng ký phiên [f331941c-0db7-4a79-9c3e-02d8f4ac0841] cho sản phẩm 'Tranh'
+[Auction:f331941c-0db7-4a79-9c3e-02d8f4ac0841] Phiên đấu giá 'Tranh' đã BẮT ĐẦU. Giá khởi điểm: 100,00
+]]></system-out>
+  </testcase>
+  <testcase name="testStartUnregisteredAuction" classname="com.auction.manager.AuctionManagerExtendedTest" time="0.005"/>
+  <testcase name="testMultipleAuctionsConcurrent" classname="com.auction.manager.AuctionManagerExtendedTest" time="0.007">
+    <system-out><![CDATA[[AuctionManager] Đã đăng ký phiên [49aa5753-b328-40c1-b39f-e77559aa6f05] cho sản phẩm 'Item 0'
+[AuctionManager] Đã đăng ký phiên [750807ac-dce1-4aba-ba2c-ff9e76033525] cho sản phẩm 'Item 1'
+[AuctionManager] Đã đăng ký phiên [66b6ac65-7d3d-4bb7-9c0f-329e76486d62] cho sản phẩm 'Item 2'
+[AuctionManager] Đã đăng ký phiên [0dfa88a8-bb11-461f-ad3f-2082b2fcbac8] cho sản phẩm 'Item 3'
+[AuctionManager] Đã đăng ký phiên [d4665de3-5bb4-444c-ae7e-8da0804a731a] cho sản phẩm 'Item 4'
+]]></system-out>
+  </testcase>
+  <testcase name="testCheckAndCloseExpiredAuctions_NoAutoClose" classname="com.auction.manager.AuctionManagerExtendedTest" time="0.004">
+    <system-out><![CDATA[[AuctionManager] Đã đăng ký phiên [20a82b5c-5b55-415b-89b0-4f61e2b7f3d3] cho sản phẩm 'Tranh'
+[Auction:20a82b5c-5b55-415b-89b0-4f61e2b7f3d3] Phiên đấu giá 'Tranh' đã BẮT ĐẦU. Giá khởi điểm: 100,00
+[Auction:49aa5753-b328-40c1-b39f-e77559aa6f05] Phiên đấu giá 'Item 0' đã BẮT ĐẦU. Giá khởi điểm: 100,00
+[Auction:750807ac-dce1-4aba-ba2c-ff9e76033525] Phiên đấu giá 'Item 1' đã BẮT ĐẦU. Giá khởi điểm: 100,00
+[Auction:66b6ac65-7d3d-4bb7-9c0f-329e76486d62] Phiên đấu giá 'Item 2' đã BẮT ĐẦU. Giá khởi điểm: 100,00
+[Auction:0dfa88a8-bb11-461f-ad3f-2082b2fcbac8] Phiên đấu giá 'Item 3' đã BẮT ĐẦU. Giá khởi điểm: 100,00
+[Auction:d4665de3-5bb4-444c-ae7e-8da0804a731a] Phiên đấu giá 'Item 4' đã BẮT ĐẦU. Giá khởi điểm: 100,00
+]]></system-out>
+  </testcase>
+  <testcase name="testGetAllAuctionsIsImmutable" classname="com.auction.manager.AuctionManagerExtendedTest" time="0.003">
+    <system-out><![CDATA[[AuctionManager] Đã đăng ký phiên [25e43be0-1f05-46d6-b5c8-5ff426b71108] cho sản phẩm 'Tranh'
+]]></system-out>
+  </testcase>
+</testsuite>

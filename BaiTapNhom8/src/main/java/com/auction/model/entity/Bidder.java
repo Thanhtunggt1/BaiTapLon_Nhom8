@@ -1,0 +1,166 @@
+package com.auction.model.entity;
+
+import com.auction.exception.AuctionClosedException;
+import com.auction.exception.InsufficientBalanceException;
+import com.auction.exception.InvalidBidException;
+import com.auction.model.enums.AuctionStatus;
+import com.auction.pattern.observer.Observer;
+
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
+public class Bidder extends User implements Observer {
+    private double balance;
+    private int unpaidWarnings = 0;
+    private boolean isBanned = false;
+
+    // --- BIẾN QUẢN LÝ KHÓA NẠP TIỀN ---
+    private int failedDepositAttempts = 0;
+    private LocalDateTime depositLockoutUntil = null;
+
+    public Bidder(String username, String password, String email, double initialBalance) {
+        super(username, password, email);
+        if (initialBalance < 0) {
+            throw new IllegalArgumentException("Số dư ban đầu không được âm.");
+        }
+        this.balance = initialBalance;
+    }
+
+    public int getUnpaidWarnings() { return unpaidWarnings; }
+    public void setUnpaidWarnings(int unpaidWarnings) { this.unpaidWarnings = unpaidWarnings; }
+    public boolean isBanned() { return isBanned; }
+    public void setBanned(boolean banned) { this.isBanned = banned; }
+
+    public void addUnpaidWarning() {
+        this.unpaidWarnings++;
+        if (this.unpaidWarnings >= 3) {
+            this.isBanned = true;
+        }
+        // Tự động lưu bản án xuống Database
+        com.auction.server.UserDAO.updateBidderPenalty(this);
+    }
+
+    // --- CÁC HÀM XỬ LÝ KHÓA NẠP TIỀN ---
+    public int getFailedDepositAttempts() { return failedDepositAttempts; }
+
+    public void recordFailedDeposit() {
+        this.failedDepositAttempts++;
+        if (this.failedDepositAttempts >= 3) {
+            // Phạt khóa 3 phút
+            this.depositLockoutUntil = LocalDateTime.now().plusMinutes(3);
+            this.failedDepositAttempts = 0;
+        }
+    }
+
+    public boolean isDepositLocked() {
+        if (depositLockoutUntil != null) {
+            if (LocalDateTime.now().isBefore(depositLockoutUntil)) {
+                return true;
+            } else {
+                depositLockoutUntil = null; // Đã hết thời gian phạt
+                return false;
+            }
+        }
+        return false;
+    }
+
+    public long getDepositLockRemainingSeconds() {
+        if (depositLockoutUntil == null) return 0;
+        return ChronoUnit.SECONDS.between(LocalDateTime.now(), depositLockoutUntil);
+    }
+
+    public void resetFailedDeposit() {
+        this.failedDepositAttempts = 0;
+        this.depositLockoutUntil = null;
+    }
+    // ------------------------------------
+
+    public boolean placeBid(Auction auction, double amount)
+            throws AuctionClosedException, InvalidBidException, InsufficientBalanceException {
+
+        if (isBanned) {
+            throw new IllegalStateException("Tài khoản của bạn đã bị vô hiệu hóa do vi phạm không thanh toán quá 3 lần!");
+        }
+
+        if (auction == null) throw new IllegalArgumentException("Auction không được null.");
+
+        if (auction.getStatus() != AuctionStatus.RUNNING) {
+            throw new AuctionClosedException(
+                    "Phiên đấu giá [" + auction.getId() + "] không ở trạng thái RUNNING.");
+        }
+        if (amount <= auction.getCurrentHighestPrice()) {
+            throw new InvalidBidException(
+                    "Giá đặt (" + amount + ") phải cao hơn giá hiện tại ("
+                            + auction.getCurrentHighestPrice() + ").");
+        }
+        if (amount > balance) {
+            throw new InsufficientBalanceException("Số dư (" + balance + ") không đủ!");
+        }
+
+        BidTransaction tx = new BidTransaction(this, auction, amount);
+        return auction.placeBid(tx);
+    }
+
+    public void setupAutoBid(Auction auction, double maxBid, double increment) {
+        if (isBanned) {
+            throw new IllegalStateException("Tài khoản của bạn đã bị vô hiệu hóa do vi phạm không thanh toán quá 3 lần!");
+        }
+        if (auction == null) throw new IllegalArgumentException("Auction không được null.");
+
+        if (maxBid <= auction.getCurrentHighestPrice()) {
+            throw new IllegalArgumentException(
+                    "maxBid phải lớn hơn giá hiện tại (" + auction.getCurrentHighestPrice() + ").");
+        }
+
+        if (increment <= 0) {
+            throw new IllegalArgumentException("Bước giá phải dương.");
+        }
+
+        if (maxBid > this.balance) {
+            throw new IllegalArgumentException("Giá tối đa (MaxBid) không được vượt quá số dư hiện tại. Vui lòng nạp thêm tiền!");
+        }
+
+        if (increment > this.balance) {
+            throw new IllegalArgumentException("Bước giá không được lớn hơn số dư hiện tại!");
+        }
+
+        if (increment > maxBid) {
+            throw new IllegalArgumentException("Bước giá vô lý! Không được lớn hơn Giá tối đa (MaxBid).");
+        }
+
+        AutoBidConfig config = new AutoBidConfig(this, auction, maxBid, increment);
+        auction.registerAutoBid(config);
+        System.out.printf("[AutoBid] %s đã cài auto-bid cho phiên [%s]: max=%.2f, step=%.2f%n",
+                getUsername(), auction.getId(), maxBid, increment);
+    }
+
+    @Override
+    public void update(Auction auction) {
+        System.out.printf("[Observer] %s nhận cập nhật: Phiên [%s] — Giá cao nhất: %.2f | Người dẫn đầu: %s%n",
+                getUsername(),
+                auction.getId(),
+                auction.getCurrentHighestPrice(),
+                auction.getCurrentLeader() != null ? auction.getCurrentLeader().getUsername() : "Chưa có");
+    }
+
+    public double getBalance() { return balance; }
+
+    public void deposit(double amount) {
+        if (isBanned) {
+            throw new IllegalStateException("Tài khoản đã bị khóa, không thể nạp tiền.");
+        }
+        if (amount <= 0) throw new IllegalArgumentException("Số tiền nạp phải dương.");
+        this.balance += amount;
+    }
+
+    public void deduct(double amount) {
+        if (amount > balance) throw new InsufficientBalanceException("Số dư không đủ.");
+        this.balance -= amount;
+    }
+
+    @Override
+    public void printInfo() {
+        super.printInfo();
+        System.out.printf("  └─ Số dư: %.2f%n", balance);
+    }
+}

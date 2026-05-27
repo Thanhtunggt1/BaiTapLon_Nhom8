@@ -1,0 +1,46 @@
+.button {
+    -fx-background-color: #2980b9;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 8 15 8 15;
+    -fx-background-radius: 20;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #3498db;
+}
+
+.button:pressed {
+    -fx-background-color: #1c5980;
+}
+
+.text-field, .password-field {
+    -fx-font-size: 14px;
+    -fx-padding: 8 12 8 12;
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+    -fx-border-color: #bdc3c7;
+    -fx-border-width: 1;
+    -fx-background-color: white;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #2980b9;
+    -fx-border-width: 2;
+}
+
+.combo-box {
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+    -fx-border-color: #bdc3c7;
+    -fx-background-color: white;
+    -fx-padding: 2 5 2 5;
+}
+
+.table-view {
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: #bdc3c7;
+}

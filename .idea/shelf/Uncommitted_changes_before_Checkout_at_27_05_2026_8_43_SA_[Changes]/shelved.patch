@@ -1,0 +1,269 @@
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ExternalStorageConfigurationManager\" enabled=\"true\" />\r\n  <component name=\"MavenProjectsManager\">\r\n    <option name=\"originalFiles\">\r\n      <list>\r\n        <option value=\"$PROJECT_DIR$/BaiTapNhom8/pom.xml\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectRootManager\" version=\"2\" project-jdk-name=\"openjdk-26\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/out\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision de13893d8f65f7bcd27376eb67d14bb1a34a2e90)
++++ b/.idea/misc.xml	(date 1779804448218)
+@@ -8,7 +8,7 @@
+       </list>
+     </option>
+   </component>
+-  <component name="ProjectRootManager" version="2" project-jdk-name="openjdk-26" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" project-jdk-name="ms-17" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/out" />
+   </component>
+ </project>
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"7b65e5c6-2848-4dd8-b981-dca5fb28ae21\" name=\"Changes\" comment=\"\">\r\n      <change afterPath=\"$PROJECT_DIR$/BaiTapNhom8/src/test/java/com/auction/model/entity/AdminExtraTest.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/BaiTapNhom8/src/test/java/com/auction/model/entity/AuctionLifecycleExtraTest.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/BaiTapNhom8/src/test/java/com/auction/model/entity/AutoBidConfigExtraTest.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/BaiTapNhom8/src/test/java/com/auction/model/entity/BidTransactionExtraTest.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/BaiTapNhom8/src/test/java/com/auction/model/entity/BidderExtraTest.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/BaiTapNhom8/src/test/java/com/auction/model/entity/EntityExtraTest.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/BaiTapNhom8/src/test/java/com/auction/model/entity/ItemExtraTest.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/BaiTapNhom8/src/test/java/com/auction/model/entity/ItemFactoryExtraTest.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/BaiTapNhom8/src/test/java/com/auction/model/entity/SellerExtraTest.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/BaiTapNhom8/src/test/java/com/auction/model/entity/UserExtraTest.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/AdminExtraTest.class\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/AuctionLifecycleExtraTest.class\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/AutoBidConfigExtraTest.class\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/BidTransactionExtraTest.class\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/BidderExtraTest.class\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/EntityExtraTest.class\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/ItemExtraTest.class\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/ItemFactoryExtraTest.class\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/SellerExtraTest.class\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/UserExtraTest.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/BidderTest.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/BidderTest.class\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"MavenImportPreferences\">\r\n    <option name=\"generalSettings\">\r\n      <MavenGeneralSettings>\r\n        <option name=\"mavenHomeTypeForPersistence\" value=\"WRAPPER\" />\r\n      </MavenGeneralSettings>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 1,\r\n  &quot;fromUser&quot;: false\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"3Cku28O1POAaQWQGJsDNBAl9zif\" />\r\n  <component name=\"ProjectLevelVcsManager\">\r\n    <ConfirmationsSetting value=\"2\" id=\"Add\" />\r\n  </component>\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"ModuleVcsDetector.initialDetectionPerformed\": \"true\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252\": \"true\",\r\n    \"RunOnceActivity.git.unshallow\": \"true\",\r\n    \"RunOnceActivity.typescript.service.memoryLimit.init\": \"true\",\r\n    \"codeWithMe.voiceChat.enabledByDefault\": \"false\",\r\n    \"git-widget-placeholder\": \"Cherry-picking in main\",\r\n    \"ignore.virus.scanning.warn.message\": \"true\",\r\n    \"kotlin-language-version-configured\": \"true\",\r\n    \"last_opened_file_path\": \"C:/Users/thanh/OneDrive/Documents/BaiTapNhom8\",\r\n    \"vue.rearranger.settings.migration\": \"true\"\r\n  }\r\n}]]></component>\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"7b65e5c6-2848-4dd8-b981-dca5fb28ae21\" name=\"Changes\" comment=\"\" />\r\n      <created>1776941681245</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1776941681245</updated>\r\n      <workItem from=\"1776941682422\" duration=\"40000\" />\r\n    </task>\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision de13893d8f65f7bcd27376eb67d14bb1a34a2e90)
++++ b/.idea/workspace.xml	(date 1779845332834)
+@@ -1,86 +1,184 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
++  <component name="AIDiffSettings">
++    <option name="showAIDiff" value="false" />
++  </component>
+   <component name="AutoImportSettings">
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="7b65e5c6-2848-4dd8-b981-dca5fb28ae21" name="Changes" comment="">
+-      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/src/test/java/com/auction/model/entity/AdminExtraTest.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/src/test/java/com/auction/model/entity/AuctionLifecycleExtraTest.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/src/test/java/com/auction/model/entity/AutoBidConfigExtraTest.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/src/test/java/com/auction/model/entity/BidTransactionExtraTest.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/src/test/java/com/auction/model/entity/BidderExtraTest.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/src/test/java/com/auction/model/entity/EntityExtraTest.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/src/test/java/com/auction/model/entity/ItemExtraTest.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/src/test/java/com/auction/model/entity/ItemFactoryExtraTest.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/src/test/java/com/auction/model/entity/SellerExtraTest.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/src/test/java/com/auction/model/entity/UserExtraTest.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/AdminExtraTest.class" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/AuctionLifecycleExtraTest.class" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/AutoBidConfigExtraTest.class" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/BidTransactionExtraTest.class" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/BidderExtraTest.class" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/EntityExtraTest.class" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/ItemExtraTest.class" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/ItemFactoryExtraTest.class" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/SellerExtraTest.class" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/UserExtraTest.class" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/BidderTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/BaiTapNhom8/target/test-classes/com/auction/model/entity/BidderTest.class" afterDir="false" />
++    <list default="true" id="a19f106b-a696-471a-9ac1-1e73694f7cc4" name="Changes" comment="">
++      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+     <option name="LAST_RESOLUTION" value="IGNORE" />
++  </component>
++  <component name="CopilotChats">
++    <option name="panelChat">
++      <chat>
++        <option name="activeSessionId" value="f59b5cc0-b0d8-417b-a1ba-2ccb72c02f4a" />
++        <option name="sessions">
++          <session>
++            <option name="chatType" value="PANEL" />
++            <option name="id" value="f59b5cc0-b0d8-417b-a1ba-2ccb72c02f4a" />
++            <option name="modeId" value="Ask" />
++            <option name="modelType" value="builtin_family" />
++            <option name="modelValue" value="auto" />
++            <option name="targetType" value="LOCAL" />
++          </session>
++        </option>
++        <option name="type" value="PANEL" />
++      </chat>
++    </option>
++  </component>
++  <component name="CopilotPersistence">
++    <persistenceIdMap>
++      <entry key="_C:/Users/ADMIN/Documents/GitHub/BaiTapLon_Nhom8" value="3EGToeuqTksjh0YUlaOwStmSfA7" />
++    </persistenceIdMap>
++  </component>
++  <component name="EmbeddingIndexingInfo">
++    <option name="cachedIndexableFilesCount" value="199" />
+   </component>
+   <component name="Git.Settings">
++    <option name="RECENT_BRANCH_BY_REPOSITORY">
++      <map>
++        <entry key="$PROJECT_DIR$" value="main" />
++      </map>
++    </option>
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+   </component>
+-  <component name="MavenImportPreferences">
+-    <option name="generalSettings">
+-      <MavenGeneralSettings>
+-        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+-      </MavenGeneralSettings>
+-    </option>
++  <component name="GitHubPullRequestSearchHistory">{
++  &quot;lastFilter&quot;: {
++    &quot;state&quot;: &quot;OPEN&quot;,
++    &quot;assignee&quot;: &quot;nnmquang10092007&quot;
++  }
++}</component>
++  <component name="GithubPullRequestsUISettings">{
++  &quot;selectedUrlAndAccountId&quot;: {
++    &quot;url&quot;: &quot;https://github.com/Thanhtunggt1/BaiTapLon_Nhom8.git&quot;,
++    &quot;accountId&quot;: &quot;8294472a-1e79-45c3-b6a6-b286187b8b31&quot;
++  }
++}</component>
++  <component name="McpProjectServerCommands">
++    <commands />
++    <urls />
+   </component>
+   <component name="ProjectColorInfo">{
+-  &quot;associatedIndex&quot;: 1,
++  &quot;associatedIndex&quot;: 0,
+   &quot;fromUser&quot;: false
+ }</component>
+-  <component name="ProjectId" id="3Cku28O1POAaQWQGJsDNBAl9zif" />
+-  <component name="ProjectLevelVcsManager">
+-    <ConfirmationsSetting value="2" id="Add" />
+-  </component>
++  <component name="ProjectId" id="3EGToeuqTksjh0YUlaOwStmSfA7" />
+   <component name="ProjectViewState">
+-    <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent"><![CDATA[{
+-  "keyToString": {
+-    "ModuleVcsDetector.initialDetectionPerformed": "true",
+-    "RunOnceActivity.ShowReadmeOnStart": "true",
+-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+-    "RunOnceActivity.git.unshallow": "true",
+-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+-    "codeWithMe.voiceChat.enabledByDefault": "false",
+-    "git-widget-placeholder": "Cherry-picking in main",
+-    "ignore.virus.scanning.warn.message": "true",
+-    "kotlin-language-version-configured": "true",
+-    "last_opened_file_path": "C:/Users/thanh/OneDrive/Documents/BaiTapNhom8",
+-    "vue.rearranger.settings.migration": "true"
+-  }
+-}]]></component>
++  <component name="PropertiesComponent">{
++  &quot;keyToString&quot;: {
++    &quot;Application.AuctionServer.executor&quot;: &quot;Run&quot;,
++    &quot;Application.Launcher.executor&quot;: &quot;Run&quot;,
++    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
++    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
++    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
++    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
++    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
++    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
++    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
++    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
++    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
++    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
++    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
++    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
++    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
++    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
++    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
++    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
++  }
++}</component>
++  <component name="RunManager" selected="Application.Launcher">
++    <configuration name="AuctionServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
++      <option name="MAIN_CLASS_NAME" value="com.auction.server.AuctionServer" />
++      <module name="auction-system" />
++      <extension name="coverage">
++        <pattern>
++          <option name="PATTERN" value="com.auction.server.*" />
++          <option name="ENABLED" value="true" />
++        </pattern>
++      </extension>
++      <method v="2">
++        <option name="Make" enabled="true" />
++      </method>
++    </configuration>
++    <configuration name="Launcher" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
++      <option name="MAIN_CLASS_NAME" value="com.auction.Launcher" />
++      <module name="auction-system" />
++      <extension name="coverage">
++        <pattern>
++          <option name="PATTERN" value="com.auction.*" />
++          <option name="ENABLED" value="true" />
++        </pattern>
++      </extension>
++      <method v="2">
++        <option name="Make" enabled="true" />
++      </method>
++    </configuration>
++    <configuration name="AutoBidBoundaryAuctionTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
++      <module name="auction-system" />
++      <extension name="coverage">
++        <pattern>
++          <option name="PATTERN" value="com.auction.model.entity.*" />
++          <option name="ENABLED" value="true" />
++        </pattern>
++      </extension>
++      <option name="PACKAGE_NAME" value="com.auction.model.entity" />
++      <option name="MAIN_CLASS_NAME" value="com.auction.model.entity.AutoBidBoundaryAuctionTest" />
++      <option name="TEST_OBJECT" value="class" />
++      <method v="2">
++        <option name="Make" enabled="true" />
++      </method>
++    </configuration>
++    <list>
++      <item itemvalue="Application.AuctionServer" />
++      <item itemvalue="Application.Launcher" />
++      <item itemvalue="JUnit.AutoBidBoundaryAuctionTest" />
++    </list>
++    <recent_temporary>
++      <list>
++        <item itemvalue="Application.Launcher" />
++        <item itemvalue="Application.AuctionServer" />
++        <item itemvalue="JUnit.AutoBidBoundaryAuctionTest" />
++      </list>
++    </recent_temporary>
++  </component>
+   <component name="TaskManager">
+     <task active="true" id="Default" summary="Default task">
+-      <changelist id="7b65e5c6-2848-4dd8-b981-dca5fb28ae21" name="Changes" comment="" />
+-      <created>1776941681245</created>
++      <changelist id="a19f106b-a696-471a-9ac1-1e73694f7cc4" name="Changes" comment="" />
++      <created>1779804084232</created>
+       <option name="number" value="Default" />
+       <option name="presentableId" value="Default" />
+-      <updated>1776941681245</updated>
+-      <workItem from="1776941682422" duration="40000" />
++      <updated>1779804084232</updated>
++      <workItem from="1779804085937" duration="65000" />
++      <workItem from="1779804161448" duration="95000" />
++      <workItem from="1779804324135" duration="73000" />
++      <workItem from="1779804413571" duration="1090000" />
+     </task>
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+     <option name="version" value="3" />
+   </component>
++  <component name="github-copilot-workspace">
++    <instructionFileLocations>
++      <option value=".github/instructions" />
++    </instructionFileLocations>
++    <promptFileLocations>
++      <option value=".github/prompts" />
++    </promptFileLocations>
++  </component>
+ </project>
+\ No newline at end of file

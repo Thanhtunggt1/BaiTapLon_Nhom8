@@ -1,228 +1,170 @@
-# Phát triển hệ thống đấu giá trực tuyến
-## Giới thiệu
-Hệ thống đấu giá trực tuyến là một ứng dụng được phát triển bằng Java nhằm mô phỏng hoạt động đấu giá sản phẩm theo thời gian thực. Dự án hỗ trợ nhiều vai trò người dùng như quản trị viên, người bán và người tham gia đấu giá, giúp quản lý sản phẩm, phiên đấu giá và quá trình đặt giá một cách trực quan.
-Ứng dụng được xây dựng theo hướng lập trình hướng đối tượng (OOP), sử dụng JavaFX để thiết kế giao diện người dùng và Maven để quản lý thư viện.
+# Hệ Thống Đấu Giá Trực Tuyến
+
+Ứng dụng đấu giá trực tuyến theo mô hình Client–Server, hỗ trợ nhiều người dùng đồng thời. Người bán có thể đăng sản phẩm và tạo phiên đấu giá; người mua có thể đặt giá thủ công hoặc cài đặt auto-bid; quản trị viên có thể giám sát và can thiệp toàn bộ hệ thống.
 
 ---
 
-# Thành viên nhóm
+## Công nghệ sử dụng
 
-| STT | Thành viên             |
-| --- | ---------------------- | 
-| 1   | Nguyễn Ngọc Minh Quang |
-| 2   | Trần Thanh Tùng        |
-| 3   | Nguyễn Quang Minh      |
-| 4   | Ngô Hữu Ngọc Tiến      |
+| Thành phần    | Công nghệ                          |
+| ------------- | ---------------------------------- |
+| Ngôn ngữ      | Java 17                            |
+| Giao diện     | JavaFX 21.0.2 + FXML               |
+| Mạng          | Java Socket (TCP)                  |
+| Cơ sở dữ liệu | MySQL 8                            |
+| Serialization | Gson 2.10.1                        |
+| Build tool    | Maven 3.x                          |
+| Đóng gói      | maven-shade-plugin 3.5.1 (Fat JAR) |
 
----
+### Yêu cầu cài đặt
 
-# Công nghệ sử dụng
-
-* **Ngôn ngữ:** Java
-* **GUI:** JavaFX
-* **Build Tool:** Maven
-* **Mô hình thiết kế:** OOP, MVC
-* **IDE khuyến nghị:** IntelliJ IDEA / VS Code / Eclipse
-* **Quản lý mã nguồn:** Git & GitHub
+- **JDK 17** trở lên — [Tải tại đây](https://adoptium.net/)
+- **MySQL 8** đang chạy tại `localhost:3306`, database tên `auction_db`
+- **Maven 3.x** (hoặc dùng `mvnw` đi kèm project)
 
 ---
 
-# Chức năng chính
+## Cấu trúc thư mục
 
-## Đối với người dùng
-
-* Đăng nhập / đăng ký tài khoản
-* Xem danh sách phiên đấu giá
-* Xem chi tiết sản phẩm
-* Tham gia đấu giá
-* Đặt giá trực tiếp
-* Theo dõi trạng thái phiên đấu giá
-* Xem lịch sử giao dịch
-
-## Đối với người bán
-
-* Tạo sản phẩm đấu giá
-* Quản lý phiên đấu giá
-* Theo dõi người tham gia
-* Kết thúc phiên đấu giá
-
-## Đối với quản trị viên
-
-* Quản lý người dùng
-* Quản lý hệ thống đấu giá
-* Kiểm tra và xử lý dữ liệu
-* Theo dõi hoạt động hệ thống
-
----
-
-# Cấu trúc dự án
-
-```bash
-src/main/java/com/auction
-│
-├── exception/         # Xử lý ngoại lệ
-├── gui/               # Giao diện JavaFX
-│   └── controller/    # Bộ điều khiển giao diện
-├── manager/           # Quản lý nghiệp vụ
-├── model/
-│   ├── entity/        # Các thực thể hệ thống
-│   └── enums/         # Enum trạng thái
-├── network/           # Xử lý mạng và DTO
-├── repository/        # Lưu trữ dữ liệu
-├── service/           # Logic xử lý nghiệp vụ
-└── util/              # Tiện ích hỗ trợ
 ```
----
-
-# Các lớp nổi bật
-
-## Entity
-
-* `Auction` – Quản lý phiên đấu giá
-* `Item` – Thông tin sản phẩm
-* `User` – Người dùng hệ thống
-* `Seller` – Người bán
-* `Bidder` – Người tham gia đấu giá
-* `Admin` – Quản trị viên
-
-## Exception
-
-* `AuctionClosedException`
-* `InvalidBidException`
-* `InsufficientBalanceException`
-
-## Controller
-
-* `LoginController`
-* `AuctionListController`
-* `AuctionDetailController`
-* `AdminController`
-* `SellerController`
-
----
-
-# Sơ đồ hoạt động hệ thống
-
-1. Người dùng đăng nhập vào hệ thống.
-2. Người bán tạo phiên đấu giá.
-3. Người tham gia xem sản phẩm và đặt giá.
-4. Hệ thống cập nhật giá theo thời gian thực.
-5. Khi hết thời gian đấu giá, hệ thống xác định người thắng cuộc.
-6. Lưu thông tin giao dịch và lịch sử đấu giá.
-
----
-
-# Yêu cầu hệ thống
-
-* Java JDK 17 trở lên
-* Maven 3.8+
-* JavaFX SDK
-
----
-
-# Hướng dẫn cài đặt
-
-## 1. Clone dự án
-
-```bash
-git clone https://github.com/your-repository/auction-system.git
-```
-
-## 2. Di chuyển vào thư mục dự án
-
-```bash
-cd BaiTapNhom8
-```
-
-## 3. Build project bằng Maven
-
-```bash
-mvn clean install
-```
-
-## 4. Chạy ứng dụng
-
-```bash
-mvn javafx:run
+BaiTapNhom8/
+├── src/
+│   ├── main/
+│   │   ├── java/com/auction/
+│   │   │   ├── Main.java                  # Entry point JavaFX
+│   │   │   ├── Launcher.java              # Wrapper khởi động client
+│   │   │   ├── gui/
+│   │   │   │   ├── controller/            # Các controller màn hình
+│   │   │   │   │   ├── LoginController
+│   │   │   │   │   ├── MainController
+│   │   │   │   │   ├── AuctionListController
+│   │   │   │   │   ├── AuctionDetailController
+│   │   │   │   │   ├── SellerController
+│   │   │   │   │   └── AdminController
+│   │   │   │   └── SessionManager.java
+│   │   │   ├── model/
+│   │   │   │   ├── entity/                # Auction, Bidder, Seller, Item...
+│   │   │   │   └── enums/                 # AuctionStatus, ItemType
+│   │   │   ├── network/
+│   │   │   │   ├── NetworkClient.java     # Client kết nối TCP
+│   │   │   │   ├── Message.java           # Gói tin JSON
+│   │   │   │   ├── MessageType.java       # Enum loại tin nhắn
+│   │   │   │   └── dto/                   # Data Transfer Objects
+│   │   │   ├── server/
+│   │   │   │   ├── AuctionServer.java     # Server TCP chính
+│   │   │   │   ├── ClientHandler.java     # Xử lý từng client
+│   │   │   │   ├── DataLoader.java        # Load dữ liệu từ DB vào RAM
+│   │   │   │   ├── DatabaseConnection.java
+│   │   │   │   ├── AuctionDAO.java
+│   │   │   │   ├── UserDAO.java
+│   │   │   │   ├── ItemDAO.java
+│   │   │   │   └── BidTransactionDAO.java
+│   │   │   ├── manager/
+│   │   │   │   └── AuctionManager.java    # Singleton quản lý phiên đấu giá
+│   │   │   ├── pattern/
+│   │   │   │   ├── factory/ItemFactory.java
+│   │   │   │   └── observer/              # Observer pattern
+│   │   │   └── exception/                 # Custom exceptions
+│   │   └── resources/com/auction/gui/
+│   │       ├── login.fxml
+│   │       ├── main.fxml
+│   │       ├── auction_list.fxml
+│   │       ├── auction_detail.fxml
+│   │       ├── seller.fxml
+│   │       ├── admin.fxml
+│   │       └── style.css
+│   └── test/                              # Unit tests
+├── target/
+│   ├── server.jar                         # ← Fat JAR chạy Server
+│   └── client.jar                         # ← Fat JAR chạy Client
+└── pom.xml
 ```
 
 ---
 
-# Hướng dẫn sử dụng
+## Vị trí file JAR
 
-## Đăng nhập
+Sau khi build, 2 file JAR nằm tại:
 
-* Chạy ứng dụng
-* Nhập tài khoản và mật khẩu
-* Chọn vai trò phù hợp
-
-## Tạo phiên đấu giá
-
-1. Người bán chọn “Tạo đấu giá”
-2. Nhập thông tin sản phẩm
-3. Thiết lập giá khởi điểm và thời gian đấu giá
-4. Xác nhận tạo phiên đấu giá
-
-## Tham gia đấu giá
-
-1. Chọn phiên đấu giá đang hoạt động
-2. Nhập mức giá muốn đấu
-3. Hệ thống kiểm tra tính hợp lệ
-4. Cập nhật giá cao nhất mới
-
----
-
-# Đặc điểm nổi bật
-
-* Giao diện trực quan bằng JavaFX
-* Áp dụng mô hình MVC rõ ràng
-* Dễ mở rộng và bảo trì
-* Hỗ trợ nhiều loại sản phẩm
-* Có xử lý ngoại lệ đầy đủ
-* Tổ chức mã nguồn khoa học
-
----
-
-# Kiểm thử
-
-Dự án hỗ trợ kiểm thử bằng JUnit:
-
-```bash
-mvn test
+```
+target/server.jar   →  Máy chủ đấu giá
+target/client.jar   →  Giao diện người dùng
 ```
 
 ---
 
-# Định hướng phát triển
+## Hướng dẫn chạy
 
-* Kết nối cơ sở dữ liệu MySQL
-* Hỗ trợ thanh toán trực tuyến
-* Gửi thông báo thời gian thực
-* Triển khai hệ thống client-server
-* Bổ sung tính năng Auto Bid
-* Xây dựng API REST
+### Bước 1 — Build project
+
+Mở terminal tại thư mục gốc project, chạy:
+
+```bash
+mvn clean package
+```
+
+Hoặc trong **IntelliJ IDEA**: Maven panel → bấm đúp **`package`**.
+
+### Bước 2 — Khởi động Server (chạy 1 lần duy nhất)
+
+```bash
+java -jar target/server.jar
+```
+
+> Server lắng nghe tại cổng **9999**. Đảm bảo MySQL đang chạy trước khi khởi động server.
+
+### Bước 3 — Chạy Client
+
+Mở **cửa sổ terminal mới**, chạy:
+
+```bash
+java -jar target/client.jar
+```
+
+> Để chạy **nhiều client cùng lúc**, mở thêm cửa sổ terminal và lặp lại lệnh trên.
 
 ---
-# Đóng góp
 
-Mọi đóng góp đều được hoan nghênh.
+## Danh sách chức năng đã hoàn thành
 
-## Quy trình đóng góp
+### Xác thực người dùng
 
-1. Fork repository
-2. Tạo branch mới
-3. Commit thay đổi
-4. Push lên GitHub
-5. Tạo Pull Request
+- [x] Đăng ký tài khoản (Bidder / Seller)
+- [x] Đăng nhập / Đăng xuất
+- [x] Phân quyền 3 vai trò: Admin, Seller, Bidder
 
----
+### Seller — Người bán
 
-# Giấy phép
+- [x] Tạo sản phẩm (3 loại: Electronics, Art, Vehicle) kèm ảnh
+- [x] Chỉnh sửa / Xóa sản phẩm (khi chưa trong phiên đấu giá)
+- [x] Tạo phiên đấu giá cho sản phẩm
+- [x] Kết thúc phiên đấu giá sớm
 
-Dự án phục vụ mục đích học tập và nghiên cứu.
+### Bidder — Người đấu giá
 
----
+- [x] Xem danh sách phiên đấu giá, lọc theo trạng thái
+- [x] Xem chi tiết phiên đấu giá và lịch sử đặt giá
+- [x] Đặt giá thủ công
+- [x] Cài đặt Auto-bid (tự động đặt giá theo bước tăng đến mức tối đa)
+- [x] Nạp tiền vào tài khoản (có xác thực mật khẩu)
+- [x] Thanh toán phiên đấu giá thắng
+- [x] Nhận cảnh báo nếu không thanh toán trong 12 giờ
 
-# Liên hệ
+### Admin — Quản trị viên
 
-Nếu có thắc mắc hoặc góp ý, vui lòng liên hệ nhóm phát triển thông qua GitHub hoặc email.
+- [x] Xem toàn bộ phiên đấu giá trong hệ thống
+- [x] Hủy phiên đấu giá bất kỳ
+- [x] Kết thúc phiên đấu giá sớm
+- [x] Nâng cấp quyền người dùng lên Admin
+
+### Hệ thống
+
+- [x] Anti-snipe: tự động gia hạn 60 giây nếu có bid trong 30 giây cuối
+- [x] Tự động đóng phiên khi hết giờ (scheduler 5 giây/lần)
+- [x] Tự động hủy & phạt Bidder không thanh toán sau 12 giờ
+- [x] Khóa tài khoản Bidder sau 3 lần vi phạm không thanh toán
+- [x] Khóa chức năng nạp tiền 3 phút sau 3 lần nhập sai mật khẩu
+- [x] Realtime cập nhật giá đến tất cả client qua BID_UPDATE broadcast
+- [x] Observer pattern: Bidder nhận thông báo khi có cập nhật phiên
+- [x] Factory pattern: tạo Item theo loại động
+- [x] Singleton: AuctionManager, ItemFactory, NetworkClient

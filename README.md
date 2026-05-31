@@ -107,13 +107,12 @@ target/client.jar   ->  Giao diện người dùng
 1. Tải và cài đặt **Radmin VPN**: [https://www.radmin-vpn.com/](https://www.radmin-vpn.com/)
 2. Mở Radmin VPN, chọn **Join Network**
 3. Nhập thông tin:
-   - **Network Name**: 
-   - **Password**: 
+   - **Network Name**: AuctionDemo
+   - **Password**: 123456
 4. Bấm **Join** — sau khi tham gia thành công, máy sẽ được cấp một IP trong mạng ảo
 5. Máy chạy **Server** chia sẻ IP Radmin VPN của mình cho các máy Client
 6. Các máy **Client** đổi  trong  thành IP của máy Server trong mạng Radmin
 
-> Nếu chạy Server và Client trên **cùng 1 máy**, bỏ qua bước này — dùng  như mặc định.
 
 ---
 

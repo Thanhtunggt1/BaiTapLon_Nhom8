@@ -1,0 +1,20 @@
+-------------------------------------------------------------------------------
+Test set: com.auction.model.entity.SellerTest
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 4, Errors: 0, Skipped: 0, Time elapsed: 0.001 sec <<< FAILURE!
+com.auction.model.entity.SellerTest.testDeleteItemSuccess()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "com.auction.model.entity.Seller.createItem(String, String, double, com.auction.model.enums.ItemType, java.util.Map)" because "this.seller" is null
+	at com.auction.model.entity.SellerTest.testDeleteItemSuccess(SellerTest.java:53)
+
+com.auction.model.entity.SellerTest.testUpdateItemSuccess()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "com.auction.model.entity.Seller.createItem(String, String, double, com.auction.model.enums.ItemType, java.util.Map)" because "this.seller" is null
+	at com.auction.model.entity.SellerTest.testUpdateItemSuccess(SellerTest.java:39)
+
+com.auction.model.entity.SellerTest.testCreateAuctionSuccess()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "com.auction.model.entity.Seller.createItem(String, String, double, com.auction.model.enums.ItemType, java.util.Map)" because "this.seller" is null
+	at com.auction.model.entity.SellerTest.testCreateAuctionSuccess(SellerTest.java:64)
+
+com.auction.model.entity.SellerTest.testCreateItem()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "com.auction.model.entity.Seller.createItem(String, String, double, com.auction.model.enums.ItemType, java.util.Map)" because "this.seller" is null
+	at com.auction.model.entity.SellerTest.testCreateItem(SellerTest.java:26)
+

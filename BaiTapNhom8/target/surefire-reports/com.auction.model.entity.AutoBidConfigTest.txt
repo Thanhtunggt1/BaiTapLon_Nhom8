@@ -1,0 +1,14 @@
+-------------------------------------------------------------------------------
+Test set: com.auction.model.entity.AutoBidConfigTest
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0 sec <<< FAILURE!
+com.auction.model.entity.AutoBidConfigTest.testComputeNextBidWithinLimit()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.IllegalArgumentException: Bidder không được null.
+	at com.auction.model.entity.AutoBidConfig.<init>(AutoBidConfig.java:15)
+	at com.auction.model.entity.AutoBidConfigTest.testComputeNextBidWithinLimit(AutoBidConfigTest.java:33)
+
+com.auction.model.entity.AutoBidConfigTest.testComputeNextBidExceedsLimit()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.IllegalArgumentException: Bidder không được null.
+	at com.auction.model.entity.AutoBidConfig.<init>(AutoBidConfig.java:15)
+	at com.auction.model.entity.AutoBidConfigTest.testComputeNextBidExceedsLimit(AutoBidConfigTest.java:40)
+

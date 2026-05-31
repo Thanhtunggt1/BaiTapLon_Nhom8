@@ -1,0 +1,37 @@
+-------------------------------------------------------------------------------
+Test set: com.auction.model.entity.AuctionTest
+-------------------------------------------------------------------------------
+Tests run: 8, Failures: 8, Errors: 0, Skipped: 0, Time elapsed: 0.002 sec <<< FAILURE!
+com.auction.model.entity.AuctionTest.testPlaceBidSuccess()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "com.auction.model.entity.Auction.startAuction()" because "this.auction" is null
+	at com.auction.model.entity.AuctionTest.testPlaceBidSuccess(AuctionTest.java:46)
+
+com.auction.model.entity.AuctionTest.testPlaceBidAuctionClosed()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.IllegalArgumentException: Bidder không được null.
+	at com.auction.model.entity.BidTransaction.<init>(BidTransaction.java:14)
+	at com.auction.model.entity.AuctionTest.testPlaceBidAuctionClosed(AuctionTest.java:56)
+
+com.auction.model.entity.AuctionTest.testEndAuctionWithWinner()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "com.auction.model.entity.Auction.startAuction()" because "this.auction" is null
+	at com.auction.model.entity.AuctionTest.testEndAuctionWithWinner(AuctionTest.java:70)
+
+com.auction.model.entity.AuctionTest.testCancelDueToUnpaid()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "com.auction.model.entity.Auction.startAuction()" because "this.auction" is null
+	at com.auction.model.entity.AuctionTest.testCancelDueToUnpaid(AuctionTest.java:100)
+
+com.auction.model.entity.AuctionTest.testEndAuctionNoWinner()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "com.auction.model.entity.Auction.startAuction()" because "this.auction" is null
+	at com.auction.model.entity.AuctionTest.testEndAuctionNoWinner(AuctionTest.java:81)
+
+com.auction.model.entity.AuctionTest.testPlaceBidInvalidAmount()  Time elapsed: 0.001 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "com.auction.model.entity.Auction.startAuction()" because "this.auction" is null
+	at com.auction.model.entity.AuctionTest.testPlaceBidInvalidAmount(AuctionTest.java:62)
+
+com.auction.model.entity.AuctionTest.testStartAuction()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "com.auction.model.entity.Auction.getStatus()" because "this.auction" is null
+	at com.auction.model.entity.AuctionTest.testStartAuction(AuctionTest.java:39)
+
+com.auction.model.entity.AuctionTest.testMarkAsPaid()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "com.auction.model.entity.Auction.startAuction()" because "this.auction" is null
+	at com.auction.model.entity.AuctionTest.testMarkAsPaid(AuctionTest.java:88)
+

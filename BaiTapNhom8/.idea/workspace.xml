@@ -5,78 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0c6a107e-68c0-4fa4-9118-006d3961becd" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_05_2026_1_35_CH_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_05_2026_1_35_CH__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_05_2026_2_17_CH_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_05_2026_2_17_CH__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_05_2026_2_36_CH_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_05_2026_2_36_CH__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_05_2026_2_37_CH_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_05_2026_2_37_CH__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_05_2026_2_38_CH_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_05_2026_2_38_CH__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_05_2026_2_49_CH_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_05_2026_2_49_CH__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_05_2026_9_53_SA_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_05_2026_9_53_SA__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/gui/UserStoreTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/manager/AuctionManagerExtendedTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/manager/AuctionManagerTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/manager/TestRegisterAuction.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/model/entity/AdminTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/model/entity/AuctionPaymentTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/model/entity/AuctionTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/model/entity/AutoBidConfigTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/model/entity/BidTransactionTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/model/entity/BidderAutoBidSetupTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/model/entity/BidderBalanceTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/model/entity/BidderPlaceBidTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/model/entity/BidderTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/model/entity/EntityTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/model/entity/ItemTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/model/entity/SellerTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/model/entity/UserTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/pattern/factory/ItemFactoryTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/TEST-com.auction.manager.AuctionManagerExtendedTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/TEST-com.auction.manager.AuctionManagerTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/TEST-com.auction.model.entity.AdminTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/TEST-com.auction.model.entity.AuctionPaymentTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/TEST-com.auction.model.entity.AuctionTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/TEST-com.auction.model.entity.AutoBidConfigTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/TEST-com.auction.model.entity.BidTransactionTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/TEST-com.auction.model.entity.BidderAutoBidSetupTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/TEST-com.auction.model.entity.BidderBalanceTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/TEST-com.auction.model.entity.BidderPlaceBidTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/TEST-com.auction.model.entity.BidderTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/TEST-com.auction.model.entity.EntityTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/TEST-com.auction.model.entity.ItemTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/TEST-com.auction.model.entity.SellerTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/TEST-com.auction.model.entity.UserTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/TEST-com.auction.pattern.factory.ItemFactoryTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/com.auction.manager.AuctionManagerExtendedTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/com.auction.manager.AuctionManagerTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/com.auction.model.entity.AdminTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/com.auction.model.entity.AuctionPaymentTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/com.auction.model.entity.AuctionTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/com.auction.model.entity.AutoBidConfigTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/com.auction.model.entity.BidTransactionTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/com.auction.model.entity.BidderAutoBidSetupTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/com.auction.model.entity.BidderBalanceTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/com.auction.model.entity.BidderPlaceBidTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/com.auction.model.entity.BidderTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/com.auction.model.entity.EntityTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/com.auction.model.entity.ItemTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/com.auction.model.entity.SellerTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/com.auction.model.entity.UserTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/com.auction.pattern.factory.ItemFactoryTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/test-classes/com/auction/manager/AuctionManagerExtendedTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/test-classes/com/auction/model/entity/AuctionPaymentTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/test-classes/com/auction/model/entity/BidderAutoBidSetupTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/test-classes/com/auction/model/entity/BidderBalanceTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/test-classes/com/auction/model/entity/BidderPlaceBidTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/test-classes/com/auction/model/entity/ItemTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../target/test-classes/com/auction/model/entity/UserTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/com/auction/manager/AuctionManagerIntegrationTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/com/auction/model/entity/AuctionTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/com/auction/model/entity/AuctionTest.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,7 +16,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="95" />
+    <option name="cachedIndexableFilesCount" value="89" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -146,9 +78,12 @@
     &quot;JUnit.ItemSubclassTest.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.SellerTest.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.UserDAOTest.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.auction-system [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.auction-system [package].executor&quot;: &quot;Run&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
     &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
@@ -182,7 +117,7 @@
       <recent name="com.auction.model.entity" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Launcher">
+  <component name="RunManager" selected="JUnit.UserDAOTest">
     <configuration name="AuctionServer" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.auction.server.AuctionServer" />
       <module name="auction-system" />
@@ -196,29 +131,16 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Launcher" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.auction.Launcher" />
+    <configuration name="AuctionObserverTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="auction-system" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.auction.*" />
+          <option name="PATTERN" value="com.auction.pattern.observer.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="AuctionManagerIntegrationTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="auction-system" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.auction.manager.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.auction.manager" />
-      <option name="MAIN_CLASS_NAME" value="com.auction.manager.AuctionManagerIntegrationTest" />
+      <option name="PACKAGE_NAME" value="com.auction.pattern.observer" />
+      <option name="MAIN_CLASS_NAME" value="com.auction.pattern.observer.AuctionObserverTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -254,6 +176,21 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="SellerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="auction-system" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.auction.model.entity.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.auction.model.entity" />
+      <option name="MAIN_CLASS_NAME" value="com.auction.model.entity.SellerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="UserDAOTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="auction-system" />
       <extension name="coverage">
@@ -271,19 +208,19 @@
     </configuration>
     <list>
       <item itemvalue="Application.AuctionServer" />
-      <item itemvalue="Application.Launcher" />
-      <item itemvalue="JUnit.AuctionManagerIntegrationTest" />
+      <item itemvalue="JUnit.AuctionObserverTest" />
+      <item itemvalue="JUnit.SellerTest" />
       <item itemvalue="JUnit.ClientHandlerTest" />
       <item itemvalue="JUnit.UserDAOTest" />
       <item itemvalue="JUnit.ItemFactoryTest" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Launcher" />
-        <item itemvalue="JUnit.AuctionManagerIntegrationTest" />
         <item itemvalue="JUnit.UserDAOTest" />
         <item itemvalue="JUnit.ClientHandlerTest" />
         <item itemvalue="JUnit.ItemFactoryTest" />
+        <item itemvalue="JUnit.AuctionObserverTest" />
+        <item itemvalue="JUnit.SellerTest" />
       </list>
     </recent_temporary>
   </component>

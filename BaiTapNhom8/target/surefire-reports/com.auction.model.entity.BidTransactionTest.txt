@@ -1,0 +1,17 @@
+-------------------------------------------------------------------------------
+Test set: com.auction.model.entity.BidTransactionTest
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 0.001 sec <<< FAILURE!
+com.auction.model.entity.BidTransactionTest.testTransactionValidityWhenAuctionNotRunning()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.IllegalArgumentException: Bidder không được null.
+	at com.auction.model.entity.BidTransaction.<init>(BidTransaction.java:14)
+	at com.auction.model.entity.BidTransactionTest.testTransactionValidityWhenAuctionNotRunning(BidTransactionTest.java:38)
+
+com.auction.model.entity.BidTransactionTest.testTransactionValidityInvalidAmount()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "com.auction.model.entity.Auction.startAuction()" because "this.auction" is null
+	at com.auction.model.entity.BidTransactionTest.testTransactionValidityInvalidAmount(BidTransactionTest.java:51)
+
+com.auction.model.entity.BidTransactionTest.testTransactionValidityValidAmount()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "com.auction.model.entity.Auction.startAuction()" because "this.auction" is null
+	at com.auction.model.entity.BidTransactionTest.testTransactionValidityValidAmount(BidTransactionTest.java:44)
+

@@ -1,0 +1,15 @@
+com\auction\server\ClientHandlerTest.class
+com\auction\server\ClientHandlerTest$1.class
+com\auction\model\entity\AdminTest.class
+com\auction\model\entity\BidderTest.class
+com\auction\server\UserDAOTest.class
+com\auction\model\entity\EntityTest$TestEntity.class
+com\auction\model\entity\EntityTest.class
+com\auction\pattern\factory\ItemFactoryTest.class
+com\auction\model\entity\AuctionTest.class
+com\auction\model\entity\ItemSubclassTest.class
+com\auction\model\entity\SellerTest.class
+com\auction\manager\AuctionManagerTest.class
+com\auction\pattern\observer\AuctionObserverTest.class
+com\auction\model\entity\AutoBidConfigTest.class
+com\auction\model\entity\BidTransactionTest.class

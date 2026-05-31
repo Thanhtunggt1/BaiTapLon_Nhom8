@@ -1,0 +1,24 @@
+-------------------------------------------------------------------------------
+Test set: com.auction.manager.AuctionManagerTest
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 0.019 sec <<< FAILURE!
+com.auction.manager.AuctionManagerTest.testStartUnregisteredAuctionThrowsException()  Time elapsed: 0.018 sec  <<< FAILURE!
+org.opentest4j.AssertionFailedError: Unexpected exception type thrown, expected: <java.lang.IllegalArgumentException> but was: <java.lang.NullPointerException>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:67)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:35)
+	at org.junit.jupiter.api.Assertions.assertThrows(Assertions.java:3115)
+	at com.auction.manager.AuctionManagerTest.testStartUnregisteredAuctionThrowsException(AuctionManagerTest.java:55)
+Caused by: java.lang.NullPointerException: Cannot invoke "com.auction.manager.AuctionManager.startAuction(com.auction.model.entity.Auction)" because "this.manager" is null
+	at com.auction.manager.AuctionManagerTest.lambda$testStartUnregisteredAuctionThrowsException$0(AuctionManagerTest.java:55)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:53)
+	... 21 more
+
+com.auction.manager.AuctionManagerTest.testStartRegisteredAuction()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "com.auction.manager.AuctionManager.registerAuction(com.auction.model.entity.Auction)" because "this.manager" is null
+	at com.auction.manager.AuctionManagerTest.testStartRegisteredAuction(AuctionManagerTest.java:60)
+
+com.auction.manager.AuctionManagerTest.testRegisterAuction()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "com.auction.manager.AuctionManager.registerAuction(com.auction.model.entity.Auction)" because "this.manager" is null
+	at com.auction.manager.AuctionManagerTest.testRegisterAuction(AuctionManagerTest.java:46)
+

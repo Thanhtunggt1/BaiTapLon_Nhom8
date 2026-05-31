@@ -1,0 +1,52 @@
+-------------------------------------------------------------------------------
+Test set: com.auction.model.entity.BidderTest
+-------------------------------------------------------------------------------
+Tests run: 8, Failures: 8, Errors: 0, Skipped: 0, Time elapsed: 0.003 sec <<< FAILURE!
+com.auction.model.entity.BidderTest.testAddUnpaidWarningBansUser()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "com.auction.model.entity.Bidder.addUnpaidWarning()" because "this.bidder" is null
+	at com.auction.model.entity.BidderTest.testAddUnpaidWarningBansUser(BidderTest.java:56)
+
+com.auction.model.entity.BidderTest.testDepositLockoutMechanism()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "com.auction.model.entity.Bidder.recordFailedDeposit()" because "this.bidder" is null
+	at com.auction.model.entity.BidderTest.testDepositLockoutMechanism(BidderTest.java:66)
+
+com.auction.model.entity.BidderTest.testSetupAutoBidInvalidMaxBid()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "com.auction.model.entity.Auction.startAuction()" because "this.dummyAuction" is null
+	at com.auction.model.entity.BidderTest.testSetupAutoBidInvalidMaxBid(BidderTest.java:80)
+
+com.auction.model.entity.BidderTest.testDepositSuccess()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "com.auction.model.entity.Bidder.deposit(double)" because "this.bidder" is null
+	at com.auction.model.entity.BidderTest.testDepositSuccess(BidderTest.java:34)
+
+com.auction.model.entity.BidderTest.testDeductSuccess()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "com.auction.model.entity.Bidder.deduct(double)" because "this.bidder" is null
+	at com.auction.model.entity.BidderTest.testDeductSuccess(BidderTest.java:45)
+
+com.auction.model.entity.BidderTest.testDepositNegativeAmountThrowsException()  Time elapsed: 0 sec  <<< FAILURE!
+org.opentest4j.AssertionFailedError: Unexpected exception type thrown, expected: <java.lang.IllegalArgumentException> but was: <java.lang.NullPointerException>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:67)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:35)
+	at org.junit.jupiter.api.Assertions.assertThrows(Assertions.java:3115)
+	at com.auction.model.entity.BidderTest.testDepositNegativeAmountThrowsException(BidderTest.java:40)
+Caused by: java.lang.NullPointerException: Cannot invoke "com.auction.model.entity.Bidder.deposit(double)" because "this.bidder" is null
+	at com.auction.model.entity.BidderTest.lambda$testDepositNegativeAmountThrowsException$0(BidderTest.java:40)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:53)
+	... 21 more
+
+com.auction.model.entity.BidderTest.testDeductInsufficientBalanceThrowsException()  Time elapsed: 0.001 sec  <<< FAILURE!
+org.opentest4j.AssertionFailedError: Unexpected exception type thrown, expected: <com.auction.exception.InsufficientBalanceException> but was: <java.lang.NullPointerException>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:67)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:35)
+	at org.junit.jupiter.api.Assertions.assertThrows(Assertions.java:3115)
+	at com.auction.model.entity.BidderTest.testDeductInsufficientBalanceThrowsException(BidderTest.java:51)
+Caused by: java.lang.NullPointerException: Cannot invoke "com.auction.model.entity.Bidder.deduct(double)" because "this.bidder" is null
+	at com.auction.model.entity.BidderTest.lambda$testDeductInsufficientBalanceThrowsException$1(BidderTest.java:51)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:53)
+	... 21 more
+
+com.auction.model.entity.BidderTest.testSetupAutoBidExceedsBalance()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "com.auction.model.entity.Auction.startAuction()" because "this.dummyAuction" is null
+	at com.auction.model.entity.BidderTest.testSetupAutoBidExceedsBalance(BidderTest.java:88)
+

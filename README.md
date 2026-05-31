@@ -1,17 +1,17 @@
-#  Hệ Thống Đấu Giá Trực Tuyến
+# Hệ Thống Đấu Giá Trực Tuyến
 
-Ứng dụng đấu giá trực tuyến theo mô hình Client–Server, hỗ trợ nhiều người dùng đồng thời. Người bán có thể đăng sản phẩm và tạo phiên đấu giá; người mua có thể đặt giá thủ công hoặc cài đặt auto-bid; quản trị viên có thể giám sát và can thiệp toàn bộ hệ thống.
-
----
-
-##  Tài liệu & Demo
-
--  **Báo cáo PDF**: [Xem tại đây](https://drive.google.com/file/d/1ss415eY6kFJhu7jdfxVhOed0ns8aNDdm/view?usp=sharing)
--  **Video Demo**: [Xem tại đây](https://drive.google.com/file/d/1C85vLbSDAdghZcbtVMGfDBiuKuQUg9IC/view?usp=sharing)
+Ứng dụng đấu giá trực tuyến theo mô hình Client-Server, hỗ trợ nhiều người dùng đồng thời. Người bán có thể đăng sản phẩm và tạo phiên đấu giá; người mua có thể đặt giá thủ công hoặc cài đặt auto-bid; quản trị viên có thể giám sát và can thiệp toàn bộ hệ thống.
 
 ---
 
-##  Công nghệ sử dụng
+## Tài liệu & Demo
+
+- **Báo cáo PDF**: [Xem tại đây](https://drive.google.com/file/d/1ss415eY6kFJhu7jdfxVhOed0ns8aNDdm/view?usp=sharing)
+- **Video Demo**: [Xem tại đây](https://drive.google.com/file/d/1C85vLbSDAdghZcbtVMGfDBiuKuQUg9IC/view?usp=sharing)
+
+---
+
+## Công nghệ sử dụng
 
 | Thành phần | Công nghệ |
 |---|---|
@@ -26,12 +26,12 @@
 ### Yêu cầu cài đặt
 
 - **JDK 17** trở lên — [Tải tại đây](https://adoptium.net/)
-- **MySQL 8** đang chạy tại `localhost:3306`, database tên `auction_db`
-- **Maven 3.x** (hoặc dùng `mvnw` đi kèm project)
+- **MySQL 8** đang chạy tại , database tên 
+- **Maven 3.x** (hoặc dùng  đi kèm project)
 
 ---
 
-##  Cấu trúc thư mục
+## Cấu trúc thư mục
 
 ```
 BaiTapNhom8/
@@ -82,25 +82,42 @@ BaiTapNhom8/
 │   │       └── style.css
 │   └── test/                              # Unit tests
 ├── target/
-│   ├── server.jar                         # ← Fat JAR chạy Server
-│   └── client.jar                         # ← Fat JAR chạy Client
+│   ├── server.jar                         # Fat JAR chạy Server
+│   └── client.jar                         # Fat JAR chạy Client
 └── pom.xml
 ```
 
 ---
 
-##  Vị trí file JAR
+## Vị trí file JAR
 
 Sau khi build, 2 file JAR nằm tại:
 
 ```
-target/server.jar   →  Máy chủ đấu giá
-target/client.jar   →  Giao diện người dùng
+target/server.jar   ->  Máy chủ đấu giá
+target/client.jar   ->  Giao diện người dùng
 ```
 
 ---
 
-##  Hướng dẫn chạy
+## Kết nối mạng (Radmin VPN)
+
+Để nhiều máy tính có thể kết nối với nhau qua mạng LAN ảo:
+
+1. Tải và cài đặt **Radmin VPN**: [https://www.radmin-vpn.com/](https://www.radmin-vpn.com/)
+2. Mở Radmin VPN, chọn **Join Network**
+3. Nhập thông tin:
+   - **Network Name**: 
+   - **Password**: 
+4. Bấm **Join** — sau khi tham gia thành công, máy sẽ được cấp một IP trong mạng ảo
+5. Máy chạy **Server** chia sẻ IP Radmin VPN của mình cho các máy Client
+6. Các máy **Client** đổi  trong  thành IP của máy Server trong mạng Radmin
+
+> Nếu chạy Server và Client trên **cùng 1 máy**, bỏ qua bước này — dùng  như mặc định.
+
+---
+
+## Hướng dẫn chạy
 
 ### Bước 1 — Build project
 
@@ -110,7 +127,7 @@ Mở terminal tại thư mục gốc project, chạy:
 mvn clean package
 ```
 
-Hoặc trong **IntelliJ IDEA**: Maven panel → bấm đúp **`package`**.
+Hoặc trong **IntelliJ IDEA**: Maven panel, bấm đúp ****.
 
 ### Bước 2 — Khởi động Server (chạy 1 lần duy nhất)
 
@@ -132,41 +149,41 @@ java -jar target/client.jar
 
 ---
 
-##  Danh sách chức năng đã hoàn thành
+## Danh sách chức năng đã hoàn thành
 
-###  Xác thực người dùng
--  Đăng ký tài khoản (Bidder / Seller)
--  Đăng nhập / Đăng xuất
--  Phân quyền 3 vai trò: Admin, Seller, Bidder
+### Xác thực người dùng
+- Đăng ký tài khoản (Bidder / Seller)
+- Đăng nhập / Đăng xuất
+- Phân quyền 3 vai trò: Admin, Seller, Bidder
 
-###  Seller — Người bán
--  Tạo sản phẩm (3 loại: Electronics, Art, Vehicle) kèm ảnh
--  Chỉnh sửa / Xóa sản phẩm (khi chưa trong phiên đấu giá)
--  Tạo phiên đấu giá cho sản phẩm
--  Kết thúc phiên đấu giá sớm
+### Seller — Người bán
+- Tạo sản phẩm (3 loại: Electronics, Art, Vehicle) kèm ảnh
+- Chỉnh sửa / Xóa sản phẩm (khi chưa trong phiên đấu giá)
+- Tạo phiên đấu giá cho sản phẩm
+- Kết thúc phiên đấu giá sớm
 
-###  Bidder — Người đấu giá
--  Xem danh sách phiên đấu giá, lọc theo trạng thái
--  Xem chi tiết phiên đấu giá và lịch sử đặt giá
--  Đặt giá thủ công
--  Cài đặt Auto-bid (tự động đặt giá theo bước tăng đến mức tối đa)
--  Nạp tiền vào tài khoản (có xác thực mật khẩu)
--  Thanh toán phiên đấu giá thắng
--  Nhận cảnh báo nếu không thanh toán trong 12 giờ
+### Bidder — Người đấu giá
+- Xem danh sách phiên đấu giá, lọc theo trạng thái
+- Xem chi tiết phiên đấu giá và lịch sử đặt giá
+- Đặt giá thủ công
+- Cài đặt Auto-bid (tự động đặt giá theo bước tăng đến mức tối đa)
+- Nạp tiền vào tài khoản (có xác thực mật khẩu)
+- Thanh toán phiên đấu giá thắng
+- Nhận cảnh báo nếu không thanh toán trong 12 giờ
 
-###  Admin — Quản trị viên
--  Xem toàn bộ phiên đấu giá trong hệ thống
--  Hủy phiên đấu giá bất kỳ
--  Kết thúc phiên đấu giá sớm
--  Nâng cấp quyền người dùng lên Admin
+### Admin — Quản trị viên
+- Xem toàn bộ phiên đấu giá trong hệ thống
+- Hủy phiên đấu giá bất kỳ
+- Kết thúc phiên đấu giá sớm
+- Nâng cấp quyền người dùng lên Admin
 
-###  Hệ thống
--  Anti-snipe: tự động gia hạn 60 giây nếu có bid trong 30 giây cuối
--  Tự động đóng phiên khi hết giờ (scheduler 5 giây/lần)
--  Tự động hủy & phạt Bidder không thanh toán sau 12 giờ
--  Khóa tài khoản Bidder sau 3 lần vi phạm không thanh toán
--  Khóa chức năng nạp tiền 3 phút sau 3 lần nhập sai mật khẩu
--  Realtime cập nhật giá đến tất cả client qua BID_UPDATE broadcast
--  Observer pattern: Bidder nhận thông báo khi có cập nhật phiên
--  Factory pattern: tạo Item theo loại động
--  Singleton: AuctionManager, ItemFactory, NetworkClient
+### Hệ thống
+- Anti-snipe: tự động gia hạn 60 giây nếu có bid trong 30 giây cuối
+- Tự động đóng phiên khi hết giờ (scheduler 5 giây/lần)
+- Tự động hủy và phạt Bidder không thanh toán sau 12 giờ
+- Khóa tài khoản Bidder sau 3 lần vi phạm không thanh toán
+- Khóa chức năng nạp tiền 3 phút sau 3 lần nhập sai mật khẩu
+- Realtime cập nhật giá đến tất cả client qua BID_UPDATE broadcast
+- Observer pattern: Bidder nhận thông báo khi có cập nhật phiên
+- Factory pattern: tạo Item theo loại động
+- Singleton: AuctionManager, ItemFactory, NetworkClient

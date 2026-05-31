@@ -1,20 +1,27 @@
-# Hệ Thống Đấu Giá Trực Tuyến
+# 🏛️ Hệ Thống Đấu Giá Trực Tuyến
 
 Ứng dụng đấu giá trực tuyến theo mô hình Client–Server, hỗ trợ nhiều người dùng đồng thời. Người bán có thể đăng sản phẩm và tạo phiên đấu giá; người mua có thể đặt giá thủ công hoặc cài đặt auto-bid; quản trị viên có thể giám sát và can thiệp toàn bộ hệ thống.
 
 ---
 
-## Công nghệ sử dụng
+## 📎 Tài liệu & Demo
 
-| Thành phần    | Công nghệ                          |
-| ------------- | ---------------------------------- |
-| Ngôn ngữ      | Java 17                            |
-| Giao diện     | JavaFX 21.0.2 + FXML               |
-| Mạng          | Java Socket (TCP)                  |
-| Cơ sở dữ liệu | MySQL 8                            |
-| Serialization | Gson 2.10.1                        |
-| Build tool    | Maven 3.x                          |
-| Đóng gói      | maven-shade-plugin 3.5.1 (Fat JAR) |
+- 📄 **Báo cáo PDF**: [Xem tại đây](https://drive.google.com/file/d/1ss415eY6kFJhu7jdfxVhOed0ns8aNDdm/view?usp=sharing)
+- 🎬 **Video Demo**: [Xem tại đây](https://drive.google.com/file/d/1C85vLbSDAdghZcbtVMGfDBiuKuQUg9IC/view?usp=sharing)
+
+---
+
+## 🛠️ Công nghệ sử dụng
+
+| Thành phần | Công nghệ |
+|---|---|
+| Ngôn ngữ | Java 17 |
+| Giao diện | JavaFX 21.0.2 + FXML |
+| Mạng | Java Socket (TCP) |
+| Cơ sở dữ liệu | MySQL 8 |
+| Serialization | Gson 2.10.1 |
+| Build tool | Maven 3.x |
+| Đóng gói | maven-shade-plugin 3.5.1 (Fat JAR) |
 
 ### Yêu cầu cài đặt
 
@@ -24,7 +31,7 @@
 
 ---
 
-## Cấu trúc thư mục
+## 📁 Cấu trúc thư mục
 
 ```
 BaiTapNhom8/
@@ -82,7 +89,7 @@ BaiTapNhom8/
 
 ---
 
-## Vị trí file JAR
+## 📦 Vị trí file JAR
 
 Sau khi build, 2 file JAR nằm tại:
 
@@ -93,7 +100,7 @@ target/client.jar   →  Giao diện người dùng
 
 ---
 
-## Hướng dẫn chạy
+## 🚀 Hướng dẫn chạy
 
 ### Bước 1 — Build project
 
@@ -125,23 +132,20 @@ java -jar target/client.jar
 
 ---
 
-## Danh sách chức năng đã hoàn thành
+## ✅ Danh sách chức năng đã hoàn thành
 
-### Xác thực người dùng
-
+### 👤 Xác thực người dùng
 - [x] Đăng ký tài khoản (Bidder / Seller)
 - [x] Đăng nhập / Đăng xuất
 - [x] Phân quyền 3 vai trò: Admin, Seller, Bidder
 
-### Seller — Người bán
-
+### 🛍️ Seller — Người bán
 - [x] Tạo sản phẩm (3 loại: Electronics, Art, Vehicle) kèm ảnh
 - [x] Chỉnh sửa / Xóa sản phẩm (khi chưa trong phiên đấu giá)
 - [x] Tạo phiên đấu giá cho sản phẩm
 - [x] Kết thúc phiên đấu giá sớm
 
-### Bidder — Người đấu giá
-
+### 🔨 Bidder — Người đấu giá
 - [x] Xem danh sách phiên đấu giá, lọc theo trạng thái
 - [x] Xem chi tiết phiên đấu giá và lịch sử đặt giá
 - [x] Đặt giá thủ công
@@ -150,15 +154,13 @@ java -jar target/client.jar
 - [x] Thanh toán phiên đấu giá thắng
 - [x] Nhận cảnh báo nếu không thanh toán trong 12 giờ
 
-### Admin — Quản trị viên
-
+### 🔧 Admin — Quản trị viên
 - [x] Xem toàn bộ phiên đấu giá trong hệ thống
 - [x] Hủy phiên đấu giá bất kỳ
 - [x] Kết thúc phiên đấu giá sớm
 - [x] Nâng cấp quyền người dùng lên Admin
 
-### Hệ thống
-
+### ⚙️ Hệ thống
 - [x] Anti-snipe: tự động gia hạn 60 giây nếu có bid trong 30 giây cuối
 - [x] Tự động đóng phiên khi hết giờ (scheduler 5 giây/lần)
 - [x] Tự động hủy & phạt Bidder không thanh toán sau 12 giờ

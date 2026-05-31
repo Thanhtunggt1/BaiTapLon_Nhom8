@@ -5,7 +5,78 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0c6a107e-68c0-4fa4-9118-006d3961becd" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_05_2026_1_35_CH_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_05_2026_1_35_CH__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_05_2026_2_17_CH_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_05_2026_2_17_CH__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_05_2026_2_36_CH_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_05_2026_2_36_CH__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_05_2026_2_37_CH_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_05_2026_2_37_CH__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_05_2026_2_38_CH_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_05_2026_2_38_CH__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_05_2026_2_49_CH_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_05_2026_2_49_CH__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_05_2026_9_53_SA_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_05_2026_9_53_SA__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/gui/UserStoreTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/manager/AuctionManagerExtendedTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/manager/AuctionManagerTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/manager/TestRegisterAuction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/model/entity/AdminTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/model/entity/AuctionPaymentTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/model/entity/AuctionTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/model/entity/AutoBidConfigTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/model/entity/BidTransactionTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/model/entity/BidderAutoBidSetupTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/model/entity/BidderBalanceTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/model/entity/BidderPlaceBidTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/model/entity/BidderTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/model/entity/EntityTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/model/entity/ItemTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/model/entity/SellerTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/model/entity/UserTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/test/java/com/auction/pattern/factory/ItemFactoryTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/TEST-com.auction.manager.AuctionManagerExtendedTest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/TEST-com.auction.manager.AuctionManagerTest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/TEST-com.auction.model.entity.AdminTest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/TEST-com.auction.model.entity.AuctionPaymentTest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/TEST-com.auction.model.entity.AuctionTest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/TEST-com.auction.model.entity.AutoBidConfigTest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/TEST-com.auction.model.entity.BidTransactionTest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/TEST-com.auction.model.entity.BidderAutoBidSetupTest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/TEST-com.auction.model.entity.BidderBalanceTest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/TEST-com.auction.model.entity.BidderPlaceBidTest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/TEST-com.auction.model.entity.BidderTest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/TEST-com.auction.model.entity.EntityTest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/TEST-com.auction.model.entity.ItemTest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/TEST-com.auction.model.entity.SellerTest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/TEST-com.auction.model.entity.UserTest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/TEST-com.auction.pattern.factory.ItemFactoryTest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/com.auction.manager.AuctionManagerExtendedTest.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/com.auction.manager.AuctionManagerTest.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/com.auction.model.entity.AdminTest.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/com.auction.model.entity.AuctionPaymentTest.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/com.auction.model.entity.AuctionTest.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/com.auction.model.entity.AutoBidConfigTest.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/com.auction.model.entity.BidTransactionTest.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/com.auction.model.entity.BidderAutoBidSetupTest.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/com.auction.model.entity.BidderBalanceTest.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/com.auction.model.entity.BidderPlaceBidTest.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/com.auction.model.entity.BidderTest.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/com.auction.model.entity.EntityTest.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/com.auction.model.entity.ItemTest.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/com.auction.model.entity.SellerTest.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/com.auction.model.entity.UserTest.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/surefire-reports/com.auction.pattern.factory.ItemFactoryTest.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/test-classes/com/auction/manager/AuctionManagerExtendedTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/test-classes/com/auction/model/entity/AuctionPaymentTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/test-classes/com/auction/model/entity/BidderAutoBidSetupTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/test-classes/com/auction/model/entity/BidderBalanceTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/test-classes/com/auction/model/entity/BidderPlaceBidTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/test-classes/com/auction/model/entity/ItemTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/test-classes/com/auction/model/entity/UserTest.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -13,7 +84,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="102" />
+    <option name="cachedIndexableFilesCount" value="95" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -27,7 +98,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$/.." value="tung" />
+        <entry key="$PROJECT_DIR$/.." value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
